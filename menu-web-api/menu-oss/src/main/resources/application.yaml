@@ -1,0 +1,13 @@
+server:
+  port: 8004
+spring:
+  application:
+    name: menu-oss
+
+aliyun:
+  oss:
+    file:
+      endpoint: oss-cn-beijing.aliyuncs.com
+      keyid: LTAI5t8ZNHpgMD1DnT3SXNMJ
+      keysecret: Y5aH5Y6PdOxXEzzOuzjKuIszr0x0pl
+      bucketname: menu-api

@@ -1,0 +1,8 @@
+# Project exclude paths
+/menu-auth/target/
+/menu-common/target/
+/menu-gateway/target/
+/menu-member/target/
+/menu-msm/target/
+/menu-oss/target/
+/menu-resource/target/

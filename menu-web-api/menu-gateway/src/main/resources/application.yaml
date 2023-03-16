@@ -1,0 +1,57 @@
+server:
+  port: 8080
+spring:
+  profiles:
+    active: dev
+  cloud:
+    gateway:
+      routes:
+        - id: menu-member          # 路由的唯一标识
+          uri: http://localhost:8000  # 如果断言成功，将要转发去的地址
+          order: 0                    # 优先级，越小优先级越高
+          predicates:                 # 断言，满足所有断言，才会进行转发
+            - Path=/member/**        # 注意：这是使用= 不是：
+        - id: menu-msm
+          uri: http://localhost:8001
+          order: 0
+          predicates:
+            - Path=/msm/**
+        - id: menu-resource
+          uri: http://localhost:8005
+          order: 0
+          predicates:
+            - Path=/resource/**
+        - id: menu-auth
+          uri: http://localhost:8002
+          order: 0
+          predicates:
+            - Path=/auth/**
+        - id: menu-oss
+          uri: http://localhost:8004
+          order: 0
+          predicates:
+            - Path=/oss/**
+
+  redis:
+    host: 43.138.88.44
+    port: 6379
+    database: 1
+    password: 654321
+    timeout: 1800000
+    lettuce:
+      pool:
+        max-active: 20  #连接池对的最大连接数
+        max-wait: -1    #最大等待时间 -1表示无限制
+        max-idle: 5     #系统允许的最大空闲数量
+        min-idle: 0     #最小空闲数
+
+# 白名单
+security:
+  ignore:
+    whites:
+      - /member/auth/**
+      - /msm/send/**
+      - /resource/**
+      - /oss/**
+
+

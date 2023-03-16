@@ -1,0 +1,93 @@
+package com.zsh.resource.recommend.cf;
+
+import com.zsh.resource.constant.DishConstant;
+import com.zsh.resource.domain.RecLog;
+import com.zsh.resource.mapper.RecLogMapper;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.stereotype.Component;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.*;
+import java.util.stream.Collectors;
+
+/**
+ * Created by zsh on 2023/3/13
+ * 基于热度值算法推荐
+ *  S = 0.3 x comment + 0.35 x collect + 0.15 x up + 0.15 x click - 0.1 x days
+ * @author zsh
+ */
+@Component
+public class MenuHotValueCFRec {
+
+    private final RecLogMapper recLogMapper;
+    private final RedisTemplate<Object, Object> redisTemplate;
+
+    public MenuHotValueCFRec(RecLogMapper recLogMapper, RedisTemplate<Object, Object> redisTemplate) {
+        this.recLogMapper = recLogMapper;
+        this.redisTemplate = redisTemplate;
+    }
+    /**
+     *  1. 加载日志数据
+     *  2. 计算热度值
+     *      计算规则: S = 0.3 x comment + 0.35 x collect + 0.15 x up + 0.15 x click - 0.1 * days
+     *  4. 对热度值进行排序
+     *  5. 取出前一百的菜品id放入redis
+     *  6. 定时器 -- 每隔一个小时进行更新热度值
+     */
+    public void recommendHotRec() {
+        // 加载所有数据
+        List<RecLog> items = recLogMapper.getAllLogData();
+        // 计算热度值
+        Map<Long, Double> dishScoreMap = new HashMap<>();
+        Map<Long, Integer> calTimeMap = new HashMap<>();
+        items.forEach(item -> {
+            Long dishId = item.getDishId();
+            Integer clickNum = item.getClickNum();
+            Integer commentNum = item.getCommentNum();
+            Boolean isCollect = item.getIsCollect();
+            Boolean isUp = item.getIsUp();
+            LocalDateTime createTime = item.getCreateTime();
+            LocalDateTime currentTime = LocalDateTime.now();
+            // 计算时间差(天数)
+            long days = Duration.between(createTime, currentTime).toDays();
+            // 计算当前条数据的分数
+            double score = 0.15 * (clickNum > 10 ? 10 : clickNum)
+                    + 0.30 * (commentNum > 10 ? 10 : commentNum)
+                    + 0.35 * (isCollect ? 10 : 0)
+                    + 0.15 * (isUp ? 10 : 0)
+                    - 0.10 * days;
+            // 保存dishId : score
+            if (dishScoreMap.containsKey(dishId)) {
+                // 将map中value进行相加
+                dishScoreMap.compute(dishId, (k, v) -> v == null ? 0 : v + score);
+            } else {
+                dishScoreMap.put(dishId, score);
+            }
+            if (calTimeMap.containsKey(dishId)) {
+                // 次数加1
+                calTimeMap.compute(dishId, (k, v) -> v == null ? 0 : v+1);
+            } else {
+                calTimeMap.put(dishId, 0);
+            }
+        });
+        // 对热度值进行取平均值
+        for (Map.Entry<Long, Double> entry : dishScoreMap.entrySet()) {
+            double value = entry.getValue() / calTimeMap.get(entry.getKey());
+            value = value < 1 ? 1 : value;
+            entry.setValue(value);
+        }
+        // 对热度值进行降序排列
+        Map<Long, Double> hotScoreMap = dishScoreMap.entrySet()
+                .stream()
+                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new));
+        // 将排序后的结果放入redis
+        redisTemplate.opsForValue().set(DishConstant.HOT_SCORE, hotScoreMap);
+    }
+
+}

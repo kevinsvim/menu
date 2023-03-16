@@ -1,0 +1,26 @@
+server:
+  port: 8002
+spring:
+  profiles:
+    active: dev
+  application:
+    name: menu-auth
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+  redis:
+    host: 43.138.88.44
+    port: 6379
+    database: 1
+    password: 654321
+    timeout: 1800000
+    lettuce:
+      pool:
+        max-active: 20  #连接池对的最大连接数
+        max-wait: -1    #最大等待时间 -1表示无限制
+        max-idle: 5     #系统允许的最大空闲数量
+        min-idle: 0     #最小空闲数
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"

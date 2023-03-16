@@ -1,0 +1,36 @@
+server:
+  port: 8000
+spring:
+  application:
+    name: menu-member
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://sh-cynosdbmysql-grp-pl8px3xs.sql.tencentcdb.com:23079/food_menu?serverTimezone=UTC&allowPublicKeyRetrieval=true
+    username: root
+    password: Hao_7886*@.Zms
+  redis:
+    host: 43.138.88.44
+    port: 6379
+    database: 0
+    password: 654321
+    timeout: 1800000
+    lettuce:
+      pool:
+        max-active: 20  #连接池对的最大连接数
+        max-wait: -1    #最大等待时间 -1表示无限制
+        max-idle: 5     #系统允许的最大空闲数量
+        min-idle: 0     #最小空闲数
+
+  jackson:
+    time-zone: GMT+8
+    date-format: yyyy-MM-dd HH:mm:ss
+
+
+mybatis-plus:
+  mapper-locations: classpath:/mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  global-config:
+    db-config:
+      #id类型。
+      id-type: ASSIGN_ID # 默认为ASSIGN_ID

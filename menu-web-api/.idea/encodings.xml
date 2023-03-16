@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Encoding" native2AsciiForPropertiesFiles="true" defaultCharsetForPropertiesFiles="UTF-8">
+    <file url="file://$PROJECT_DIR$/menu-auth/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-auth/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-common/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-common/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-gateway/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-gateway/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-member/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-member/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-msm/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-msm/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-oss/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-oss/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/menu-resource/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
+  </component>
+</project>

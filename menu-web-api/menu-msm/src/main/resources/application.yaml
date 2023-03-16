@@ -1,0 +1,38 @@
+server:
+  port: 8001
+spring:
+  application:
+    name: menu-msm
+  redis:
+    host: 43.138.88.44
+    port: 6379
+    database: 1
+    password: 654321
+    timeout: 1800000
+    lettuce:
+      pool:
+        max-active: 20  #连接池对的最大连接数
+        max-wait: -1    #最大等待时间 -1表示无限制
+        max-idle: 5     #系统允许的最大空闲数量
+        min-idle: 0     #最小空闲数
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
+
+#腾讯-》短信服务配置
+tencent:
+  msm:
+    id: AKIDhCRP7ZjcEZcOt73i6D3bssb2C5h25rMa
+    secret: ye3BQO4UcT2LOBhvtaz7yYqsd6ICpBF2
+    endPoint: sms.tencentcloudapi.com
+    appId: 1400561703
+    signName: 编程指引
+    templateId: 1082416
+#tencent:
+#  msm:
+#    id: AKIDUqzvmbJsN2maJDCA1wslcPAsVxFOM6c6
+#    secret: S1UlqiM1fEmBNK5cuFVdaKq78wX3Up6L
+#    endPoint: sms.tencentcloudapi.com
+#    appId: 1400569954
+#    signName: 备用
+#    templateId: 1113549
