@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zsh.resource.mapper.StepMapper">
+
+    <resultMap id="BaseResultMap" type="com.zsh.resource.domain.Step">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="dishId" column="dish_id" jdbcType="BIGINT"/>
+            <result property="imageUrl" column="image_url" jdbcType="VARCHAR"/>
+            <result property="content" column="content" jdbcType="VARCHAR"/>
+            <result property="rank" column="rank" jdbcType="INTEGER"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,dish_id,image_url,
+        content,rank,is_deleted,
+        create_time,update_time
+    </sql>
+</mapper>

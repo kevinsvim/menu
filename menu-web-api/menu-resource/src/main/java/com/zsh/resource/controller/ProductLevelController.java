@@ -19,8 +19,8 @@ public class ProductLevelController {
     public ProductLevelController(ProductionLevelService levelService) {
         this.levelService = levelService;
     }
-    @GetMapping("/getAllProductLevelAndTime")
-    public CommonResult<Object> getAllProductLevelAndTime() {
-        return levelService.getAllProductLevelAndTime();
+    @GetMapping("/getPublishDataEcho")
+    public CommonResult<Object> getPublishDataEcho() {
+        return levelService.getPublishDataEcho();
     }
 }

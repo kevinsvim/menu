@@ -82,6 +82,12 @@ public class Dish implements Serializable {
     private Long publisherId;
 
     /**
+     * 是否是独家发布
+     */
+    private boolean isSole;
+
+    private Integer status;
+    /**
      * 
      */
     private Boolean isDeleted;

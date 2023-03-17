@@ -1,10 +1,9 @@
 package com.zsh.resource.controller;
 
 import com.zsh.common.result.CommonResult;
+import com.zsh.resource.domain.dto.PublishDishDto;
 import com.zsh.resource.service.DishService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 /**
@@ -21,9 +20,20 @@ public class DishController {
         this.dishService = dishService;
     }
 
+    /**
+     *  获取热度值推荐
+     */
     @GetMapping("/hotScore")
     public CommonResult<Object> getHotRec() {
         
         return dishService.getHotRec();
     }
+    /**
+     * 存储发布的菜品
+     */
+    @PostMapping("/saveDish")
+    public CommonResult<Object> saveDish(@RequestBody PublishDishDto publishDishDto) {
+        return dishService.saveDish(publishDishDto);
+    }
+
 }

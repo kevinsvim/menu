@@ -20,9 +20,9 @@ public class MenuHotScoreRecTimerTask {
     }
 
     // 每隔一分钟执行(用于测试)
-    @Scheduled(cron = "0 */1 * * * ?")
+//    @Scheduled(cron = "0 */1 * * * ?")
     // 每天凌晨一点执行(生产环境)
-    //@Scheduled(cron = "0 0 1 * * ?")
+    @Scheduled(cron = "0 0 1 * * ?")
     public void hotScoreTaskRun() {
         // 调用热度值算法生成结果保存redis
         try {

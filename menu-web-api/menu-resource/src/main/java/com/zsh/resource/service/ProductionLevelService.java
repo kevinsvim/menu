@@ -13,5 +13,5 @@ public interface ProductionLevelService extends IService<ProductionLevel> {
     /**
      * 获取烹饪难度和时间
      */
-    CommonResult<Object> getAllProductLevelAndTime();
+    CommonResult<Object> getPublishDataEcho();
 }

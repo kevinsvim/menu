@@ -90,7 +90,7 @@
       <option name="IGNORE_JAVADOC_PERIOD" value="true" />
       <option name="IGNORE_DUPLICATED_THROWS" value="false" />
       <option name="IGNORE_POINT_TO_ITSELF" value="false" />
-      <option name="myAdditionalJavadocTags" value="date,date:2021/8/16,author:张帅豪,email:1817937322@qq.com,email:zsh.smile.coder@gmail.com,description,createDate,date:2023/3/13,author:zsh,description:jwt工具类,describe,TableName,date:2023/3/19,date:2021/6/19" />
+      <option name="myAdditionalJavadocTags" value="date,date:2021/8/16,author:张帅豪,email:1817937322@qq.com,email:zsh.smile.coder@gmail.com,description,createDate,date:2023/3/13,author:zsh,description:jwt工具类,describe,TableName,date:2023/3/19,date:2021/6/19,Entity" />
     </inspection_tool>
     <inspection_tool class="MapOrSetKeyShouldOverrideHashCodeEquals" enabled="false" level="CRITICAL" enabled_by_default="false" />
   </profile>
