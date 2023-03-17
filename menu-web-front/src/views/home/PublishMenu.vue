@@ -18,7 +18,7 @@
       <el-upload
         class="upload"
         drag
-        limit="1"
+        :limit=1
         :action="url"
         multiple
         :before-remove="removeSignalImage"
@@ -37,16 +37,16 @@
         </template>
       </el-upload>
     </div>
-    <!-- 选中烹饪工艺 -->
+    <!-- 烹饪工艺、难度、等级、时间、口味、 -->
     <div class="cook_skill">
       <el-row :gutter="10">
         <el-col :span="3" class="skill__item">
           <span>烹饪难度:</span>
         </el-col>
         <el-col :span="9">
-          <el-select v-model="publishMenu.productLevel" class="m-2" placeholder="Select" size="large">
+          <el-select v-model.number="publishMenu.productionLevelId" class="m-2" placeholder="Select" size="large">
             <el-option
-              v-for="item in productionLevel"
+              v-for="item in productionLevels"
               :key="item.id"
               :label="item.levelName"
               :value="item.id"
@@ -57,9 +57,9 @@
           <span>烹饪时间:</span>
         </el-col>
         <el-col :span="9">
-          <el-select v-model="publishMenu.productTime" class="m-2" placeholder="Select" size="large">
+          <el-select v-model.number="publishMenu.productionTimeId" class="m-2" placeholder="Select" size="large">
             <el-option
-              v-for="item in productionTime"
+              v-for="item in productionTimes"
               :key="item.id"
               :label="item.timeName"
               :value="item.id"
@@ -67,6 +67,60 @@
           </el-select>
         </el-col>
       </el-row>
+      <el-row :gutter="10" style="margin-top: 20px">
+        <el-col :span="3" class="skill__item">
+          <span>口味:</span>
+        </el-col>
+        <el-col :span="9">
+          <el-select v-model.number="publishMenu.flavorId" class="m-2" placeholder="Select" size="large">
+            <el-option
+              v-for="item in flavors"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+              placeholder="请选择"
+            />
+          </el-select>
+        </el-col>
+        <el-col :span="3" class="skill__item">
+          <span>烹饪工艺:</span>
+        </el-col>
+        <el-col :span="9">
+          <el-select v-model.number="publishMenu.cookTechnologyId" class="m-2" placeholder="Select" size="large">
+            <el-option
+              v-for="item in cookTechnologies"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+              placeholder="请选择"
+            />
+          </el-select>
+        </el-col>
+      </el-row>
+      <el-row :gutter="10" style="margin-top: 20px">
+        <el-col :span="3" class="skill__item">
+          <span>厨具:</span>
+        </el-col>
+        <el-col :span="9">
+          <el-select
+            v-model="publishMenu.kitchenwareIds"
+            multiple
+            collapse-tags
+            collapse-tags-tooltip
+            :max-collapse-tags="3"
+            placeholder="请选择"
+            style="width: 228px"
+          >
+            <el-option
+              v-for="item in kitchenwares"
+              :key="item.id"
+              :label="item.name"
+              :value="item.id"
+            />
+          </el-select>
+        </el-col>
+      </el-row>
+
     </div>
     <!-- 描述 -->
     <div>
@@ -97,7 +151,7 @@
             <el-table-column prop="name" width="390">
               <template #default="scope">
               <el-input
-                v-model="publishMenu.materialMenu[scope.$index].material"
+                v-model="publishMenu.materialMenu[scope.$index].name"
                 placeholder="菜谱食材"
                 clearable
                 maxlength="30"
@@ -225,8 +279,9 @@
         placeholder="Please input"
       />
     </div>
+    <el-checkbox v-model="publishMenu.isSole" label="独家发布" size="large" border class="sole"/>
     <div style="margin-top: 30px">
-      <el-button type="success" style="width: 100px; height: 40px">发布</el-button>
+      <el-button type="success" style="width: 100px; height: 40px" @click="publish">发布</el-button>
     </div>
   </div>
   <FoodFooter/>
@@ -234,13 +289,14 @@
 
 <script>
 import { UploadFilled, Plus, StarFilled } from '@element-plus/icons-vue'
-import { reactive, ref } from 'vue'
+import { reactive} from 'vue'
 import { ElMessage } from 'element-plus'
 import FoodFooter from '@/views/footer/FoodFooter'
 import request from '@/utils/http'
 import oss from '@/api/oss'
 import { number } from '@/utils/numberUtils'
 import resource from '@/api/resource'
+import router from '@/router'
 export default {
   name: 'publish',
   components: {
@@ -254,46 +310,77 @@ export default {
     const publishMenu = reactive({
       name: '',
       imageUrl: '',
-      productLevel: '',
-      productTime: '',
+      productionLevelId: 0,
+      productionTimeId: 0,
+      flavorId: 0,
+      cookTechnologyId: 0,
+      kitchenwareIds: [],
       description: '',
       materialMenu: [
         {
-          material: '',
+          name: '',
           dosage: ''
         }
       ],
       stepMenu: [
         {
+          rank: '',
           imageUrl: '',
           content: ''
         }
       ],
-      skill: ''
+      skill: '',
+      isSole: false
     })
+    // 保存数据
+    const publish = () => {
+      console.log('发布的数据为:', publishMenu)
+      resource.savePublishData(publishMenu).then(result => {
+        ElMessage.success('发布成功')
+        // 跳转到登录页面
+        router.push('/')
+
+      }).catch(error => {
+        ElMessage.error('发布失败,请稍后再试~')
+      })
+    }
     const url = request.defaults.baseURL  + '/oss/upload/avatar'
     /*************************   组件渲染之前执行    ***********************/
-    function getAllProductLevelAndTime() {
-      resource.getAllCookingLevelAndTime().then(result => {
-        // 数据赋值 -> 直接赋值会失去响应式
-        Array.prototype.push.apply(productionLevel, result.data.productionLevels)
-        Array.prototype.push.apply(productionTime, result.data.productionTimes)
+      // 烹饪等级
+    let productionLevels = reactive([])
+    // 烹饪时间
+    let productionTimes = reactive([])
+    // 口味
+    let flavors = reactive([])
+    // 烹饪工艺
+    let cookTechnologies = [reactive([])]
+    // 厨具
+    let kitchenwares = reactive([])
+    // 发布数据回显方法
+    const getPublishDataEcho = () => {
+      resource.getPublishDataEcho().then(result => {
+        // 数据赋值
+        Array.prototype.push.apply(productionLevels, result.data.productionLevels)
+        Array.prototype.push.apply(productionTimes, result.data.productionTimes)
+        Array.prototype.push.apply(flavors, result.data.flavors)
+        Array.prototype.push.apply(cookTechnologies, result.data.cookTechnologies)
+        Array.prototype.push.apply(kitchenwares, result.data.kitchenwares)
       }).catch(error => {
         ElMessage.error('Inner server error')
       })
     }
-    getAllProductLevelAndTime()
+    getPublishDataEcho()
     /*************************   主图片的上传与移除    ***********************/
 
     // 移除文件触发的方法
-    function removeSignalImage(file, fileList) {
+    const removeSignalImage = (file, fileList) => {
       oss.removeImage(publishMenu.imageUrl).then(result => {
         console.log(result)
         ElMessage.success('图片移除成功~')
       })
     }
     // 图片上传成功触发的方法
-    function signalUploadSuccess(data, fileList) {
+    const signalUploadSuccess = (data, fileList) => {
       publishMenu.imageUrl = data.data
     }
     /***************************   食材清单   ****************************/
@@ -303,14 +390,10 @@ export default {
 
     const onAddItem = () => {
       publishMenu.materialMenu.push({
-        material: '',
+        name: '',
         dosage: ''
       })
     }
-    // 烹饪等级
-    let productionLevel = reactive([])
-    // 烹饪时间
-    let productionTime = reactive([])
     /***************************   步骤   ****************************/
 
     const deleteRow2 = (index) => {
@@ -326,6 +409,7 @@ export default {
     const handleStepImageSuccess = (response, file, index) => {
       // 在指定索引位置进行数据替换
       publishMenu.stepMenu[index].imageUrl = response.data
+      publishMenu.stepMenu[index].rank = index + 1
     }
 
     const beforeAvatarUpload = (rawFile) => {
@@ -338,8 +422,15 @@ export default {
       }
       return true
     }
+
     return {
       url,
+      number,
+      productionLevels,
+      productionTimes,
+      flavors,
+      cookTechnologies,
+      kitchenwares,
       publishMenu,
       onAddItem,
       deleteRow,
@@ -349,9 +440,7 @@ export default {
       deleteRow2,
       removeSignalImage,
       signalUploadSuccess,
-      number,
-      productionLevel,
-      productionTime
+      publish,
     }
   }
 
@@ -449,6 +538,12 @@ export default {
   width: 178px;
   height: 178px;
   display: block;
+}
+.sole {
+  margin-top: 20px;
+  display: flex;
+  justify-content: left;
+  width: 100px;
 }
 </style>
 <style>
