@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
 * @author 18179
@@ -46,8 +47,12 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
     @Override
     public CommonResult<Object> getHotRec() {
         Object hotScore = redisTemplate.opsForValue().get(DishConstant.HOT_SCORE);
-        Map<String, String> hotScoreMap = JSON.parseObject(JSON.toJSONString(hotScore), new TypeReference<Map<String, String>>() {
+        Map<String, String> hotScoreMap = JSON.parseObject(JSON.toJSONString(hotScore), new TypeReference<>() {
         });
+        // 根据所有的id查询出所有相关的菜品数据
+        Set<String> dishIds = hotScoreMap.keySet();
+
+        // 遍历每一个dishId,从hotScoreMap获取进行菜品排序
         return CommonResult.success(hotScoreMap);
     }
 

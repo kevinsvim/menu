@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c422f363-7015-44ca-a5fe-8adaa651df63" name="Changes" comment="新增发布菜谱接口" />
+    <list default="true" id="c422f363-7015-44ca-a5fe-8adaa651df63" name="Changes" comment="新增发布菜谱接口">
+      <change beforePath="$PROJECT_DIR$/../menu-web-front/src/api/dish.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web-front/src/api/dish.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web-front/src/views/Index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web-front/src/views/Index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web-front/src/views/home/HomePage.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web-front/src/views/home/NavigationBar.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web-front/src/views/home/PublishMenu.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web-front/src/views/home/PublishNote.vue" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -223,7 +230,7 @@
       <workItem from="1678950090599" duration="1000" />
       <workItem from="1678956877820" duration="11231000" />
       <workItem from="1679016381669" duration="12352000" />
-      <workItem from="1679040804910" duration="5274000" />
+      <workItem from="1679040804910" duration="8649000" />
     </task>
     <task id="LOCAL-00001" summary="新增发布菜谱接口">
       <created>1679056192747</created>

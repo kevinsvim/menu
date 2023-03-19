@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * Created by zsh on 2023/3/13
@@ -78,16 +77,28 @@ public class MenuHotValueCFRec {
             entry.setValue(value);
         }
         // 对热度值进行降序排列
-        Map<Long, Double> hotScoreMap = dishScoreMap.entrySet()
-                .stream()
-                .sorted(Collections.reverseOrder(Map.Entry.comparingByValue()))
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue,
-                        (e1, e2) -> e1,
-                        LinkedHashMap::new));
+        Map<Long, Double> hotScoreMap = sortDescend(dishScoreMap);
         // 将排序后的结果放入redis
         redisTemplate.opsForValue().set(DishConstant.HOT_SCORE, hotScoreMap);
+    }
+
+    /**
+     * 对map集合的value进行降序排列方法
+     * @param map 需要排序的map集合
+     * @param <K> 键
+     * @param <V> 值
+     */
+    public <K, V extends Comparable<? super V>> Map<K, V> sortDescend(Map<K, V> map) {
+        List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
+        list.sort((o1, o2) -> {
+            int compare = (o1.getValue()).compareTo(o2.getValue());
+            return -compare;
+        });
+        Map<K, V> returnMap = new LinkedHashMap<>();
+        for (Map.Entry<K, V> entry:list) {
+            returnMap.put(entry.getKey(), entry.getValue());
+        }
+        return returnMap;
     }
 
 }
