@@ -31,7 +31,9 @@
         </el-row>
         <el-row style="margin-top: 20px">
           <el-col :span="6">
-            <CardTypeTwo :title="title"/>
+            <router-link :to="/detail/ + 1">
+              <CardTypeTwo :title="title"/>
+            </router-link>
           </el-col>
           <el-col :span="6">
             <CardTypeTwo :title="title"/>
@@ -99,11 +101,11 @@
 
 <script>
 import { useRouter } from 'vue-router'
-import NavigationBar from '@/views/home/NavigationBar'
+import NavigationBar from '@/views/pages/NavigationBar'
 import FoodFooter from '@/views/footer/FoodFooter'
 import dish from '@/api/dish'
-import Publish from '@/views/home/PublishMenu'
-import HomePage from '@/views/home/HomePage'
+import Publish from '@/views/pages/PublishMenu'
+import HomePage from '@/views/pages/HomePage'
 import { reactive, ref } from 'vue'
 import BannerFront from '@/components/banner/BannerFront'
 import CardTypeOne from '@/components/card/CardTypeOne'

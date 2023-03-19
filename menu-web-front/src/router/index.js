@@ -23,12 +23,17 @@ const routes = [
   {
     path: '/publishMenu',
     name: 'PublishMenu',
-    component: () => import('@/views/home/PublishMenu')
+    component: () => import('@/views/pages/PublishMenu')
   },
   {
     path: '/publishNote',
     name: 'PublishNote',
-    component: () => import('@/views/home/PublishNote')
+    component: () => import('@/views/pages/PublishNote')
+  },
+  {
+    path: '/detail/:id',
+    name: 'MenuDetails',
+    component: () => import('@/views/pages/MenuDetails')
   }
 ]
 
