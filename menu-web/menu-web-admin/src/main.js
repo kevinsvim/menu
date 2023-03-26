@@ -1,43 +1,15 @@
-import Vue from 'vue'
+import { createApp } from 'vue'
+import App from './App.vue'
+import ElementPlus from 'element-plus'
+import 'element-plus/dist/index.css'
+import router from './router/index.js';
+import "@/assets/fonts/icon-fonts/iconfont.js";
+import iconfontSvg from "@/components/iconfonts/IconSvg.vue";
 
-import 'normalize.css/normalize.css' // A modern alternative to CSS resets
+const app = createApp(App)
 
-import ElementUI from 'element-ui'
-import 'element-ui/lib/theme-chalk/index.css'
-import locale from 'element-ui/lib/locale/lang/en' // lang i18n
 
-import '@/styles/index.scss' // global css
-
-import App from './App'
-import store from './store'
-import router from './router'
-
-import '@/icons' // icon
-import '@/permission' // permission control
-
-/**
- * If you don't want to use mock-server
- * you want to use MockJs for mock api
- * you can execute: mockXHR()
- *
- * Currently MockJs will be used in the production environment,
- * please remove it before going online ! ! !
- */
-if (process.env.NODE_ENV === 'production') {
-  const { mockXHR } = require('../mock')
-  mockXHR()
-}
-
-// set ElementUI lang to EN
-Vue.use(ElementUI, { locale })
-// 如果想要中文版 element-ui，按如下方式声明
-// Vue.use(ElementUI)
-
-Vue.config.productionTip = false
-
-new Vue({
-  el: '#app',
-  router,
-  store,
-  render: h => h(App)
-})
+app.component("iconfont-svg",iconfontSvg)
+// 路由
+app.use(router)
+app.use(ElementPlus).mount('#app')
