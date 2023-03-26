@@ -4,13 +4,154 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="c422f363-7015-44ca-a5fe-8adaa651df63" name="Changes" comment="新增发布菜谱接口">
-      <change beforePath="$PROJECT_DIR$/../menu-web-front/src/api/dish.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web-front/src/api/dish.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web-front/src/views/Index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web-front/src/views/Index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web-front/src/views/home/HomePage.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web-front/src/views/home/NavigationBar.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web-front/src/views/home/PublishMenu.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web-front/src/views/home/PublishNote.vue" beforeDir="false" />
+    <list default="true" id="c422f363-7015-44ca-a5fe-8adaa651df63" name="Changes" comment="新增后台管理系统">
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/.editorconfig" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/.env.ghpages" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/.eslintignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/.eslintrc-auto-import.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/.eslintrc.cjs" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/.prettierrc" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/LICENSE" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/README.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/env.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/index.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/package.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/pnpm-lock.yaml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/public/favicon.ico" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/public/favicon.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/App.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/api/resource.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/assets/icons/index.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/assets/icons/primary.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/assets/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/auto-imports.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/components.d.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/components/RightContent/RightContent.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/components/RightContent/__tests__/RightContent.spec.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/components/SettingDrawer/SettingDrawer.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/components/SettingDrawer/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/components/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/hooks/useLoading.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/hooks/useTheme.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/layouts/BasicLayout.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/layouts/BlankLayout.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/layouts/NestedLayout.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/main.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/router/index.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/utils/icons.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/utils/request.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/views/Detail.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/views/HomePage.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/views/Page1.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/views/Page2.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/views/admins/DynamicMatch.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/views/admins/PageInfo.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/views/admins/PageTypography.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/src/views/category/List.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/tsconfig.app.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/tsconfig.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/tsconfig.vite-config.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/tsconfig.vitest.json" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-admin-web/vite.config.ts" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/assets/img/background1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/views/home/Index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/.env.development" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/.env.production" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/.env.staging" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/.eslintignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/.eslintrc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-admin/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/.travis.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/LICENSE" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/README-zh.md" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-admin/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/babel.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/build/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/jest.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/jsconfig.json" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-admin/jsconfig.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/mock/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/mock/mock-server.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/mock/table.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/mock/user.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/mock/utils.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-admin/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-admin/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/postcss.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/public/favicon.ico" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/public/index.html" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/api/menu.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/api/table.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/api/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/api/user.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/assets/404_images/404.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/assets/404_images/404_cloud.png" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/components/Breadcrumb/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/components/Hamburger/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/components/SvgIcon/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/icons/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/icons/svg/dashboard.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/icons/svg/example.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/icons/svg/eye-open.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/icons/svg/eye.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/icons/svg/form.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/icons/svg/link.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/icons/svg/nested.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/icons/svg/password.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/icons/svg/table.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/icons/svg/tree.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/icons/svg/user.svg" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/icons/svgo.yml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/layout/components/AppMain.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/layout/components/Navbar.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/layout/components/Sidebar/FixiOSBug.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/layout/components/Sidebar/Item.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/layout/components/Sidebar/Link.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/layout/components/Sidebar/Logo.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/layout/components/Sidebar/SidebarItem.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/layout/components/Sidebar/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/layout/components/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/layout/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/layout/mixin/ResizeHandler.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/permission.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/settings.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/store/getters.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/store/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/store/modules/app.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/store/modules/settings.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/store/modules/user.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/styles/element-ui.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/styles/index.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/styles/mixin.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/styles/sidebar.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/styles/transition.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/styles/variables.scss" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/utils/auth.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/utils/get-page-title.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/utils/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/utils/request.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/utils/request.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/utils/validate.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/views/404.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/views/dashboard/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/views/form/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/views/login/Index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/views/login/Index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/views/table/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/views/tree/index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/views/type/add/Index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/views/type/list/Index.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/tests/unit/.eslintrc.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/tests/unit/components/Breadcrumb.spec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/tests/unit/components/Hamburger.spec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/tests/unit/components/SvgIcon.spec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/tests/unit/utils/formatTime.spec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/tests/unit/utils/param2Obj.spec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/tests/unit/utils/parseTime.spec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/tests/unit/utils/validate.spec.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/vue.config.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../vue-admin-template-master.zip" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -44,6 +185,7 @@
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/menu-msm/src/main/resources/application.yaml" root0="SKIP_INSPECTION" />
+    <setting file="file://$PROJECT_DIR$/menu-resource/src/main/java/com/zsh/resource/service/impl/TypeServiceImpl.java" root0="SKIP_INSPECTION" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -113,7 +255,7 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Application.ProductionLevel">
+  <component name="RunManager" selected="Spring Boot.ResourceApplication">
     <configuration name="MemberDaoGenerator" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.zsh.member.MemberDaoGenerator" />
       <module name="menu-member" />
@@ -231,6 +373,15 @@
       <workItem from="1678956877820" duration="11231000" />
       <workItem from="1679016381669" duration="12352000" />
       <workItem from="1679040804910" duration="8649000" />
+      <workItem from="1679193011292" duration="1901000" />
+      <workItem from="1679223148188" duration="1315000" />
+      <workItem from="1679280118125" duration="915000" />
+      <workItem from="1679305289362" duration="1187000" />
+      <workItem from="1679409265112" duration="8308000" />
+      <workItem from="1679454334583" duration="10429000" />
+      <workItem from="1679557314238" duration="5004000" />
+      <workItem from="1679630331978" duration="5997000" />
+      <workItem from="1679718910611" duration="4393000" />
     </task>
     <task id="LOCAL-00001" summary="新增发布菜谱接口">
       <created>1679056192747</created>
@@ -239,7 +390,21 @@
       <option name="project" value="LOCAL" />
       <updated>1679056192747</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="详情页编写">
+      <created>1679193105495</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1679193105495</updated>
+    </task>
+    <task id="LOCAL-00003" summary="新增后台管理系统">
+      <created>1679409625680</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1679409625680</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -270,7 +435,9 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="新增发布菜谱接口" />
-    <option name="LAST_COMMIT_MESSAGE" value="新增发布菜谱接口" />
+    <MESSAGE value="详情页编写" />
+    <MESSAGE value="新增后台管理系统" />
+    <option name="LAST_COMMIT_MESSAGE" value="新增后台管理系统" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
