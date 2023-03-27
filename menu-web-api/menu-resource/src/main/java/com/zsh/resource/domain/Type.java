@@ -18,7 +18,7 @@ public class Type implements Serializable {
     /**
      * 
      */
-    @TableId
+    @TableId(type = IdType.AUTO)
     private Long id;
 
     /**
@@ -30,6 +30,11 @@ public class Type implements Serializable {
      * 父分类id
      */
     private Long parentId;
+
+    /**
+     * 所属层级
+     */
+    private Integer typeLevel;
 
     /**
      * 

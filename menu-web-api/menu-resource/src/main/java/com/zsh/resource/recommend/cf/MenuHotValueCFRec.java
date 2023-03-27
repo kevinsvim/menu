@@ -32,7 +32,7 @@ public class MenuHotValueCFRec {
      *      计算规则: S = 0.3 x comment + 0.35 x collect + 0.15 x up + 0.15 x click - 0.1 * days
      *  4. 对热度值进行排序
      *  5. 取出前一百的菜品id放入redis
-     *  6. 定时器 -- 每隔一个小时进行更新热度值
+     *  6. 定时器 -- 每隔一天进行更新热度值
      */
     public void recommendHotRec() {
         // 加载所有数据

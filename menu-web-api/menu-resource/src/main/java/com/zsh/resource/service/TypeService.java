@@ -12,4 +12,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface TypeService extends IService<Type> {
 
     CommonResult<Object> getTreeCategory();
+
+    CommonResult<Object> saveCategory(Type type);
+
+    CommonResult<Object> removeCategory(Integer categoryLevel, Long categoryId);
 }

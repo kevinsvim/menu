@@ -1,10 +1,9 @@
 package com.zsh.resource.controller;
 
 import com.zsh.common.result.CommonResult;
+import com.zsh.resource.domain.Type;
 import com.zsh.resource.service.TypeService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * Created by zsh on 2023/3/21
@@ -28,4 +27,19 @@ public class TypeController {
         return typeService.getTreeCategory();
     }
 
+    /**
+     * 保存分类
+     */
+    @PostMapping("/saveCategory")
+    public CommonResult<Object> saveCategory(@RequestBody Type type) {
+        return typeService.saveCategory(type);
+    }
+
+    /**
+     * 移除分类
+     */
+    @DeleteMapping("/removeCategory")
+    public CommonResult<Object> removeCategory(@RequestParam("categoryLevel") Integer categoryLevel, @RequestParam("categoryId") Long categoryId) {
+        return typeService.removeCategory(categoryLevel, categoryId);
+    }
 }
