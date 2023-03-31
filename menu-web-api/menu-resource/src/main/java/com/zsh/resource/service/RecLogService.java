@@ -1,5 +1,6 @@
 package com.zsh.resource.service;
 
+import com.zsh.common.result.CommonResult;
 import com.zsh.resource.domain.RecLog;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -10,4 +11,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface RecLogService extends IService<RecLog> {
 
+    /**
+     * 修改当前用户的收藏与否
+     */
+    CommonResult<Object> updateCollect(Integer type, Long dishId, Long memberId);
 }

@@ -34,4 +34,10 @@
                create_time
         FROM rec_log
     </select>
+    <update id="updateCollectType">
+        UPDATE rec_log
+        SET is_collect = #{type}
+        WHERE dish_id = #{dishId}
+          AND member_id = #{memberId}
+    </update>
 </mapper>
