@@ -119,6 +119,18 @@
             />
           </el-select>
         </el-col>
+        <el-col :span="3" class="skill__item">
+          <span>所属分类:</span>
+        </el-col>
+        <el-col :span="9">
+          <el-cascader
+            clearable
+            :options="categoryTree"
+            :show-all-levels="false"
+            :props="categoryOptionProps"
+            v-model="categoryId"
+          />
+        </el-col>
       </el-row>
 
     </div>
@@ -150,28 +162,28 @@
           <el-table :data="publishMenu.materialMenu" style="width: 100%" max-height="450">
             <el-table-column prop="name" width="390">
               <template #default="scope">
-              <el-input
-                v-model="publishMenu.materialMenu[scope.$index].name"
-                placeholder="菜谱食材"
-                clearable
-                maxlength="30"
-                minlength="1"
-                show-word-limit
-                input-style="height: 40px"
-              />
+                <el-input
+                  v-model="publishMenu.materialMenu[scope.$index].name"
+                  placeholder="菜谱食材"
+                  clearable
+                  maxlength="30"
+                  minlength="1"
+                  show-word-limit
+                  input-style="height: 40px"
+                />
               </template>
             </el-table-column>
             <el-table-column prop="name" width="200">
               <template #default="scope">
-              <el-input
-                v-model="publishMenu.materialMenu[scope.$index].dosage"
-                placeholder="菜谱用量"
-                clearable
-                maxlength="10"
-                minlength="1"
-                show-word-limit
-                input-style="height: 40px"
-              />
+                <el-input
+                  v-model="publishMenu.materialMenu[scope.$index].dosage"
+                  placeholder="菜谱用量"
+                  clearable
+                  maxlength="10"
+                  minlength="1"
+                  show-word-limit
+                  input-style="height: 40px"
+                />
               </template>
             </el-table-column>
 
@@ -215,19 +227,20 @@
           </el-table-column>
           <el-table-column prop="imageUrl" width="200">
             <template #default="scope">
-            <el-upload
-              class="avatar-uploader"
-              :action="url"
-              :show-file-list="false"
-              :on-success="response => handleStepImageSuccess(response, file, scope.$index)"
-              :before-upload="beforeAvatarUpload"
-              style="height: 200px"
-            >
-              <img v-if="publishMenu.stepMenu[scope.$index].imageUrl" :src="publishMenu.stepMenu[scope.$index].imageUrl" class="avatar"/>
-              <el-icon v-else class="avatar-uploader-icon">
-                <Plus/>
-              </el-icon>
-            </el-upload>
+              <el-upload
+                class="avatar-uploader"
+                :action="url"
+                :show-file-list="false"
+                :on-success="response => handleStepImageSuccess(response, file, scope.$index)"
+                :before-upload="beforeAvatarUpload"
+                style="height: 200px"
+              >
+                <img v-if="publishMenu.stepMenu[scope.$index].imageUrl"
+                     :src="publishMenu.stepMenu[scope.$index].imageUrl" class="avatar"/>
+                <el-icon v-else class="avatar-uploader-icon">
+                  <Plus/>
+                </el-icon>
+              </el-upload>
             </template>
           </el-table-column>
           <el-table-column prop="content" width="405">
@@ -268,7 +281,7 @@
       </el-icon>
     </el-divider>
     <!-- 小窍门 -->
-    <div  class="step">
+    <div class="step">
       <div class="step-content">
         <span class="step-title">小窍门</span>
       </div>
@@ -288,15 +301,16 @@
 </template>
 
 <script>
-import { UploadFilled, Plus, StarFilled } from '@element-plus/icons-vue'
-import { reactive} from 'vue'
-import { ElMessage } from 'element-plus'
+import {UploadFilled, Plus, StarFilled} from '@element-plus/icons-vue'
+import {reactive, ref} from 'vue'
+import {ElMessage} from 'element-plus'
 import FoodFooter from '@/views/footer/FoodFooter'
 import request from '@/utils/http'
 import oss from '@/api/oss'
-import { number } from '@/utils/numberUtils'
+import {number} from '@/utils/numberUtils'
 import resource from '@/api/resource'
 import router from '@/router'
+
 export default {
   name: 'publish',
   components: {
@@ -305,7 +319,7 @@ export default {
     Plus,
     FoodFooter
   },
-  setup () {
+  setup() {
     // 请求封装数据
     const publishMenu = reactive({
       name: '',
@@ -314,6 +328,7 @@ export default {
       productionTimeId: 0,
       flavorId: 0,
       cookTechnologyId: 0,
+      typeId: 0,
       kitchenwareIds: [],
       description: '',
       materialMenu: [
@@ -332,8 +347,10 @@ export default {
       skill: '',
       isSole: false
     })
+    const categoryId = ref([])
     // 保存数据
     const publish = () => {
+      publishMenu.typeId = categoryId.value[2]
       console.log('发布的数据为:', publishMenu)
       resource.savePublishData(publishMenu).then(result => {
         ElMessage.success('发布成功')
@@ -344,7 +361,7 @@ export default {
         ElMessage.error('发布失败,请稍后再试~')
       })
     }
-    const url = request.defaults.baseURL  + '/oss/upload/avatar'
+    const url = request.defaults.baseURL + '/oss/upload/avatar'
     /*************************   组件渲染之前执行    ***********************/
       // 烹饪等级
     let productionLevels = reactive([])
@@ -370,15 +387,30 @@ export default {
       })
     }
     getPublishDataEcho()
-    /*************************   主图片的上传与移除    ***********************/
 
-    // 移除文件触发的方法
-    const removeSignalImage = (file, fileList) => {
-      oss.removeImage(publishMenu.imageUrl).then(result => {
-        console.log(result)
-        ElMessage.success('图片移除成功~')
+    // 获取所有的分类
+    const categoryTree = reactive([])
+    const getTreeCategory = () => {
+      resource.getTreeCategory(2).then(res => {
+        categoryTree.push(...res.data)
       })
     }
+    getTreeCategory()
+    // 级联数据名转换
+    const categoryOptionProps = {
+      value: 'id',
+      label: 'name',
+      children: 'children'
+    }
+    /*************************   主图片的上传与移除    ***********************/
+
+      // 移除文件触发的方法
+    const removeSignalImage = (file, fileList) => {
+        oss.removeImage(publishMenu.imageUrl).then(result => {
+          console.log(result)
+          ElMessage.success('图片移除成功~')
+        })
+      }
     // 图片上传成功触发的方法
     const signalUploadSuccess = (data, fileList) => {
       publishMenu.imageUrl = data.data
@@ -432,6 +464,9 @@ export default {
       cookTechnologies,
       kitchenwares,
       publishMenu,
+      categoryTree,
+      categoryOptionProps,
+      categoryId,
       onAddItem,
       deleteRow,
       handleStepImageSuccess,
@@ -520,6 +555,7 @@ export default {
     display: flex;
     justify-content: left;
     margin-bottom: 10px;
+
     .step-title {
       font-weight: bold;
       font-size: 20px;
@@ -539,6 +575,7 @@ export default {
   height: 178px;
   display: block;
 }
+
 .sole {
   margin-top: 20px;
   display: flex;

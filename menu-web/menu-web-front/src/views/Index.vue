@@ -6,11 +6,6 @@
        element-loading-svg-view-box="-10, -10, 50, 50"
        element-loading-background="rgba(122, 122, 122, 0.8)"
   >
-    <!-- 导航栏 -->
-    <NavigationBar
-      @publish="selectWhich"
-      @homePage="selectWhich"
-    />
     <div>
       <!-- 轮播图-静态 -->
       <BannerFront/>
@@ -29,34 +24,15 @@
             </div>
           </el-col>
         </el-row>
-        <el-row style="margin-top: 20px">
-          <el-col :span="6">
-            <router-link :to="{ path: '/detail', query: { id: '1' } }" target="_blank">
-              <CardTypeTwo :title="title"/>
+        <el-row>
+          <el-col :span="6" v-for="(menu,index) in concentrationMenu" :key="menu.id" style="margin-top: 20px">
+            <router-link :to="{ path: '/detail', query: { id: menu.id } }" target="_blank">
+              <DishCard
+                :title="menu.name"
+                :imageUrl="menu.imageUrl"
+                :username="menu.username"
+              />
             </router-link>
-          </el-col>
-          <el-col :span="6">
-            <CardTypeTwo :title="title"/>
-          </el-col>
-          <el-col :span="6">
-            <CardTypeTwo :title="title"/>
-          </el-col>
-          <el-col :span="6">
-            <CardTypeTwo :title="title"/>
-          </el-col>
-        </el-row>
-        <el-row style="margin-top: 20px">
-          <el-col :span="6">
-            <CardTypeTwo :title="title"/>
-          </el-col>
-          <el-col :span="6">
-            <CardTypeTwo :title="title"/>
-          </el-col>
-          <el-col :span="6">
-            <CardTypeTwo :title="title"/>
-          </el-col>
-          <el-col :span="6">
-            <CardTypeTwo :title="title"/>
           </el-col>
         </el-row>
       </div>
@@ -101,9 +77,8 @@
 
 <script>
 import { useRouter } from 'vue-router'
-import NavigationBar from '@/views/pages/NavigationBar'
+import NavigationBar from '@/views/pages/nav/NavigationBar'
 import FoodFooter from '@/views/footer/FoodFooter'
-import dish from '@/api/dish'
 import Publish from '@/views/pages/PublishMenu'
 import HomePage from '@/views/pages/HomePage'
 import { reactive, ref } from 'vue'
@@ -111,7 +86,8 @@ import BannerFront from '@/components/banner/BannerFront'
 import CardTypeOne from '@/components/card/CardTypeOne'
 import CardTypeTwo from '@/components/card/CardTypeTwo'
 import { ArrowRightBold } from '@element-plus/icons'
-
+import resource from "@/api/resource";
+import DishCard from "@/components/card/DishCard";
 export default {
   name: 'HomeView',
   components: {
@@ -122,10 +98,19 @@ export default {
     BannerFront,
     CardTypeOne,
     CardTypeTwo,
-    ArrowRightBold
+    ArrowRightBold,
+    DishCard
   },
 
   setup () {
+    // 获取热度推荐
+    const concentrationMenu = reactive([])
+    const getDailySection = () => {
+      resource.getConcentrationMenu().then(res => {
+        concentrationMenu.push(...res.data)
+      })
+    }
+    getDailySection()
     const indexLoading = ref(false)
     const svg = `
         <path class="path" d="
@@ -144,22 +129,6 @@ export default {
       selectPublish: false,
     })
 
-    // 选中功能状态
-    function selectWhich (type) {
-      console.log(type)
-      selectStatus.selectPublish = false
-      selectStatus.selectIndex = false
-      switch (type) {
-        case 1:
-          selectStatus.selectIndex = true
-          break
-        case 6:
-          selectStatus.selectPublish = true
-          break
-        default:
-          break
-      }
-    }
 
     const router = useRouter()
     const login = () => {
@@ -174,26 +143,15 @@ export default {
       router.push('/logout')
     }
 
-    /**
-     * 加载每日精选菜谱
-     */
-    function getDailySection () {
-      dish.getDailySelection().then(result => {
-
-      }).catch(error => {
-
-      })
-    }
-
     return {
       selectStatus,
       indexLoading,
       svg,
       title,
-      selectWhich,
+      concentrationMenu,
       login,
       register,
-      logout
+      logout,
     }
   }
 }

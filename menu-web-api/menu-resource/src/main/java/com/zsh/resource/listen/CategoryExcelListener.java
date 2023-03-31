@@ -35,6 +35,7 @@ public class CategoryExcelListener extends AnalysisEventListener<CategoryExcel> 
         if (categoryExcel == null) {
             throw new ExcelException("上传的Excel存在数据空");
         }
+
         // 获取每个类名对应的数据
         Type oneCategory = getType(typeService, categoryExcel.getOneCategoryName());
         Type twoCategory = getType(typeService, categoryExcel.getTwoCategoryName());

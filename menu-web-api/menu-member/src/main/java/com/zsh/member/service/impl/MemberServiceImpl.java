@@ -10,6 +10,7 @@ import com.zsh.member.constant.LoginType;
 import com.zsh.member.domain.Member;
 import com.zsh.member.domain.dto.LoginDto;
 import com.zsh.member.domain.dto.RegisterDto;
+import com.zsh.member.domain.vo.MemberLoginVo;
 import com.zsh.member.service.MemberService;
 import com.zsh.member.mapper.MemberMapper;
 import org.apache.commons.lang3.StringUtils;
@@ -34,7 +35,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
      * 登录
      */
     @Override
-    public CommonResult<String> login(LoginDto loginDto) {
+    public CommonResult<Object> login(LoginDto loginDto) {
         // 1. 根据用户名查询相应密码
         QueryWrapper<Member> wrapper = new QueryWrapper<>();
         switch (loginDto.getType()) {
@@ -55,8 +56,12 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         if (ObjectUtils.isNotEmpty(member) && loginDto.getPassword().equals(member.getPassword())) {
             // 3.生成token
             String token = JwtTokenUtils.generateToken(String.valueOf(member.getId()), member.getUsername());
-
-            return CommonResult.success(token);
+            MemberLoginVo memberLoginVo = new MemberLoginVo();
+            memberLoginVo.setId(String.valueOf(member.getId()));
+            memberLoginVo.setToken(token);
+            memberLoginVo.setUsername(member.getUsername());
+            memberLoginVo.setImage_url(member.getImageUrl());
+            return CommonResult.success(memberLoginVo);
         }
         return CommonResult.fail(CommonResultCode.LOGIN_ERROR);
     }

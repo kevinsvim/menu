@@ -3,6 +3,9 @@ package com.zsh.resource.service;
 import com.zsh.common.result.CommonResult;
 import com.zsh.resource.domain.Type;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zsh.resource.domain.vo.CategoryTreeVo;
+
+import java.util.List;
 
 /**
 * @author 18179
@@ -11,7 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 */
 public interface TypeService extends IService<Type> {
 
-    CommonResult<Object> getTreeCategory();
+    List<CategoryTreeVo> getTreeCategory(Integer status);
 
     CommonResult<Object> saveCategory(Type type);
 

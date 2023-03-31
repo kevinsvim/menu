@@ -2,6 +2,7 @@ package com.zsh.resource.domain.vo;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,9 @@ import java.util.List;
  * @author zsh
  */
 @Data
-public class CategoryTreeVo {
+public class CategoryTreeVo implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private Long id;
     private String name;

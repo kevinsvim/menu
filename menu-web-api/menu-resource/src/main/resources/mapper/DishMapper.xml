@@ -5,22 +5,36 @@
 <mapper namespace="com.zsh.resource.mapper.DishMapper">
 
     <resultMap id="BaseResultMap" type="com.zsh.resource.domain.Dish">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="imageUrl" column="image_url" jdbcType="VARCHAR"/>
-            <result property="materialId" column="material_id" jdbcType="BIGINT"/>
-            <result property="productionLevelId" column="production_level_id" jdbcType="BIGINT"/>
-            <result property="productionTimeId" column="production_time_id" jdbcType="BIGINT"/>
-            <result property="isOriginal" column="is_original" jdbcType="BIT"/>
-            <result property="description" column="description" jdbcType="VARCHAR"/>
-            <result property="typeId" column="type_id" jdbcType="BIGINT"/>
-            <result property="cookTechnologyId" column="cook_technology_id" jdbcType="BIGINT"/>
-            <result property="flavorId" column="flavor_id" jdbcType="BIGINT"/>
-            <result property="skill" column="skill" jdbcType="VARCHAR"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="publisherId" column="publisher_id" jdbcType="BIGINT"/>
-            <result property="isDeleted" column="is_deleted" jdbcType="BIT"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="imageUrl" column="image_url" jdbcType="VARCHAR"/>
+        <result property="materialId" column="material_id" jdbcType="BIGINT"/>
+        <result property="productionLevelId" column="production_level_id" jdbcType="BIGINT"/>
+        <result property="productionTimeId" column="production_time_id" jdbcType="BIGINT"/>
+        <result property="isOriginal" column="is_original" jdbcType="BIT"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="typeId" column="type_id" jdbcType="BIGINT"/>
+        <result property="cookTechnologyId" column="cook_technology_id" jdbcType="BIGINT"/>
+        <result property="flavorId" column="flavor_id" jdbcType="BIGINT"/>
+        <result property="skill" column="skill" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="publisherId" column="publisher_id" jdbcType="BIGINT"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="BIT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <resultMap id="BaseDetailResultMap" type="com.zsh.resource.domain.vo.DishDetailVo">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="imageUrl" column="image_url" jdbcType="VARCHAR"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="isSole" column="is_sole"/>
+        <result property="description" column="description" jdbcType="VARCHAR"/>
+        <result property="skill" column="skill" jdbcType="VARCHAR"/>
+        <result property="username" column="username" jdbcType="VARCHAR"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="avatar" column="avatar" jdbcType="VARCHAR"/>
+        <result property="materialName" column="material_name" jdbcType="BIGINT"/>
+        <result property="dosage" column="dosage" jdbcType="VARCHAR"/>
     </resultMap>
 
     <sql id="Base_Column_List">
@@ -31,4 +45,33 @@
         publisher_id,is_deleted,create_time,
         update_time
     </sql>
+    <select id="getConcentrationRecContent" resultType="com.zsh.resource.domain.vo.DishConcentrationVo">
+        SELECT d.id, d.name, d.image_url, m.username
+        FROM dish AS d
+        LEFT JOIN member AS m ON d.publisher_id = m.id
+        WHERE d.id IN
+        <foreach collection="list" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+
+    </select>
+
+    <select id="getDishDetail" resultMap="BaseDetailResultMap">
+        SELECT d.id,
+               d.name,
+               d.image_url,
+               d.is_sole,
+               d.description,
+               d.skill,
+               u.username,
+               u.id AS user_id,
+               u.image_url AS avatar,
+               m.name AS material_name,
+               m.dosage
+        FROM dish AS d
+                 LEFT JOIN member AS u
+                           ON d.publisher_id = u.id
+                 LEFT JOIN material m ON d.material_id = m.id
+        WHERE d.id = #{id}
+    </select>
 </mapper>

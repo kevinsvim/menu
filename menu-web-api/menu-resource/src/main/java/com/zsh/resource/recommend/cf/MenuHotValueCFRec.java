@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by zsh on 2023/3/13
@@ -72,14 +73,14 @@ public class MenuHotValueCFRec {
         });
         // 对热度值进行取平均值
         for (Map.Entry<Long, Double> entry : dishScoreMap.entrySet()) {
-            double value = entry.getValue() / calTimeMap.get(entry.getKey());
+            double value = entry.getValue() / (calTimeMap.get(entry.getKey()) == 0 ? 1 : calTimeMap.get(entry.getKey()));
             value = value < 1 ? 1 : value;
             entry.setValue(value);
         }
         // 对热度值进行降序排列
         Map<Long, Double> hotScoreMap = sortDescend(dishScoreMap);
         // 将排序后的结果放入redis
-        redisTemplate.opsForValue().set(DishConstant.HOT_SCORE, hotScoreMap);
+        redisTemplate.opsForValue().set(DishConstant.HOT_SCORE, hotScoreMap, 2, TimeUnit.DAYS);
     }
 
     /**

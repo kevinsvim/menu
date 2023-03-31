@@ -5,11 +5,42 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c422f363-7015-44ca-a5fe-8adaa651df63" name="Changes" comment="数据提交">
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/api/sign.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/assets/fonts/icon_fonts/iconfont.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/assets/img/menu/background3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/components/card/DishCard.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/components/iconfonts/IconSvg.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/store/token.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/store/user.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/dish/DishCategory.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/dish/DishConcentration.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/dish/DishLatest.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/dish/DishMaterial.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/dish/DishMenu.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/nav/CategoryFilterNav.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/nav/NavigationBar.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/sign/Sign.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/api/resource.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/api/resource.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/assets/fonts/icon-fonts/iconfont.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/assets/fonts/icon-fonts/iconfont.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/components/category/List.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/components/category/Update.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/App.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/App.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/api/resource.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/api/resource.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/assets/img/menu/jx3.png" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/assets/img/menu/jx3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/assets/img/menu/publishBack.png" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/assets/img/menu/publishBack.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/components/card/CardTypeTwo.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/components/card/CardTypeTwo.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/router/index.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/store/index.js" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/utils/http.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/utils/http.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/Index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/Index.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/MenuDetails.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/MenuDetails.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/MenuType.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/NavigationBar.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/PublishMenu.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/PublishMenu.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/sign/SignIn.vue" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/sign/SignUp.vue" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -57,6 +88,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="ProjectErrors" />
+  </component>
   <component name="ProjectId" id="2MG6KVPba2qOr3c3kZRVA0aMLmU" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -78,7 +112,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="org.jetbrains.plugins.github.ui.GithubSettingsConfigurable" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="ReactorSettings">
     <option name="notificationShown" value="true" />
@@ -174,10 +208,10 @@
       <item itemvalue="Application.MemberDaoGenerator" />
       <item itemvalue="Application.MenuItemCFRec" />
       <item itemvalue="Application.ProductionLevel" />
-      <item itemvalue="Spring Boot.OssApplication" />
       <item itemvalue="Spring Boot.GatewayApplication" />
       <item itemvalue="Spring Boot.MemberApplication" />
       <item itemvalue="Spring Boot.MsmApplication" />
+      <item itemvalue="Spring Boot.OssApplication" />
       <item itemvalue="Spring Boot.ResourceApplication" />
     </list>
     <recent_temporary>
@@ -241,6 +275,12 @@
       <workItem from="1679630331978" duration="5997000" />
       <workItem from="1679718910611" duration="4393000" />
       <workItem from="1679799621282" duration="21888000" />
+      <workItem from="1679881883143" duration="5758000" />
+      <workItem from="1679919864541" duration="4119000" />
+      <workItem from="1679966881592" duration="13955000" />
+      <workItem from="1680053354814" duration="14068000" />
+      <workItem from="1680158768676" duration="20953000" />
+      <workItem from="1680230824211" duration="15206000" />
     </task>
     <task id="LOCAL-00001" summary="新增发布菜谱接口">
       <created>1679056192747</created>
@@ -305,6 +345,52 @@
     <MESSAGE value="新增后台管理系统" />
     <MESSAGE value="数据提交" />
     <option name="LAST_COMMIT_MESSAGE" value="数据提交" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint type="java-line">
+          <url>jar://G:/maven01/mysql/mysql-connector-java/8.0.19/mysql-connector-java-8.0.19-sources.jar!/com/mysql/cj/jdbc/PreparedStatementWrapper.java</url>
+          <line>148</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>jar://G:/maven01/mysql/mysql-connector-java/8.0.19/mysql-connector-java-8.0.19-sources.jar!/com/mysql/cj/jdbc/ClientPreparedStatement.java</url>
+          <line>1465</line>
+          <option name="timeStamp" value="14" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>jar://G:/maven01/com/zaxxer/HikariCP/3.4.5/HikariCP-3.4.5.jar!/com/zaxxer/hikari/pool/HikariProxyCallableStatement.class</url>
+          <line>462</line>
+          <option name="timeStamp" value="15" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>jar://G:/maven01/com/zaxxer/HikariCP/3.4.5/HikariCP-3.4.5.jar!/com/zaxxer/hikari/pool/HikariProxyPreparedStatement.class</url>
+          <line>460</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>jar://G:/maven01/mysql/mysql-connector-java/8.0.19/mysql-connector-java-8.0.19-sources.jar!/com/mysql/cj/AbstractQueryBindings.java</url>
+          <line>156</line>
+          <option name="timeStamp" value="19" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>jar://G:/maven01/org/mybatis/mybatis-spring/2.0.5/mybatis-spring-2.0.5-sources.jar!/org/mybatis/spring/SqlSessionTemplate.java</url>
+          <line>278</line>
+          <option name="timeStamp" value="20" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>jar://G:/maven01/org/mybatis/mybatis/3.5.6/mybatis-3.5.6-sources.jar!/org/apache/ibatis/session/defaults/DefaultSqlSession.java</url>
+          <line>195</line>
+          <option name="timeStamp" value="21" />
+        </line-breakpoint>
+        <line-breakpoint type="java-line">
+          <url>jar://G:/maven01/mysql/mysql-connector-java/8.0.19/mysql-connector-java-8.0.19-sources.jar!/com/mysql/cj/ClientPreparedQueryBindings.java</url>
+          <line>186</line>
+          <option name="timeStamp" value="22" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

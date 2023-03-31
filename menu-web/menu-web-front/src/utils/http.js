@@ -18,7 +18,9 @@ const http = axios.create({
  */
 http.interceptors.request.use(config => {
   // 每次请求前需要携带token
-  config.headers['Authorization'] = localStorage.getItem('menu_token_info') || ''
+  console.log(window.localStorage.getItem('token'))
+  config.headers['Authorization'] = localStorage.getItem('token') || ''
+  console.log(config.headers['Authorization'])
   // 某些接口不需要携带token
   return config
 }, error => {
@@ -32,14 +34,18 @@ http.interceptors.request.use(config => {
 http.interceptors.response.use(
   response => {
     let res = response.data
-    // 如果返回的文件
-    if (response.config.responseType === 'blob') {
-      return res
+    // token失效或未登录
+    if (res.code === 401) {
+      localStorage.clear()
     }
-    // 兼容服务端返回的字符串数据
-    if (typeof res === 'string') {
-      res = res ? JSON.parse(res) : res
-    }
+    // // 如果返回的文件
+    // if (response.config.responseType === 'blob') {
+    //   return res
+    // }
+    // // 兼容服务端返回的字符串数据
+    // // if (typeof res === 'string') {
+    // //   res = res ? JSON.parse(res) : res
+    // // }
     return res
   }, error => {
     return Promise.reject(error)

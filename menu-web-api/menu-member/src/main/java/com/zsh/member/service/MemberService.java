@@ -13,7 +13,7 @@ import com.zsh.member.domain.dto.RegisterDto;
 */
 public interface MemberService extends IService<Member> {
 
-    CommonResult<String> login(LoginDto loginDto);
+    CommonResult<Object> login(LoginDto loginDto);
 
     CommonResult<String> register(RegisterDto registerDto);
 }

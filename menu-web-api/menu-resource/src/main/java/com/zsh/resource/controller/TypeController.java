@@ -22,9 +22,10 @@ public class TypeController {
     /**
      * 获取树形列表
      */
-    @GetMapping("/getTreeCategory")
-    public CommonResult<Object> getTreeCategory() {
-        return typeService.getTreeCategory();
+    @GetMapping("/getTreeCategory/{status}")
+    public CommonResult<Object> getTreeCategory(@PathVariable("status") String status) {
+        System.out.println("-----------:" + status);
+        return CommonResult.success(typeService.getTreeCategory(Integer.valueOf(status)));
     }
 
     /**

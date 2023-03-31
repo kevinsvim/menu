@@ -23,7 +23,7 @@ public class MemberController {
     }
 
     @PostMapping("/login")
-    public CommonResult<String> login(@RequestBody LoginDto loginDto) {
+    public CommonResult<Object> login(@RequestBody LoginDto loginDto) {
         log.info("登录用户:{}", loginDto.getAccount());
         return memberService.login(loginDto);
     }

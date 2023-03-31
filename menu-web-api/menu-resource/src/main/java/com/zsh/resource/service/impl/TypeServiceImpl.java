@@ -1,7 +1,6 @@
 package com.zsh.resource.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zsh.common.result.CommonResult;
@@ -11,6 +10,7 @@ import com.zsh.resource.domain.vo.CategoryTreeVo;
 import com.zsh.resource.service.DishService;
 import com.zsh.resource.service.TypeService;
 import com.zsh.resource.mapper.TypeMapper;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -36,9 +36,11 @@ public class TypeServiceImpl extends ServiceImpl<TypeMapper, Type>
      * 一级分类父id: 0
      * 二级分类的父id为一级分类的id
      * 三级分类的父id为二级分类的id
+     * @param status
      */
+    @Cacheable(value = "treeData")
     @Override
-    public CommonResult<Object> getTreeCategory() {
+    public List<CategoryTreeVo> getTreeCategory(Integer status) {
         List<CategoryTreeVo> oneCategory = new ArrayList<>();
         // 1. 查出所有数据
         List<Type> list = this.list();
@@ -66,7 +68,7 @@ public class TypeServiceImpl extends ServiceImpl<TypeMapper, Type>
                                 category3.setName(threeItem.getName());
                                 category3.setParentId(threeItem.getParentId());
                                 category3.setLevel(3);
-                                category3.setDisabled(true);
+                                category3.setDisabled(status == 1);
                                 category2.getChildren().add(category3);
                             }
                         });
@@ -78,7 +80,7 @@ public class TypeServiceImpl extends ServiceImpl<TypeMapper, Type>
 
         });
 
-        return CommonResult.success(oneCategory);
+        return oneCategory;
     }
 
     /**

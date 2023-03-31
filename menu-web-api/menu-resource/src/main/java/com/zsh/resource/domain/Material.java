@@ -18,7 +18,7 @@ public class Material implements Serializable {
     /**
      * 
      */
-    @TableId(type = IdType.AUTO)
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
     private Long id;
 
     /**
@@ -31,40 +31,6 @@ public class Material implements Serializable {
      */
     private String dosage;
 
-    /**
-     * 
-     */
-    private String minorName;
-
-    /**
-     * 
-     */
-    private String minorDosage;
-
-    /**
-     * 
-     */
-    private String codimentName;
-
-    /**
-     * 
-     */
-    private String codimentDosage;
-
-    /**
-     * 
-     */
-    private Integer isDeleted;
-
-    /**
-     * 
-     */
-    private Date createTime;
-
-    /**
-     * 
-     */
-    private Date updateTime;
 
     @TableField(exist = false)
     private static final long serialVersionUID = 1L;

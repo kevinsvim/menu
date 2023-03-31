@@ -54,11 +54,12 @@ public class JwtTokenUtils {
      * 根据负责生成JWT的token
      */
     public static String generateToken(Map<String, Object> claims) {
-        return Jwts.builder()
+        String token = Jwts.builder()
                 .setClaims(claims)
                 .setExpiration(generateExpirationDate())
                 .signWith(SignatureAlgorithm.HS512, TOKEN_SECRET)
                 .compact();
+        return TOKEN_PREFIX + " " + token;
     }
 
     public static String generateToken(String userId, String username) {

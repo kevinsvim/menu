@@ -2,8 +2,12 @@ package com.zsh.resource.controller;
 
 import com.zsh.common.result.CommonResult;
 import com.zsh.resource.domain.dto.PublishDishDto;
+import com.zsh.resource.domain.vo.DishConcentrationVo;
+import com.zsh.resource.domain.vo.DishDetailVo;
 import com.zsh.resource.service.DishService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 /**
@@ -28,12 +32,32 @@ public class DishController {
         
         return dishService.getHotRec();
     }
+
     /**
      * 存储发布的菜品
      */
     @PostMapping("/saveDish")
     public CommonResult<Object> saveDish(@RequestBody PublishDishDto publishDishDto) {
+        System.out.println(publishDishDto);
         return dishService.saveDish(publishDishDto);
     }
 
+    /**
+     * 获取精选菜谱
+     */
+    @GetMapping("/getConcentrationMenu")
+    public CommonResult<Object> getConcentrationMenu() {
+        List<DishConcentrationVo> list = dishService.getConcentrationMenu();
+        return CommonResult.success(list);
+    }
+
+    /**
+     * 获取菜谱详情数据
+     * @param id 菜谱id
+     */
+    @GetMapping("/getDishDetailById/{id}")
+    public CommonResult<Object> getDishDetailById(@PathVariable("id") String id, @RequestHeader(value = "userId", required = false) Long userId) {
+        DishDetailVo list = dishService.getDishDetail(id, userId);
+        return CommonResult.success(list);
+    }
 }

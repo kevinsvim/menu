@@ -5,6 +5,9 @@ spring:
     active: dev
   cloud:
     gateway:
+      httpclient:
+        connect-timeout: 5
+        response-timeout: 10s
       routes:
         - id: menu-member          # 路由的唯一标识
           uri: http://localhost:8000  # 如果断言成功，将要转发去的地址
@@ -49,9 +52,8 @@ spring:
 security:
   ignore:
     whites:
-      - /member/**
+      - /member/auth/**
       - /msm/send/**
-      - /resource/**
-      - /oss/**
-
-
+      - /resource/banner/**
+      - /resource/dish/getConcentrationMenu
+#      - /oss/**

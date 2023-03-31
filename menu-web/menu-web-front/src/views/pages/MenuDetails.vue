@@ -1,18 +1,17 @@
 <template>
-    <NavigationBar/>
   <div class="menu-details">
     <div class="demo-image__lazy">
-      <el-image style="border-radius: 10px" :src="url" lazy :fit="'fill'"/>
+      <el-image style="border-radius: 10px; height: 420px" :src="detail.imageUrl" lazy :fit="'fill'"/>
     </div>
     <div class="main_title">
-      <span>酸甜可口的菠萝咕咾肉</span>
+      <span>{{ detail.name }}</span>
     </div>
     <div>
       <el-row>
         <el-col :span="2">
           <div class="textStyle"><span>精品</span></div>
         </el-col>
-        <el-col :span="4">
+        <el-col :span="4" v-if="detail.isSole">
           <div class="textStyle" style="background: #FF4C44"><span>独家</span></div>
         </el-col>
       </el-row>
@@ -20,43 +19,58 @@
     <div class="middle">
       <div class="up_collect">
         <div style="flex: 1; text-align: left; align-items: center; display: flex">
-          <span class="up">19.6万</span>
+          <span class="up">{{ detail.upNum }}</span>
           <span class="upSpan">点赞</span>
         </div>
         <div style="flex: 1; text-align: left; align-items: center; display: flex; margin-left: 40px">
-          <span class="up" style="margin-top: 3px">2500</span>
+          <span class="up" style="margin-top: 3px">{{ detail.collectNum }}</span>
           <span class="upSpan">收藏</span>
         </div>
-        <div style="flex: 5; display: flex; justify-content: right">
-          <el-button type="warning">
+        <div v-if="!detail.isCollect"  style="flex: 5; display: flex; justify-content: right">
+          <el-button type="warning" @click="() => collect(1)">
             <el-icon color="#FFFFF" size="18">
               <StarFilled/>
             </el-icon>
             <span style="margin-top: 3px">收藏</span></el-button>
+        </div>
+        <div v-if="detail.isCollect"  style="flex: 5; display: flex; justify-content: right">
+          <el-button type="warning" @click="() => collect(0)">
+            <el-icon color="#FFFFF" size="18">
+              <Select/>
+            </el-icon>
+            <span style="margin-top: 3px">已收藏</span></el-button>
         </div>
       </div>
       <div style="display: flex; align-items: center; margin-top: 20px">
         <div>
           <el-avatar
             :fit="'fill'"
-            src="https://online-en.oss-cn-beijing.aliyuncs.com/canvas66.png"
+            :src="detail.avatar"
           />
         </div>
         <div style="flex: 1">
           <span>熊猫半糖</span>
         </div>
-        <div style="flex: 1">
-          <el-button>
+        <div v-if="!detail.isFollow" style="flex: 1">
+          <el-button @click="() => follow(1)">
             <el-icon :size="12" :color="'black'">
               <Plus/>
             </el-icon>
             <span style="margin-top: 3px">关注</span>
           </el-button>
         </div>
+        <div v-if="detail.isFollow" style="flex: 1">
+          <el-button @click="() => follow(0)">
+            <el-icon :size="12" :color="'black'">
+              <Select/>
+            </el-icon>
+            <span style="margin-top: 3px">已关注</span>
+          </el-button>
+        </div>
         <div style="flex: 5"></div>
       </div>
       <div style="margin-top: 40px">
-        <span>菠萝咕咾肉是广东的一道特色传统名菜，属于粤菜系，由菠萝和猪肉煮成。它作为欧美人士最熟悉的中国菜之一，最常见于国外的唐人街餐馆。 据悉，咕咾肉始于清朝，当时的广州市有许多外国人都非常喜欢食用中国菜，尤其喜欢酸甜口味的糖醋排骨。但由于外国友人使用刀叉吃饭不习惯吐骨头，广东厨师便运用剔骨的精肉加上调料制成肉圆，入锅油炸至酥脆，淋上糖醋汁，因味道酸甜可口，受到大家的喜爱，便流传开来。</span>
+        <span>{{ detail.description }}</span>
       </div>
     </div>
     <div class="menu_material">
@@ -67,14 +81,14 @@
       <div>
         <el-table
           ref="singleTableRef"
-          :data="tableData"
+          :data="detail.materials"
           highlight-current-row
           style="width: 100%"
           @current-change="handleCurrentChange"
         >
           <el-table-column type="index" width="250"/>
           <el-table-column property="name" label="Material" width="300"/>
-          <el-table-column property="value" label="Dosage"/>
+          <el-table-column property="dosage" label="Dosage"/>
         </el-table>
       </div>
     </div>
@@ -82,10 +96,10 @@
       <div style="text-align: left">
         <span class="child_title">秘制大拌菜的做法</span>
       </div>
-      <div style="display: flex; margin-top: 20px; text-align: left" v-for="(item,index) in steps">
+      <div style="display: flex; margin-top: 20px; text-align: left" v-for="(item,index) in detail.steps">
         <div style="flex: 1;">
           <el-image class="image_form"
-                    :src="'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg'" :fit="'fill'"/>
+                    :src="item.imageUrl" :fit="'fill'"/>
         </div>
         <div style="flex: 2.5">
           <div>
@@ -93,7 +107,7 @@
           </div>
           <div>
             <span class="content_text">
-              里脊肉切成小块，大约1-1.5厘米左右、用水清洗干净、加入料酒，少许盐腌制10-15分钟
+              {{ item.content }}
             </span>
           </div>
         </div>
@@ -105,24 +119,23 @@
         <span class="child_title">菠萝咕咾肉的烹饪技巧</span>
       </div>
       <div style="margin-top: 30px; margin-bottom: 30px">
-        <span class="content_text">做菜好吃都有技巧，我的每道菜都有小妙招，大家搜索“豆果”可以直接查看我的菜谱！</span>
+        <span class="content_text">{{ detail.skill }}</span>
       </div>
     </div>
-
     <div class="text_left">
       <span class="span_style1">©本菜谱的做法由 <span
-        style="color: deepskyblue">厨房笔记-fang</span> 编写，未经授权不得转载</span>
+        style="color: deepskyblue">{{ detail.publisher }}</span> 编写，未经授权不得转载</span>
     </div>
 
     <!-- 点赞 -->
     <div style="margin-top: 40px; margin-bottom: 40px">
       <el-button type="warning" plain color="#FFB31A" @click="updateUpState(true)" style="width: 100px">
-        <svg v-show="!isUp" t="1679207238822" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="51920" width="20" height="20"><path d="M523.048421 948.170105L200.919579 626.041263a35.031579 35.031579 0 1 1 49.55621-49.55621L523.048421 849.057684l343.363368-343.363368a175.292632 175.292632 0 1 0-247.915789-247.91579l-67.368421 67.368421a35.031579 35.031579 0 0 1-49.556211-49.55621l67.368421-67.368421a245.301895 245.301895 0 0 1 346.893474 346.920421z" fill="#83D2EA" p-id="51921"></path><path d="M519.491368 948.170105L126.571789 555.250526A245.301895 245.301895 0 0 1 473.492211 208.330105l70.790736 70.790737a35.031579 35.031579 0 0 1-49.475368 49.529263l-70.790737-70.790737a175.292632 175.292632 0 1 0-247.915789 247.91579l343.363368 343.363368 272.599579-272.572631a35.031579 35.031579 0 0 1 49.556211 49.55621z" fill="#208BB5" p-id="51922"></path></svg>
-        <svg v-show="isUp" t="1679207372833" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="52076" width="20" height="20"><path d="M510.671749 348.792894S340.102978 48.827055 134.243447 254.685563C-97.636714 486.565724 510.671749 913.435858 510.671749 913.435858s616.107079-419.070494 376.428301-658.749272c-194.095603-194.096626-376.428302 94.106308-376.428301 94.106308z" fill="#FF713C" p-id="52077"></path><path d="M510.666632 929.674705c-3.267417 0-6.534833-0.983397-9.326413-2.950192-16.924461-11.872399-414.71121-293.557896-435.220312-529.448394-5.170766-59.482743 13.879102-111.319341 56.643068-154.075121 51.043536-51.043536 104.911398-76.930113 160.095231-76.930114 112.524796 0 196.878996 106.48115 228.475622 153.195078 33.611515-45.214784 122.406864-148.20646 234.04343-148.20646 53.930283 0 105.46603 24.205285 153.210428 71.941496 45.063335 45.063335 64.954361 99.200326 59.133795 160.920016C935.306982 641.685641 536.758893 915.327952 519.80271 926.859589a16.205077 16.205077 0 0 1-9.136078 2.815116zM282.857183 198.75574c-46.25344 0-92.396363 22.682605-137.127124 67.413365-36.149315 36.157501-51.614541 78.120218-47.25321 128.291898 17.575284 202.089671 352.199481 455.119525 412.332023 499.049037 60.434417-42.86732 395.406538-289.147446 414.567947-492.458945 4.933359-52.344159-11.341303-96.465029-49.759288-134.88199-41.431621-41.423435-85.24243-62.424748-130.242319-62.424748-122.041544 0-220.005716 152.203494-220.989114 153.742547-3.045359 4.806469-8.53335 7.883551-14.101159 7.534603a16.257266 16.257266 0 0 1-13.736863-8.184403c-0.902556-1.587148-91.569532-158.081365-213.690893-158.081364z" fill="#885F44" p-id="52078"></path></svg>
-        <span v-show="!isUp"  style="margin-left: 7px">
+        <svg v-show="!detail.isUp" t="1679207238822" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="51920" width="20" height="20"><path d="M523.048421 948.170105L200.919579 626.041263a35.031579 35.031579 0 1 1 49.55621-49.55621L523.048421 849.057684l343.363368-343.363368a175.292632 175.292632 0 1 0-247.915789-247.91579l-67.368421 67.368421a35.031579 35.031579 0 0 1-49.556211-49.55621l67.368421-67.368421a245.301895 245.301895 0 0 1 346.893474 346.920421z" fill="#83D2EA" p-id="51921"></path><path d="M519.491368 948.170105L126.571789 555.250526A245.301895 245.301895 0 0 1 473.492211 208.330105l70.790736 70.790737a35.031579 35.031579 0 0 1-49.475368 49.529263l-70.790737-70.790737a175.292632 175.292632 0 1 0-247.915789 247.91579l343.363368 343.363368 272.599579-272.572631a35.031579 35.031579 0 0 1 49.556211 49.55621z" fill="#208BB5" p-id="51922"></path></svg>
+        <svg v-show="detail.isUp" t="1679207372833" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="52076" width="20" height="20"><path d="M510.671749 348.792894S340.102978 48.827055 134.243447 254.685563C-97.636714 486.565724 510.671749 913.435858 510.671749 913.435858s616.107079-419.070494 376.428301-658.749272c-194.095603-194.096626-376.428302 94.106308-376.428301 94.106308z" fill="#FF713C" p-id="52077"></path><path d="M510.666632 929.674705c-3.267417 0-6.534833-0.983397-9.326413-2.950192-16.924461-11.872399-414.71121-293.557896-435.220312-529.448394-5.170766-59.482743 13.879102-111.319341 56.643068-154.075121 51.043536-51.043536 104.911398-76.930113 160.095231-76.930114 112.524796 0 196.878996 106.48115 228.475622 153.195078 33.611515-45.214784 122.406864-148.20646 234.04343-148.20646 53.930283 0 105.46603 24.205285 153.210428 71.941496 45.063335 45.063335 64.954361 99.200326 59.133795 160.920016C935.306982 641.685641 536.758893 915.327952 519.80271 926.859589a16.205077 16.205077 0 0 1-9.136078 2.815116zM282.857183 198.75574c-46.25344 0-92.396363 22.682605-137.127124 67.413365-36.149315 36.157501-51.614541 78.120218-47.25321 128.291898 17.575284 202.089671 352.199481 455.119525 412.332023 499.049037 60.434417-42.86732 395.406538-289.147446 414.567947-492.458945 4.933359-52.344159-11.341303-96.465029-49.759288-134.88199-41.431621-41.423435-85.24243-62.424748-130.242319-62.424748-122.041544 0-220.005716 152.203494-220.989114 153.742547-3.045359 4.806469-8.53335 7.883551-14.101159 7.534603a16.257266 16.257266 0 0 1-13.736863-8.184403c-0.902556-1.587148-91.569532-158.081365-213.690893-158.081364z" fill="#885F44" p-id="52078"></path></svg>
+        <span v-show="!detail.isUp"  style="margin-left: 7px">
             点个赞
         </span>
-        <span v-show="isUp" style="margin-left: 7px">
+        <span v-show="detail.isUp" style="margin-left: 7px">
             已点赞
         </span>
       </el-button>
@@ -137,8 +150,8 @@
         <span class="child_title">评论</span>
       </div>
       <div style="margin-top: 20px; display: flex;">
-        <div style="flex: 1; text-align: left">
-          <el-avatar :size="'default'" :src="url"></el-avatar>
+        <div style="flex: 1; text-align: left" v-if="detail.currentUserAvatar !== ''">
+          <el-avatar :size="'default'" :src="detail.currentUserAvatar"></el-avatar>
         </div>
         <div style="flex: 10; text-align: left">
           <el-input
@@ -159,40 +172,16 @@
         </el-button>
       </div>
       <!-- 评论内容 -->
-      <div style="margin-top: 20px; display: flex">
+      <div style="margin-top: 20px; display: flex" v-for="comment in detail.comments">
         <div style="flex: 1; text-align: left">
-          <el-avatar :size="'default'" :src="url"></el-avatar>
+          <el-avatar :size="'default'" :src="comment.imageUrl"></el-avatar>
         </div>
         <div style="flex: 12; text-align: left">
           <div style="margin-top: 8px">
-            <span style="font-size: 13px; line-height: 30px">李耀英</span>
+            <span style="font-size: 13px; line-height: 30px">{{ comment.username }}</span>
           </div>
           <div>
-            <span style="line-height: 40px; font-size: 15px">这得买多少鱿鱼呀,没做过</span>
-          </div>
-          <div style="display: flex">
-            <div style="flex: 1; justify-content: flex-start">
-              <span style="line-height: 30px; font-size: 13px; color: #999">1天前&nbsp;&nbsp;&nbsp;河南省</span>
-            </div>
-            <div style="cursor:pointer;">
-              <span style="font-size: 13px; color: #256DC6;">删除</span>
-            </div>
-          </div>
-          <div>
-            <el-divider />
-          </div>
-        </div>
-      </div>
-      <div style="margin-top: 20px; display: flex">
-        <div style="flex: 1; text-align: left">
-          <el-avatar :size="'default'" :src="url"></el-avatar>
-        </div>
-        <div style="flex: 12; text-align: left">
-          <div style="margin-top: 8px">
-            <span style="font-size: 13px; line-height: 30px">李耀英</span>
-          </div>
-          <div>
-            <span style="line-height: 40px; font-size: 15px">这得买多少鱿鱼呀,没做过</span>
+            <span style="line-height: 40px; font-size: 15px">{{ comment.publishDate }}</span>
           </div>
           <div style="display: flex">
             <div style="flex: 1; justify-content: flex-start">
@@ -216,10 +205,13 @@
 
 import { reactive, ref } from 'vue'
 import { StarFilled, Check } from '@element-plus/icons-vue'
-import { Plus, Star } from '@element-plus/icons'
+import {Plus, Select, Star} from '@element-plus/icons'
 import MenuFooter from '@/views/footer/FoodFooter'
-import NavigationBar from '@/views/pages/NavigationBar'
-
+import NavigationBar from '@/views/pages/nav/NavigationBar'
+import { useRoute } from 'vue-router'
+import resource from "@/api/resource";
+import {ElMessage} from "element-plus";
+import { userStore } from "@/store/user";
 export default {
   name: 'MenuDetails',
   components: {
@@ -229,49 +221,97 @@ export default {
     StarFilled,
     Comment,
     Check,
-    NavigationBar
+    NavigationBar,
+    Select
   },
   setup () {
-    const url = 'https://menu-api.oss-cn-beijing.aliyuncs.com/dish/home_cooking/gulu.jpeg'
-    const isUp = ref(false)
-    const tableData = reactive([
-      {
-        name: '名称',
-        value: 'tester',
-      },
-      {
-        name: '创建人2',
-        value: '张3',
-      },
-      {
-        name: '创建人',
-        value: '张三4',
-      }, {
-        name: '创建人s',
-        value: '张三',
-      },
+    const route = useRoute()
+    const uStore = userStore();
+    /**
+     * 详情页面数据
+     */
+    const detail = reactive({
+      id: '',
+      name: '',
+      imageUrl: '',
+      isSole: false,
+      publishDate: '',
+      upNum: 0,
+      collectNum: 0,
+      avatar: '',
+      isFollow: false,
+      description: '',
+      materials: [],
+      steps: [],
+      skill: '',
+      publisher: '',
+      isUp: false,
+      isCollect: false,
+      currentUserAvatar: '',
+      comments: []
+    })
+    // 根据id获取详细信息
+    const getDishDetailById = () => {
+      let id = route.query.id
+      if (id) {
+        resource.getDetailByDishId(id).then(res => {
+          console.log('详情数据为:', res.data)
+          // 数据赋值
+          let data = res.data
+          detail.id = data.id
+          detail.name = data.name
+          detail.imageUrl = data.imageUrl
+          detail.isSole = data.isSole
+          detail.upNum = data.upNum
+          detail.collectNum = data.collectNum
+          detail.avatar = data.avatar
+          detail.isFollow = data.isFollow
+          detail.description = data.description
+          detail.materials.push(...data.materials)
+          detail.steps.push(...data.steps)
+          detail.skill = data.skill
+          detail.publisher = data.username
+          detail.publishDate = data.publishDate
+          detail.isUp = data.isUp
+          detail.isCollect = data.isCollect
+          detail.comments.push(...data.comments)
+          detail.currentUserAvatar = uStore.getImageUrl()
+        }).catch(error => {
+          ElMessage.error('出错了~ 请稍后再试!')
+        })
+      }
+    }
+    getDishDetailById()
 
-    ])
-    let steps = reactive([
-      {
-        imageUrl: '',
-        content: ''
-      },
-      {},
-      {}
-    ])
+    // 收藏与取消收藏
+    const collect = (type) => {
+      // 判断用户是否登录
+      if (uStore.isLogin()) {
+        // 先进行页面变化
+        detail.isCollect = !detail.isCollect
+        resource.collect(type, detail.id, uStore.getId()).then(res => {
+
+        }).catch(error => {
+          // 修改失败，则恢复原样
+          detail.isCollect = !detail.isCollect
+        })
+      }
+    }
+    // 关注与取消关注
+    const follow = (type) => {
+
+    }
     const content = ref('')
     // 修改点赞状态
     const updateUpState = (status) => {
-      isUp.value = !isUp.value
+
     }
     return {
-      url,
-      tableData,
-      steps,
-      isUp,
       updateUpState,
-      content
+      content,
+      detail,
+      collect,
+      follow
     }
   }
 }

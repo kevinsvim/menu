@@ -3,6 +3,7 @@ package com.zsh.resource.domain.dto;
 import com.zsh.resource.domain.Material;
 import com.zsh.resource.domain.Step;
 import lombok.Data;
+import lombok.ToString;
 
 import java.util.List;
 
@@ -12,6 +13,7 @@ import java.util.List;
  * @author zsh
  */
 @Data
+@ToString
 public class PublishDishDto {
     /**
      * 菜品名
@@ -61,4 +63,10 @@ public class PublishDishDto {
      * 烹饪工艺id
      */
     private Long cookTechnologyId;
+    /**
+     * 分类id
+     */
+    private Long  typeId;
+
+
 }

@@ -5,16 +5,18 @@
 <mapper namespace="com.zsh.resource.mapper.TypeMapper">
 
     <resultMap id="BaseResultMap" type="com.zsh.resource.domain.Type">
-            <id property="id" column="id" jdbcType="BIGINT"/>
-            <result property="name" column="name" jdbcType="VARCHAR"/>
-            <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
-            <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
-            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
-            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="name" column="name" jdbcType="VARCHAR"/>
+        <result property="parentId" column="parent_id" jdbcType="BIGINT"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="INTEGER"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+
     </resultMap>
 
     <sql id="Base_Column_List">
         id,name,parent_id,
         is_deleted,create_time,update_time
     </sql>
+
 </mapper>
