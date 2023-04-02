@@ -18,7 +18,10 @@ public interface RecLogMapper extends BaseMapper<RecLog> {
 
     List<RecLog> getAllLogData();
 
-    boolean updateCollectType(@Param("type") boolean type, @Param("dishId") Long dishId, @Param("memberId") Long memberId);
+    boolean updateCollectType(@Param("type") boolean type, @Param("dishId") String dishId, @Param("memberId") String memberId);
+
+    boolean updateUpType(@Param("type") boolean type, @Param("dishId") String dishId, @Param("userId") String userId);
+
 }
 
 

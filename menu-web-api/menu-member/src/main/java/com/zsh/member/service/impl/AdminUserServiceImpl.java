@@ -32,7 +32,7 @@ public class AdminUserServiceImpl extends ServiceImpl<AdminUserMapper, AdminUser
         AdminUser user = this.getOne(wrapper);
         if (ObjectUtils.isNotEmpty(user) && userDto.getPassword().equals(user.getPassword())) {
             // 生成token返回
-            String token = JwtTokenUtils.generateToken(String.valueOf(user.getId()), user.getUsername());
+            String token = JwtTokenUtils.generateToken(user.getId(), user.getUsername());
             return CommonResult.success(token);
         }
         return CommonResult.fail();

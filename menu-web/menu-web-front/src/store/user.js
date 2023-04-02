@@ -42,7 +42,7 @@ export const userStore = defineStore('user', {
     },
     // 判断用户是否已经登录
     isLogin() {
-      return !(this.imageUrl === '' && localStorage.getItem('token') === '')
+      return this.id !== '' || localStorage.getItem('token') !== ''
     }
   }
 })

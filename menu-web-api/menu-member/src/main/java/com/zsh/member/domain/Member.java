@@ -21,7 +21,7 @@ public class Member implements Serializable {
      * id
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
+    private String id;
 
     /**
      * 昵称

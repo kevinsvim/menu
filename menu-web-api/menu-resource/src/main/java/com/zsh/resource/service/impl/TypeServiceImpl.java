@@ -46,11 +46,11 @@ public class TypeServiceImpl extends ServiceImpl<TypeMapper, Type>
         List<Type> list = this.list();
         // 2.将pid为0的设置为一级分类,并将一级分类的id放入hash表中
         list.forEach(type -> {
-            if (type.getParentId() == 0) {
+            if (type.getParentId().equals("0")) {
                 CategoryTreeVo category = new CategoryTreeVo();
                 category.setId(type.getId());
                 category.setName(type.getName());
-                category.setParentId(0L);
+                category.setParentId("0");
                 category.setLevel(1);
                 // 寻找二级分类数据
                 list.forEach(twoItem -> {

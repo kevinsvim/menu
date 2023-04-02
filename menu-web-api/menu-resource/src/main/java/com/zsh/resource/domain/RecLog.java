@@ -17,17 +17,17 @@ public class RecLog implements Serializable {
      * 
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
+    private String id;
 
     /**
      * 
      */
-    private Long dishId;
+    private String dishId;
 
     /**
      * 
      */
-    private Long memberId;
+    private String memberId;
 
     /**
      * 点击数量

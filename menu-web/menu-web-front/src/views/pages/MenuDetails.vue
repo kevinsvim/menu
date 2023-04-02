@@ -51,7 +51,7 @@
         <div style="flex: 1">
           <span>熊猫半糖</span>
         </div>
-        <div v-if="!detail.isFollow" style="flex: 1">
+        <div v-if="!detail.isHiddenFollow && !detail.isFollow" style="flex: 1">
           <el-button @click="() => follow(1)">
             <el-icon :size="12" :color="'black'">
               <Plus/>
@@ -59,7 +59,7 @@
             <span style="margin-top: 3px">关注</span>
           </el-button>
         </div>
-        <div v-if="detail.isFollow" style="flex: 1">
+        <div v-if="!detail.isHiddenFollow && detail.isFollow" style="flex: 1">
           <el-button @click="() => follow(0)">
             <el-icon :size="12" :color="'black'">
               <Select/>
@@ -129,13 +129,15 @@
 
     <!-- 点赞 -->
     <div style="margin-top: 40px; margin-bottom: 40px">
-      <el-button type="warning" plain color="#FFB31A" @click="updateUpState(true)" style="width: 100px">
-        <svg v-show="!detail.isUp" t="1679207238822" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="51920" width="20" height="20"><path d="M523.048421 948.170105L200.919579 626.041263a35.031579 35.031579 0 1 1 49.55621-49.55621L523.048421 849.057684l343.363368-343.363368a175.292632 175.292632 0 1 0-247.915789-247.91579l-67.368421 67.368421a35.031579 35.031579 0 0 1-49.556211-49.55621l67.368421-67.368421a245.301895 245.301895 0 0 1 346.893474 346.920421z" fill="#83D2EA" p-id="51921"></path><path d="M519.491368 948.170105L126.571789 555.250526A245.301895 245.301895 0 0 1 473.492211 208.330105l70.790736 70.790737a35.031579 35.031579 0 0 1-49.475368 49.529263l-70.790737-70.790737a175.292632 175.292632 0 1 0-247.915789 247.91579l343.363368 343.363368 272.599579-272.572631a35.031579 35.031579 0 0 1 49.556211 49.55621z" fill="#208BB5" p-id="51922"></path></svg>
-        <svg v-show="detail.isUp" t="1679207372833" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="52076" width="20" height="20"><path d="M510.671749 348.792894S340.102978 48.827055 134.243447 254.685563C-97.636714 486.565724 510.671749 913.435858 510.671749 913.435858s616.107079-419.070494 376.428301-658.749272c-194.095603-194.096626-376.428302 94.106308-376.428301 94.106308z" fill="#FF713C" p-id="52077"></path><path d="M510.666632 929.674705c-3.267417 0-6.534833-0.983397-9.326413-2.950192-16.924461-11.872399-414.71121-293.557896-435.220312-529.448394-5.170766-59.482743 13.879102-111.319341 56.643068-154.075121 51.043536-51.043536 104.911398-76.930113 160.095231-76.930114 112.524796 0 196.878996 106.48115 228.475622 153.195078 33.611515-45.214784 122.406864-148.20646 234.04343-148.20646 53.930283 0 105.46603 24.205285 153.210428 71.941496 45.063335 45.063335 64.954361 99.200326 59.133795 160.920016C935.306982 641.685641 536.758893 915.327952 519.80271 926.859589a16.205077 16.205077 0 0 1-9.136078 2.815116zM282.857183 198.75574c-46.25344 0-92.396363 22.682605-137.127124 67.413365-36.149315 36.157501-51.614541 78.120218-47.25321 128.291898 17.575284 202.089671 352.199481 455.119525 412.332023 499.049037 60.434417-42.86732 395.406538-289.147446 414.567947-492.458945 4.933359-52.344159-11.341303-96.465029-49.759288-134.88199-41.431621-41.423435-85.24243-62.424748-130.242319-62.424748-122.041544 0-220.005716 152.203494-220.989114 153.742547-3.045359 4.806469-8.53335 7.883551-14.101159 7.534603a16.257266 16.257266 0 0 1-13.736863-8.184403c-0.902556-1.587148-91.569532-158.081365-213.690893-158.081364z" fill="#885F44" p-id="52078"></path></svg>
-        <span v-show="!detail.isUp"  style="margin-left: 7px">
+      <el-button v-if="!detail.isUp" type="warning" plain color="#FFB31A" @click="updateUpState(1)" style="width: 100px">
+        <svg t="1679207238822" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="51920" width="20" height="20"><path d="M523.048421 948.170105L200.919579 626.041263a35.031579 35.031579 0 1 1 49.55621-49.55621L523.048421 849.057684l343.363368-343.363368a175.292632 175.292632 0 1 0-247.915789-247.91579l-67.368421 67.368421a35.031579 35.031579 0 0 1-49.556211-49.55621l67.368421-67.368421a245.301895 245.301895 0 0 1 346.893474 346.920421z" fill="#83D2EA" p-id="51921"></path><path d="M519.491368 948.170105L126.571789 555.250526A245.301895 245.301895 0 0 1 473.492211 208.330105l70.790736 70.790737a35.031579 35.031579 0 0 1-49.475368 49.529263l-70.790737-70.790737a175.292632 175.292632 0 1 0-247.915789 247.91579l343.363368 343.363368 272.599579-272.572631a35.031579 35.031579 0 0 1 49.556211 49.55621z" fill="#208BB5" p-id="51922"></path></svg>
+        <span style="margin-left: 7px">
             点个赞
         </span>
-        <span v-show="detail.isUp" style="margin-left: 7px">
+      </el-button>
+      <el-button v-if="detail.isUp" type="warning" plain color="#FFB31A" @click="updateUpState(0)" style="width: 100px">
+        <svg t="1679207372833" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="52076" width="20" height="20"><path d="M510.671749 348.792894S340.102978 48.827055 134.243447 254.685563C-97.636714 486.565724 510.671749 913.435858 510.671749 913.435858s616.107079-419.070494 376.428301-658.749272c-194.095603-194.096626-376.428302 94.106308-376.428301 94.106308z" fill="#FF713C" p-id="52077"></path><path d="M510.666632 929.674705c-3.267417 0-6.534833-0.983397-9.326413-2.950192-16.924461-11.872399-414.71121-293.557896-435.220312-529.448394-5.170766-59.482743 13.879102-111.319341 56.643068-154.075121 51.043536-51.043536 104.911398-76.930113 160.095231-76.930114 112.524796 0 196.878996 106.48115 228.475622 153.195078 33.611515-45.214784 122.406864-148.20646 234.04343-148.20646 53.930283 0 105.46603 24.205285 153.210428 71.941496 45.063335 45.063335 64.954361 99.200326 59.133795 160.920016C935.306982 641.685641 536.758893 915.327952 519.80271 926.859589a16.205077 16.205077 0 0 1-9.136078 2.815116zM282.857183 198.75574c-46.25344 0-92.396363 22.682605-137.127124 67.413365-36.149315 36.157501-51.614541 78.120218-47.25321 128.291898 17.575284 202.089671 352.199481 455.119525 412.332023 499.049037 60.434417-42.86732 395.406538-289.147446 414.567947-492.458945 4.933359-52.344159-11.341303-96.465029-49.759288-134.88199-41.431621-41.423435-85.24243-62.424748-130.242319-62.424748-122.041544 0-220.005716 152.203494-220.989114 153.742547-3.045359 4.806469-8.53335 7.883551-14.101159 7.534603a16.257266 16.257266 0 0 1-13.736863-8.184403c-0.902556-1.587148-91.569532-158.081365-213.690893-158.081364z" fill="#885F44" p-id="52078"></path></svg>
+        <span style="margin-left: 7px">
             已点赞
         </span>
       </el-button>
@@ -166,9 +168,9 @@
         </div>
       </div>
       <div style="margin-top: 10px; text-align: right">
-        <el-button type="primary">
+        <el-button type="primary" @click="publishComment" :disabled="commentBtnDisabled">
           发布评论
-          <svg style="margin-left: 3px" t="1679217923062" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2304" width="20" height="20"><path d="M896 85.333333C299.008 85.333333 184.661333 605.013333 137.344 882.688l-2.346667 13.866667a36.138667 36.138667 0 0 0 35.626667 42.112h8.917333a42.666667 42.666667 0 0 0 41.344-32.128c1.877333-7.381333 3.584-13.525333 5.034667-18.304 34.218667-110.378667 101.12-171.776 200.746667-184.234667 170.666667-21.333333 298.666667-170.666667 341.333333-298.666667l-64-42.666666 42.666667-42.666667c42.666667-42.666667 85.504-106.666667 149.333333-234.666667z" fill="#F64E54" p-id="2305"></path></svg>
+          <iconfont-svg icon="icon-liuyan" size="25"/>
         </el-button>
       </div>
       <!-- 评论内容 -->
@@ -181,14 +183,16 @@
             <span style="font-size: 13px; line-height: 30px">{{ comment.username }}</span>
           </div>
           <div>
-            <span style="line-height: 40px; font-size: 15px">{{ comment.publishDate }}</span>
+            <span style="line-height: 40px; font-size: 15px">{{ comment.content }}</span>
           </div>
           <div style="display: flex">
             <div style="flex: 1; justify-content: flex-start">
-              <span style="line-height: 30px; font-size: 13px; color: #999">1天前&nbsp;&nbsp;&nbsp;河南省</span>
+              <span style="line-height: 30px; font-size: 13px; color: #999">{{ comment.publishDate }}</span>
             </div>
             <div style="cursor:pointer;">
-              <span style="font-size: 13px; color: #256DC6;">删除</span>
+              <el-button text @click="() => removeComment(comment.id)">
+                <span style="font-size: 13px; color: #256DC6;">删除</span>
+              </el-button>
             </div>
           </div>
           <div>
@@ -203,18 +207,22 @@
 
 <script>
 
-import { reactive, ref } from 'vue'
+import {getCurrentInstance, reactive, ref} from 'vue'
 import { StarFilled, Check } from '@element-plus/icons-vue'
 import {Plus, Select, Star} from '@element-plus/icons'
 import MenuFooter from '@/views/footer/FoodFooter'
 import NavigationBar from '@/views/pages/nav/NavigationBar'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import resource from "@/api/resource";
-import {ElMessage} from "element-plus";
+import {ElMessage, ElMessageBox} from "element-plus";
 import { userStore } from "@/store/user";
+import IconfontSvg from "@/components/iconfonts/IconSvg";
+import comment from '@/api/comment'
+import {HOME_CONSTANT, MENU_CONSTANT, MENU_EVENT} from "@/utils/nav";
 export default {
   name: 'MenuDetails',
   components: {
+    IconfontSvg,
     Star,
     MenuFooter,
     Plus,
@@ -226,30 +234,57 @@ export default {
   },
   setup () {
     const route = useRoute()
+    const router = useRouter()
     const uStore = userStore();
     /**
      * 详情页面数据
      */
     const detail = reactive({
+      // 菜谱id
       id: '',
+      // 菜谱名
       name: '',
+      // 菜谱主图片
       imageUrl: '',
+      // 是否独家
       isSole: false,
+      // 菜谱发布日期
       publishDate: '',
+      // 点赞数量
       upNum: 0,
+      // 收藏数量
       collectNum: 0,
+      // 发布者头像
       avatar: '',
+      // 当前登录用户是否关注该发布者
       isFollow: false,
+      // 菜谱描述
       description: '',
+      // 材料
       materials: [],
+      // 步骤
       steps: [],
+      // 菜谱技巧
       skill: '',
+      // 发布者用户名
       publisher: '',
+      // 发布者id
+      publisherId: '',
+      // 当前用户是否点赞该菜谱
       isUp: false,
+      // 当前用户是否收藏该菜谱
       isCollect: false,
+      // 当前登录用户头像
       currentUserAvatar: '',
-      comments: []
+      // 当前菜谱的所有评论
+      comments: [],
+      // 是否隐藏关注
+      isHiddenFollow: false,
     })
+    // 用户评论内容
+    const content = ref('')
+    // 发布按钮是否禁止
+    const commentBtnDisabled = ref(false)
     // 根据id获取详细信息
     const getDishDetailById = () => {
       let id = route.query.id
@@ -274,8 +309,13 @@ export default {
           detail.publishDate = data.publishDate
           detail.isUp = data.isUp
           detail.isCollect = data.isCollect
+          detail.publisherId = data.userId
           detail.comments.push(...data.comments)
           detail.currentUserAvatar = uStore.getImageUrl()
+          // 判断当前是否是当前登录用户发布的菜谱,如果是则隐藏关注这个功能
+          if (uStore.getId() === detail.publisherId) {
+            detail.isHiddenFollow = true
+          }
         }).catch(error => {
           ElMessage.error('出错了~ 请稍后再试!')
         })
@@ -283,6 +323,16 @@ export default {
     }
     getDishDetailById()
 
+    // 获取到 全局事件总线
+    const { Bus }  = getCurrentInstance().appContext.config.globalProperties
+    // 修改导航栏的状态
+    const updateSelectState = () => {
+      localStorage.setItem(HOME_CONSTANT, false)
+      localStorage.setItem(MENU_CONSTANT, true)
+      // 通知导航栏组件刷新选中状态
+      Bus.emit(MENU_EVENT, { state: true })
+    }
+    updateSelectState()
     // 收藏与取消收藏
     const collect = (type) => {
       // 判断用户是否登录
@@ -290,7 +340,6 @@ export default {
         // 先进行页面变化
         detail.isCollect = !detail.isCollect
         resource.collect(type, detail.id, uStore.getId()).then(res => {
-
         }).catch(error => {
           // 修改失败，则恢复原样
           detail.isCollect = !detail.isCollect
@@ -299,19 +348,68 @@ export default {
     }
     // 关注与取消关注
     const follow = (type) => {
+      detail.isFollow = !detail.isFollow
+      resource.follow(detail.publisherId, type).then(res => {
 
+      }).catch(error => {
+        detail.isFollow = !detail.isFollow
+      })
     }
-    const content = ref('')
-    // 修改点赞状态
+    // 点赞与取消点赞
     const updateUpState = (status) => {
-
+      detail.isUp = !detail.isUp
+      resource.up(status, detail.id).then(res => {
+      }).catch(error => {
+        detail.isUp = !detail.isUp
+      })
+    }
+    // 发表评论
+    const publishComment = () => {
+      // 发布按钮禁止
+      commentBtnDisabled.value = true
+      // 如果没登录，则跳转到登录页面
+      if (!uStore.isLogin()) {
+        router.push('/')
+      } else if (content.value === '') {
+        ElMessage.info('您输入的内容为空~')
+      } else {
+        // 保存评论
+        comment.addComment(content.value, detail.id).then(res => {
+          content.value = ''
+          ElMessage.success('发布成功,审核后显示~')
+          commentBtnDisabled.value = false
+        }).catch(error => {
+          commentBtnDisabled.value = false
+        })
+      }
+    }
+    // 移除评论
+    const removeComment = (commentId) => {
+      ElMessageBox.confirm(
+        '您确定要删除该评论吗?',
+        'Warning',
+        {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+      ).then(() => {
+        // 删除该评论
+        comment.deleteCommentById(commentId).then(res => {
+          // 刷新评论
+          getDishDetailById()
+        })
+      })
     }
     return {
-      updateUpState,
       content,
       detail,
+      commentBtnDisabled,
+      updateUpState,
       collect,
-      follow
+      follow,
+      publishComment,
+      removeComment
     }
   }
 }

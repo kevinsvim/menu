@@ -16,6 +16,7 @@
     "dayjs": "^1.11.7",
     "element-plus": "^2.2.32",
     "less-loader": "^6.2.0",
+    "mitt": "^3.0.0",
     "moment": "^2.29.4",
     "node-sass": "^4.14.1",
     "pinia": "^2.0.32",

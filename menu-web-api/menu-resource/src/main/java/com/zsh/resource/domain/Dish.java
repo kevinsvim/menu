@@ -19,7 +19,7 @@ public class Dish implements Serializable {
      * 
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
+    private String id;
 
     /**
      * 菜品图片url
@@ -29,17 +29,17 @@ public class Dish implements Serializable {
     /**
      * 食材id
      */
-    private Long materialId;
+    private String materialId;
 
     /**
      * 制作难度等级id
      */
-    private Long productionLevelId;
+    private String productionLevelId;
 
     /**
      * 制作时间id
      */
-    private Long productionTimeId;
+    private String productionTimeId;
 
     /**
      * 是否原创
@@ -54,17 +54,17 @@ public class Dish implements Serializable {
     /**
      * 类型id
      */
-    private Long typeId;
+    private String typeId;
 
     /**
      * 工艺id
      */
-    private Long cookTechnologyId;
+    private String cookTechnologyId;
 
     /**
      * 品味id
      */
-    private Long flavorId;
+    private String flavorId;
 
     /**
      * 小妙招
@@ -79,13 +79,16 @@ public class Dish implements Serializable {
     /**
      * 发布者id
      */
-    private Long publisherId;
+    private String publisherId;
 
     /**
      * 是否是独家发布
      */
     private boolean isSole;
 
+    /**
+     * 发布状态
+     */
     private Integer status;
     /**
      * 

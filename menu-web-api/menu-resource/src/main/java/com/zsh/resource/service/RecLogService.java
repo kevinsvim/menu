@@ -14,5 +14,10 @@ public interface RecLogService extends IService<RecLog> {
     /**
      * 修改当前用户的收藏与否
      */
-    CommonResult<Object> updateCollect(Integer type, Long dishId, Long memberId);
+    CommonResult<Object> updateCollect(Integer type, String dishId, String memberId);
+
+    /**
+     * 是否取消点赞 【0 - 取消点赞】 【1 - 点赞】
+     */
+    CommonResult<Object> updateUp(String userId, String dishId, Integer type);
 }

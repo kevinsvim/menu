@@ -11,5 +11,5 @@ import lombok.Data;
 public class CategorySaveDto {
 
     private String name;
-    private Long parentId;
+    private String parentId;
 }

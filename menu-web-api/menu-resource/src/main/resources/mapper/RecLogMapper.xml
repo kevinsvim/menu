@@ -40,4 +40,10 @@
         WHERE dish_id = #{dishId}
           AND member_id = #{memberId}
     </update>
+    <update id="updateUpType">
+        UPDATE rec_log
+        SET is_up = #{type}
+        WHERE dish_id = #{dishId}
+          AND member_id = #{userId}
+    </update>
 </mapper>

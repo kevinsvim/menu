@@ -3,11 +3,14 @@ package com.zsh.resource.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.TypeReference;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zsh.common.result.CommonResult;
 import com.zsh.resource.constant.DishConstant;
 import com.zsh.resource.domain.*;
 import com.zsh.resource.domain.dto.PublishDishDto;
+import com.zsh.resource.domain.vo.DishCategoryVo;
 import com.zsh.resource.domain.vo.DishConcentrationVo;
 import com.zsh.resource.domain.vo.DishDetailVo;
 import com.zsh.resource.mapper.CommentMapper;
@@ -20,7 +23,6 @@ import com.zsh.resource.service.StepService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -124,28 +126,47 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         Object hotScore = redisTemplate.opsForValue().get(DishConstant.HOT_SCORE);
         Map<String, String> hotScoreMap = JSON.parseObject(JSON.toJSONString(hotScore), new TypeReference<>() {
         });
+        Map<String, DishConcentrationVo> resMap = new HashMap<>();
         if (hotScore != null) {
             Set<String> dishIds = hotScoreMap.keySet();
             // 2.取出前8个菜谱id
             List<String> ids = dishIds.stream().limit(8).collect(Collectors.toList());
             // 3.根据id集合查询相关信息
-            return dishMapper.getConcentrationRecContent(ids);
+            List<DishConcentrationVo> list = dishMapper.getConcentrationRecContent(ids);
+            resMap = list.stream().collect(Collectors.toMap(DishConcentrationVo::getId, k1 -> k1));
+            LambdaQueryWrapper<RecLog> wrapper = new LambdaQueryWrapper<>();
+            // 拼接参数查询所有相关日志
+            for (String id : ids) {
+                wrapper.or().eq(RecLog::getDishId, id);
+            }
+            List<RecLog> recLogs = recLogMapper.selectList(wrapper);
+            for (RecLog recLog : recLogs) {
+                DishConcentrationVo dishVo = resMap.get(recLog.getDishId());
+                dishVo.setViews(dishVo.getViews() + recLog.getClickNum());
+                dishVo.setUpNum(dishVo.getUpNum() + (recLog.getIsUp() ? 1 : 0));
+                dishVo.setCollectNum(dishVo.getCollectNum() + (recLog.getIsCollect() ? 1 : 0));
+                dishVo.setCommentNum(dishVo.getCommentNum() + recLog.getCommentNum());
+            }
         }
-        return null;
+        List<DishConcentrationVo> res = new ArrayList<>();
+        for (Map.Entry<String, DishConcentrationVo> entry : resMap.entrySet()) {
+            res.add(entry.getValue());
+        }
+        return res;
     }
 
     /**
      * 获取菜谱页详情
-     * @param id 菜谱id
+     *
+     * @param id     菜谱id
      * @param userId 《---- 当前登录的用户id ---》
      */
 //    @Cacheable(value = "dishDetail", key = "#id + #userId")
     @Override
-    public DishDetailVo getDishDetail(String id, Long userId) {
+    public DishDetailVo getDishDetail(String id, String userId) {
         // 分为用户登录和未登录两种情况
         // 查询菜谱相关数据
-        Long dishId = Long.valueOf(id);
-        DishDetailVo dishDetail = dishMapper.getDishDetail(dishId);
+        DishDetailVo dishDetail = dishMapper.getDishDetail(id);
         dishDetail.setIsUp(false);
         dishDetail.setIsCollect(false);
         // 去日志查询该菜谱点赞、收藏数量
@@ -158,7 +179,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
             upNum += recLog.getIsUp() ? 1 : 0;
             collectNum += recLog.getIsCollect() ? 1 : 0;
             // 判断当前用户是否已经点赞、收藏该菜谱 [前提是userId不能为空,为空则表示该用户还未登录]
-            if (ObjectUtils.isNotEmpty(userId) && recLog.getMemberId().equals(userId)) {
+            if (StringUtils.isNotEmpty(userId) && recLog.getMemberId().equals(userId)) {
                 dishDetail.setIsCollect(recLog.getIsCollect());
                 dishDetail.setIsUp(recLog.getIsUp());
             }
@@ -177,10 +198,10 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         }
         dishDetail.setMaterials(materials);
         // 查询评论数据
-        dishDetail.setComments(commentMapper.getCommentsByDishId(dishId));
+        dishDetail.setComments(commentMapper.getCommentsByDishId(id));
         // 查看步骤相关数据
         LambdaQueryWrapper<Step> stepWrapper = new LambdaQueryWrapper<>();
-        stepWrapper.eq(Step::getDishId, dishId);
+        stepWrapper.eq(Step::getDishId, id);
         List<Step> steps = stepService.list(stepWrapper);
         dishDetail.setSteps(steps);
         dishDetail.setIsFollow(false);
@@ -193,6 +214,15 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
             dishDetail.setIsFollow(count > 0);
         }
         return dishDetail;
+    }
+
+    /**
+     * 根据分类id获取所有的菜谱
+     */
+    @Override
+    public IPage<DishCategoryVo> getAllDishByCategoryId(String categoryId, Integer pageSize, Integer pageNum) {
+        Page<DishCategoryVo> page = new Page<>(pageNum, pageSize);
+        return dishMapper.getDishPage(page, categoryId);
     }
 }
 

@@ -3,6 +3,7 @@ package com.zsh.resource.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zsh.common.result.CommonResult;
+import com.zsh.resource.domain.Follow;
 import com.zsh.resource.domain.RecLog;
 import com.zsh.resource.service.RecLogService;
 import com.zsh.resource.mapper.RecLogMapper;
@@ -22,7 +23,7 @@ public class RecLogServiceImpl extends ServiceImpl<RecLogMapper, RecLog>
      * @param type 【0 - 取消收藏】 【1 - 收藏】
      */
     @Override
-    public CommonResult<Object> updateCollect(Integer type, Long dishId, Long memberId) {
+    public CommonResult<Object> updateCollect(Integer type, String dishId, String memberId) {
         LambdaQueryWrapper<RecLog> recLogWrapper = new LambdaQueryWrapper<>();
         recLogWrapper.eq(RecLog::getDishId, dishId).eq(RecLog::getMemberId, memberId);
         int count = this.count(recLogWrapper);
@@ -36,6 +37,30 @@ public class RecLogServiceImpl extends ServiceImpl<RecLogMapper, RecLog>
             recLog.setDishId(dishId);
             recLog.setIsUp(false);
             recLog.setMemberId(memberId);
+            this.save(recLog);
+        }
+
+        return CommonResult.success();
+    }
+
+    /**
+     * 是否取消点赞 【0 - 取消点赞】 【1 - 点赞】
+     */
+    @Override
+    public CommonResult<Object> updateUp(String userId, String dishId, Integer type) {
+        LambdaQueryWrapper<RecLog> recLogWrapper = new LambdaQueryWrapper<>();
+        recLogWrapper.eq(RecLog::getDishId, dishId).eq(RecLog::getMemberId, userId);
+        int count = this.count(recLogWrapper);
+        if (count > 0) {
+            this.baseMapper.updateUpType(type == 1, dishId, userId);
+        } else {
+            RecLog recLog = new RecLog();
+            recLog.setIsUp(true);
+            recLog.setClickNum(0);
+            recLog.setCommentNum(0);
+            recLog.setDishId(dishId);
+            recLog.setIsUp(false);
+            recLog.setMemberId(userId);
             this.save(recLog);
         }
 

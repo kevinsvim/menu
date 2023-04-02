@@ -1,5 +1,4 @@
 import { createRouter, createWebHashHistory } from 'vue-router'
-import { storeToRefs } from 'pinia'
 import { tokenStore } from "@/store/token";
 const routes = [
   {
@@ -96,6 +95,14 @@ const routes = [
         ]
       },
       {
+        path: '/categoryMenuDetails',
+        name: 'CategoryMenuDetails',
+        component: () => import('@/views/pages/dish/category/CategoryMenuDetails'),
+        meta: {
+          auth: false
+        }
+      },
+      {
         path: 'detail',
         name: 'MenuDetails',
         component: () => import('@/views/pages/MenuDetails'),
@@ -103,6 +110,22 @@ const routes = [
           auth: false
         }
       },
+      {
+        path: '/note',
+        name: 'Note',
+        component: () => import('@/components/card/NoteCard'),
+        meta: {
+          auth: false
+        }
+      },
+      {
+        path: '/card',
+        name: 'Card',
+        component: () => import('@/components/card/DishCard2'),
+        meta: {
+          auth: false
+        }
+      }
     ]
   }
 ]

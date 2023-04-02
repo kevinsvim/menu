@@ -25,14 +25,15 @@
           </el-col>
         </el-row>
         <el-row>
-          <el-col :span="6" v-for="(menu,index) in concentrationMenu" :key="menu.id" style="margin-top: 20px">
-            <router-link :to="{ path: '/detail', query: { id: menu.id } }" target="_blank">
-              <DishCard
-                :title="menu.name"
-                :imageUrl="menu.imageUrl"
-                :username="menu.username"
-              />
-            </router-link>
+          <el-col :span="6" v-for="(menu,index) in concentrationMenu" :key="menu.id" style="margin-top: 20px; text-align: left">
+            <div @click="() => toDetail(menu.id)">
+<!--              <DishCard-->
+<!--                :title="menu.name"-->
+<!--                :imageUrl="menu.imageUrl"-->
+<!--                :username="menu.username"-->
+<!--              />-->
+              <DishCard2/>
+            </div>
           </el-col>
         </el-row>
       </div>
@@ -66,6 +67,7 @@
           </el-col>
           <el-col :span="4" style="text-align: left">
             <CardTypeOne :title="title"/>
+
           </el-col>
         </el-row>
       </div>
@@ -80,7 +82,6 @@ import { useRouter } from 'vue-router'
 import NavigationBar from '@/views/pages/nav/NavigationBar'
 import FoodFooter from '@/views/footer/FoodFooter'
 import Publish from '@/views/pages/PublishMenu'
-import HomePage from '@/views/pages/HomePage'
 import { reactive, ref } from 'vue'
 import BannerFront from '@/components/banner/BannerFront'
 import CardTypeOne from '@/components/card/CardTypeOne'
@@ -88,10 +89,12 @@ import CardTypeTwo from '@/components/card/CardTypeTwo'
 import { ArrowRightBold } from '@element-plus/icons'
 import resource from "@/api/resource";
 import DishCard from "@/components/card/DishCard";
+import { getCurrentInstance, onBeforeMount } from 'vue'
+import DishCard2 from "@/components/card/DishCard2";
 export default {
   name: 'HomeView',
   components: {
-    HomePage,
+    DishCard2,
     NavigationBar,
     FoodFooter,
     Publish,
@@ -103,6 +106,8 @@ export default {
   },
 
   setup () {
+    // 获取到 全局事件总线
+    const { Bus }  = getCurrentInstance().appContext.config.globalProperties
     // 获取热度推荐
     const concentrationMenu = reactive([])
     const getDailySection = () => {
@@ -143,6 +148,12 @@ export default {
       router.push('/logout')
     }
 
+    const toDetail = (menuId) => {
+      // 通信修改导航栏选中状态
+      Bus.emit('NavSelectEvent', { state: 'menu' })
+      router.push({ path: '/detail', query: { id: menuId } })
+      // window.open(routeData.href, '_blank');
+    }
     return {
       selectStatus,
       indexLoading,
@@ -152,6 +163,7 @@ export default {
       login,
       register,
       logout,
+      toDetail
     }
   }
 }

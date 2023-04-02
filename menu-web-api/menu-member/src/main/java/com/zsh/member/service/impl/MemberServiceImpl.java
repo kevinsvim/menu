@@ -1,5 +1,6 @@
 package com.zsh.member.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -55,9 +56,9 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         // 2. 校验密码的正确性
         if (ObjectUtils.isNotEmpty(member) && loginDto.getPassword().equals(member.getPassword())) {
             // 3.生成token
-            String token = JwtTokenUtils.generateToken(String.valueOf(member.getId()), member.getUsername());
+            String token = JwtTokenUtils.generateToken(member.getId(), member.getUsername());
             MemberLoginVo memberLoginVo = new MemberLoginVo();
-            memberLoginVo.setId(String.valueOf(member.getId()));
+            memberLoginVo.setId(member.getId());
             memberLoginVo.setToken(token);
             memberLoginVo.setUsername(member.getUsername());
             memberLoginVo.setImage_url(member.getImageUrl());
@@ -84,10 +85,11 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
                 BeanUtils.copyProperties(registerDto, newMember);
                 this.save(newMember);
                 // 4.生成token
-                String token = JwtTokenUtils.generateToken(String.valueOf(newMember.getId()), newMember.getUsername());
+                String token = JwtTokenUtils.generateToken(newMember.getId(), newMember.getUsername());
                 return CommonResult.success(token);
             }
         }
         return CommonResult.fail(CommonResultCode.VERIFY_CODE_ERROR);
     }
+
 }

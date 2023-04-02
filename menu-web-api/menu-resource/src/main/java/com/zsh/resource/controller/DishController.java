@@ -1,7 +1,9 @@
 package com.zsh.resource.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.zsh.common.result.CommonResult;
 import com.zsh.resource.domain.dto.PublishDishDto;
+import com.zsh.resource.domain.vo.DishCategoryVo;
 import com.zsh.resource.domain.vo.DishConcentrationVo;
 import com.zsh.resource.domain.vo.DishDetailVo;
 import com.zsh.resource.service.DishService;
@@ -37,8 +39,9 @@ public class DishController {
      * 存储发布的菜品
      */
     @PostMapping("/saveDish")
-    public CommonResult<Object> saveDish(@RequestBody PublishDishDto publishDishDto) {
-        System.out.println(publishDishDto);
+    public CommonResult<Object> saveDish(@RequestHeader("userId") String userId, @RequestBody PublishDishDto publishDishDto) {
+        publishDishDto.setPublisherId(userId);
+        System.out.println("------------->" + userId);
         return dishService.saveDish(publishDishDto);
     }
 
@@ -56,8 +59,19 @@ public class DishController {
      * @param id 菜谱id
      */
     @GetMapping("/getDishDetailById/{id}")
-    public CommonResult<Object> getDishDetailById(@PathVariable("id") String id, @RequestHeader(value = "userId", required = false) Long userId) {
+    public CommonResult<Object> getDishDetailById(@PathVariable("id") String id, @RequestHeader(value = "userId", required = false) String userId) {
         DishDetailVo list = dishService.getDishDetail(id, userId);
         return CommonResult.success(list);
+    }
+
+    /**
+     * 根据三级分类id获取所有菜谱
+     */
+    @GetMapping("/getAllDishByCategoryId/{categoryId}/{pageSize}/{currentPage}")
+    public CommonResult<Object> getAllDishByCategoryId(@PathVariable("categoryId") String categoryId,
+                                                       @PathVariable("pageSize") Integer pageSize,
+                                                       @PathVariable("currentPage") Integer currentPage) {
+        IPage<DishCategoryVo> data = dishService.getAllDishByCategoryId(categoryId, pageSize, currentPage);
+        return CommonResult.success(data);
     }
 }

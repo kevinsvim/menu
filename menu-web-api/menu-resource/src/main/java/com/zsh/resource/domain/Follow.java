@@ -19,17 +19,17 @@ public class Follow implements Serializable {
      * 
      */
     @TableId
-    private Long id;
+    private String id;
 
     /**
      * 粉丝id
      */
-    private Long fansId;
+    private String fansId;
 
     /**
      * 被关注者用户id
      */
-    private Long memberId;
+    private String memberId;
 
     /**
      * 

@@ -20,7 +20,7 @@ public class Banner implements Serializable {
      * 
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Integer id;
+    private String id;
 
     /**
      * 轮播图url

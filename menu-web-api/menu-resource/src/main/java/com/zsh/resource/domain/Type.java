@@ -19,7 +19,7 @@ public class Type implements Serializable {
      * 
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
+    private String id;
 
     /**
      * 分类名
@@ -29,7 +29,7 @@ public class Type implements Serializable {
     /**
      * 父分类id
      */
-    private Long parentId;
+    private String parentId;
 
     /**
      * 所属层级

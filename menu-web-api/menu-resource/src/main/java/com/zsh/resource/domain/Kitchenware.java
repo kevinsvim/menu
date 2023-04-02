@@ -19,7 +19,7 @@ public class Kitchenware implements Serializable {
      * 
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
+    private String id;
 
     /**
      * 厨具名

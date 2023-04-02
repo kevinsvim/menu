@@ -33,9 +33,4 @@ public class MemberController {
         return memberService.register(registerDto);
     }
 
-    @GetMapping("/test")
-    public CommonResult<String> test() {
-        log.info("test...");
-        return CommonResult.success("test");
-    }
 }

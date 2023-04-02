@@ -15,7 +15,7 @@
     <div style="margin-top: 10px">
       <el-row >
         <el-col :span="4" v-for="threeCategory in twoCategory.children">
-          <span class="three_title">
+          <span class="three_title" @click="() => toCategoryDetailPage(threeCategory.id, threeCategory.name)">
             {{ threeCategory.name }}
           </span>
         </el-col>
@@ -30,12 +30,15 @@
 
 import resource from "@/api/resource";
 import { reactive } from 'vue'
+import { useRouter } from "vue-router/dist/vue-router";
+
 export default {
   name: "Category",
   components: {
 
   },
   setup() {
+    const router = useRouter()
     const categoryTree = reactive([])
     // 获取树形结构数据
     const getTreeCategory = () => {
@@ -45,8 +48,13 @@ export default {
     }
     getTreeCategory()
 
+    const toCategoryDetailPage = (categoryId, name) => {
+      let data = router.resolve({path: '/categoryMenuDetails', query: {id: categoryId, name: name}})
+      window.open(data.href, '_blank')
+    }
     return {
-      categoryTree
+      categoryTree,
+      toCategoryDetailPage
     }
   }
 }

@@ -71,7 +71,7 @@ public class DishDetailVo implements Serializable {
     /**
      * 菜谱发布者用户id
      */
-    private Long userId;
+    private String userId;
 
     /**
      * 菜谱发布者用户头像

@@ -17,7 +17,7 @@ import java.util.List;
 @Mapper
 public interface CommentMapper extends BaseMapper<Comment> {
 
-    List<CommentVo> getCommentsByDishId(@Param("id") Long id);
+    List<CommentVo> getCommentsByDishId(@Param("id") String id);
 }
 
 

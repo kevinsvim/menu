@@ -24,7 +24,6 @@ public class TypeController {
      */
     @GetMapping("/getTreeCategory/{status}")
     public CommonResult<Object> getTreeCategory(@PathVariable("status") String status) {
-        System.out.println("-----------:" + status);
         return CommonResult.success(typeService.getTreeCategory(Integer.valueOf(status)));
     }
 

@@ -1,7 +1,9 @@
 package com.zsh.resource.mapper;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.zsh.resource.domain.Dish;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zsh.resource.domain.vo.DishCategoryVo;
 import com.zsh.resource.domain.vo.DishConcentrationVo;
 import com.zsh.resource.domain.vo.DishDetailVo;
 import org.apache.ibatis.annotations.Mapper;
@@ -25,7 +27,12 @@ public interface DishMapper extends BaseMapper<Dish> {
     /**
      * 查询菜谱详情数据
      */
-    DishDetailVo getDishDetail(Long id);
+    DishDetailVo getDishDetail(@Param("id") String id);
+
+    /**
+     * 根据分类id获取菜谱集合
+     */
+    IPage<DishCategoryVo> getDishPage (IPage<DishCategoryVo> page, @Param("categoryId") String categoryId);
 }
 
 

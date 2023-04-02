@@ -16,6 +16,10 @@ import java.util.List;
 @ToString
 public class PublishDishDto {
     /**
+     * 发布者id
+     */
+    private String publisherId;
+    /**
      * 菜品名
      */
     private String name;
@@ -26,11 +30,11 @@ public class PublishDishDto {
     /**
      * 烹饪水平
      */
-    private Long productionLevelId;
+    private String productionLevelId;
     /**
      * 烹饪等级
      */
-    private Long productionTimeId;
+    private String productionTimeId;
     /**
      * 描述
      */
@@ -58,15 +62,15 @@ public class PublishDishDto {
     /**
      * 品味id
      */
-    private Long flavorId;
+    private String flavorId;
     /**
      * 烹饪工艺id
      */
-    private Long cookTechnologyId;
+    private String cookTechnologyId;
     /**
      * 分类id
      */
-    private Long  typeId;
+    private String  typeId;
 
 
 }

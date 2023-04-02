@@ -43,7 +43,6 @@ export default {
    * @param type 【0-取消收藏】【1-收藏】
    * @param dishId 菜谱id
    * @param memberId 当前登录的用户id
-   * @returns {*}
    */
   collect(type, dishId, memberId) {
     return http({
@@ -53,6 +52,37 @@ export default {
         type: type,
         dishId: dishId,
         memberId: memberId
+      }
+    })
+  },
+  /**
+   * 点赞与取消点赞
+   * @param type 【0-取消点赞】【1-点赞】
+   * @param dishId 菜谱id
+   // * @param memberId 当前登录的用户id
+   */
+  up(type, dishId) {
+    return http({
+      url: `${api_url}/recLog/up`,
+      method: 'patch',
+      params: {
+        type: type,
+        dishId: dishId,
+      }
+    })
+  },
+  /**
+   * 关注与取消关注
+   * @param type 【0-取消关注】【1-关注】
+   * @param publisher 菜谱发布者
+   */
+  follow(publisher, type) {
+    return http({
+      url: `${api_url}/follow/updateFollow`,
+      method: 'patch',
+      params: {
+        publisher: publisher,
+        type: type,
       }
     })
   }

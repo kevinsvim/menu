@@ -19,7 +19,7 @@ public class Comment implements Serializable {
      * 
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
+    private String id;
 
     /**
      * 评论内容
@@ -29,18 +29,23 @@ public class Comment implements Serializable {
     /**
      * 菜品id
      */
-    private Long dishId;
+    private String dishId;
 
     /**
      * 评论用户id
      */
-    private Long memberId;
+    private String memberId;
 
 
     /**
      * 评论时间
      */
     private Date publishDate;
+
+    /**
+     * 评论状态【1 - 未审核 2 - 已审核】
+     */
+    private Integer status;
 
     /**
      * 

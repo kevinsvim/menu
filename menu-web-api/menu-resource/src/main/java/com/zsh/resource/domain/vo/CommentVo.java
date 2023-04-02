@@ -14,7 +14,7 @@ public class CommentVo {
     /**
      * 评论id
      */
-    private Long id;
+    private String id;
 
     /**
      * 评论内容
@@ -24,12 +24,12 @@ public class CommentVo {
     /**
      * 菜品id
      */
-    private Long dishId;
+    private String dishId;
 
     /**
      * 评论用户id
      */
-    private Long memberId;
+    private String memberId;
 
     /**
      * 评论用户头像

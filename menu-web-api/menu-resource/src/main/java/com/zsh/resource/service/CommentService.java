@@ -1,5 +1,6 @@
 package com.zsh.resource.service;
 
+import com.zsh.common.result.CommonResult;
 import com.zsh.resource.domain.Comment;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -9,5 +10,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 * @createDate 2023-03-29 17:55:17
 */
 public interface CommentService extends IService<Comment> {
+
+    CommonResult<Object> saveComment(String userId, String content, String dishId);
 
 }

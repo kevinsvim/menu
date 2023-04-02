@@ -62,7 +62,7 @@ public class CategoryExcelListener extends AnalysisEventListener<CategoryExcel> 
             if (ObjectUtils.isEmpty(twoCategory) && ObjectUtils.isEmpty(threeCategory)) {
                 // 将三者保存起来
                 // 保存一级分类
-                Type type1 = saveType(typeService, categoryExcel.getOneCategoryName(), 0L, 1);
+                Type type1 = saveType(typeService, categoryExcel.getOneCategoryName(), "0", 1);
                 // 保存二级分类
                 Type type2 = saveType(typeService, categoryExcel.getTwoCategoryName(), type1.getId(), 2);
                 // 保存三级分类
@@ -74,7 +74,7 @@ public class CategoryExcelListener extends AnalysisEventListener<CategoryExcel> 
     /**
      * 统一保存数据
      */
-    private Type saveType(TypeService typeService, String name, Long parentId, int level) {
+    private Type saveType(TypeService typeService, String name, String parentId, int level) {
         Type type = new Type();
         type.setName(name);
         type.setTypeLevel(level);

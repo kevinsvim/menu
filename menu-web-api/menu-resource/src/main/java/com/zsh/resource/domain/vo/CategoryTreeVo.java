@@ -16,9 +16,9 @@ public class CategoryTreeVo implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    private Long id;
+    private String id;
     private String name;
-    private Long parentId;
+    private String parentId;
     private Integer level;
     private Boolean disabled;
 

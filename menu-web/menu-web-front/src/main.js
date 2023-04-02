@@ -10,6 +10,9 @@ import iconfontSvg from "@/components/iconfonts/IconSvg.vue";
 
 const app = createApp(App)
 
+import mitt from 'mitt'
+
+app.config.globalProperties.Bus = mitt()
 app.use(ElementPlus)
 app.use(createPinia())
 app.component("iconfont-svg",iconfontSvg)

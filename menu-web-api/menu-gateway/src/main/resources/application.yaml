@@ -56,4 +56,5 @@ security:
       - /msm/send/**
       - /resource/banner/**
       - /resource/dish/getConcentrationMenu
-#      - /oss/**
+      - /resource/dish/getAllDishByCategoryId/**
+      - /oss/**

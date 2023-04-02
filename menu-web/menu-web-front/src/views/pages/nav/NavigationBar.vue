@@ -130,8 +130,8 @@
 
 <script>
 import {useRouter} from 'vue-router/dist/vue-router'
-import {reactive, computed, ref} from 'vue'
-import {indexTransfer} from '@/utils/navigationDataTransfer'
+import {reactive, computed, ref, getCurrentInstance, onBeforeUnmount } from 'vue'
+import {HOME_CONSTANT, MENU_CONSTANT, MENU_EVENT} from '@/utils/nav'
 import {ArrowDown, ArrowRight} from '@element-plus/icons'
 import SearchBox from '@/components/search/SearchBox'
 import resource from "@/api/resource";
@@ -144,44 +144,7 @@ export default {
     ArrowRight,
     SearchBox,
   },
-  setup(props, {emit}) {
-    // 判断用户是否登录
-    const isLogin = ref(false)
-    const uStore = userStore()
-    const avatar = ref('')
-    const getUserInfo = () => {
-      let imageUrl = uStore.getImageUrl()
-      if (imageUrl) {
-        isLogin.value = true
-        avatar.value = imageUrl
-      }
-    }
-    getUserInfo()
-    /**
-     * 初始化，加载分类数据
-     */
-    const router = useRouter()
-    const allCategoryTree = reactive([])
-    const partCategoryTree = reactive([])
-    const getCategoryTree = () => {
-      resource.getTreeCategory(2).then(res => {
-        // 放置总数居
-        allCategoryTree.push(...res.data)
-        // 取出二级分类下的前5个数据
-        partCategoryTree.push(...res.data.flatMap(x => x.children).slice(0, 5))
-      })
-    }
-    getCategoryTree()
-    // 查看全部分类
-    const toLookAllCategory = () => {
-      menu()
-      router.push({name: 'Category', params: { activeName: 'category' }})
-    }
-    const logoUrl = 'https://menu-api.oss-cn-beijing.aliyuncs.com/icon/logo.png'
-
-    const sign = () => {
-      router.push('/sign')
-    }
+  setup() {
     /**
      * 点击导航栏功能开始
      */
@@ -192,6 +155,86 @@ export default {
       noteState: false,     // 笔记
       comicState: false,    // 漫画
     })
+    // 判断用户是否登录
+    const isLogin = ref(false)
+    const uStore = userStore()
+    const avatar = ref('')
+    /**
+     * 初始化，加载分类数据
+     */
+    const router = useRouter()
+    const allCategoryTree = reactive([])
+    const partCategoryTree = reactive([])
+    const logoUrl = 'https://menu-api.oss-cn-beijing.aliyuncs.com/icon/logo.png'
+
+    const { Bus }  = getCurrentInstance().appContext.config.globalProperties
+    Bus.on(MENU_EVENT, res => {
+      console.log('监听到事件.....')
+      settingSelectState(2)
+    })
+    onBeforeUnmount(() => {
+      Bus.off(MENU_EVENT)
+    })
+    const getCategoryTree = () => {
+      resource.getTreeCategory(2).then(res => {
+        // 放置总数居
+        allCategoryTree.push(...res.data)
+        // 取出二级分类下的前5个数据
+        partCategoryTree.push(...res.data.flatMap(x => x.children).slice(0, 5))
+      })
+    }
+    getCategoryTree()
+
+    const getUserInfo = () => {
+      let imageUrl = uStore.getImageUrl()
+      if (imageUrl) {
+        isLogin.value = true
+        avatar.value = imageUrl
+      }
+    }
+    getUserInfo()
+    // 查看全部分类
+    const toLookAllCategory = () => {
+      menu()
+      router.push({name: 'Category', params: { activeName: 'category' }})
+    }
+
+    const sign = () => {
+      router.push('/sign')
+    }
+    // 初始化或获取导航栏选中状态
+    const initSelectState = () => {
+      if (localStorage.getItem(HOME_CONSTANT) === null) {
+        localStorage.setItem(HOME_CONSTANT, true)
+        localStorage.setItem(MENU_CONSTANT, false)
+      } else {
+        // 取出为true的设置为选中状态
+        if (localStorage.getItem(HOME_CONSTANT)) {
+          state.homePageState = true
+        } else if (localStorage.getItem(MENU_CONSTANT)) {
+          state.menuState = true
+        }
+      }
+    }
+    initSelectState()
+    // 设置选中状态
+    const settingSelectState = (type) => {
+      state.homePageState = false
+      state.menuState = false
+      localStorage.setItem(HOME_CONSTANT, false)
+      localStorage.setItem(MENU_CONSTANT, false)
+      switch (type) {
+        case 1:
+          state.homePageState = true
+          localStorage.setItem(HOME_CONSTANT, true)
+          break
+        case 2:
+          state.menuState = true
+          localStorage.setItem(MENU_CONSTANT, true)
+          break
+      }
+    }
+    // 监听各个选中状态
     const selectHomePageState = computed(() => ({
       selectStateStyle: state.homePageState,
       unSelectStateStyle: !state.homePageState
@@ -210,23 +253,23 @@ export default {
     }))
     // 点击首页
     function accessHomePage() {
-      // 判断当前首页是否处于选中状态
       if (!state.homePageState) {
-        // 将首页设置为选中状态
         state.homePageState = true
-        // 通知父组件修改状态
-        emit('homePage', indexTransfer)
+        settingSelectState(1)
+        router.push('/index')
       }
     }
+    // 选中菜谱
     function menu() {
-      if (!state.menu) {
-        setState(3)
+      if (!state.menuState) {
+        state.menuState = true
+        settingSelectState(2)
       }
     }
     // 点击笔记
     function note() {
       if (!state.noteState) {
-        setState(1)
+
         // 跳转到笔记页显示
 
       }
@@ -234,40 +277,15 @@ export default {
 
     function comic() {
       if (!state.comicState) {
-        setState(2)
+
       }
     }
-
     // 点击发布菜谱
     function publishMenu() {
-      // 校验token是否登录
-
       // 跳转路径
       router.push('/publishMenu')
     }
 
-    // 清除导航栏功能的选中状态
-    function setState(type) {
-      state.noteState = false
-      state.homePageState = false
-      state.comicState = false
-      state.menuState = false
-      switch (type) {
-        case 0:
-          state.homePageState = true
-          break
-        case 1:
-          state.noteState = true
-          break
-        case 2:
-          state.comicState = true
-          break
-        case 3:
-          state.menuState = true
-        default:
-          break
-      }
-    }
 
     return {
       sign,

@@ -18,8 +18,8 @@ public class AdminUser implements Serializable {
     /**
      * 
      */
-    @TableId(type = IdType.AUTO)
-    private Long id;
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
+    private String id;
 
     /**
      * 管理员用户名

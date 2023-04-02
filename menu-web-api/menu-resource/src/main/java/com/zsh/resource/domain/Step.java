@@ -19,12 +19,12 @@ public class Step implements Serializable {
      * 
      */
     @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Long id;
+    private String id;
 
     /**
      * 菜品id
      */
-    private Long dishId;
+    private String dishId;
 
     /**
      * 步骤图片url

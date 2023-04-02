@@ -1,9 +1,11 @@
 package com.zsh.resource.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.zsh.common.result.CommonResult;
 import com.zsh.resource.domain.Dish;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zsh.resource.domain.dto.PublishDishDto;
+import com.zsh.resource.domain.vo.DishCategoryVo;
 import com.zsh.resource.domain.vo.DishConcentrationVo;
 import com.zsh.resource.domain.vo.DishDetailVo;
 
@@ -34,7 +36,12 @@ public interface DishService extends IService<Dish> {
     /**
      * 获取菜谱详情页数据
      * @param id 菜谱id
-     * @param userId
      */
-    DishDetailVo getDishDetail(String id, Long userId);
+    DishDetailVo getDishDetail(String id, String userId);
+
+    /**
+     * 根据分类id获取全部的菜谱
+     */
+    IPage<DishCategoryVo> getAllDishByCategoryId(String categoryId, Integer pageSize, Integer pageNum);
+
 }

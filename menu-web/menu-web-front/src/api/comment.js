@@ -1,40 +1,29 @@
 import request from "@/utils/http";
 
+const api_url = '/resource/comment'
+
 export default {
-  // 根据课程id获取评论信息
-  getCommentList(courseId) {
-    return request({
-      url: `/serviceedu/edu-comment/getCommentList/${courseId}`,
-      method: "get",
-    });
-  },
 
   // 添加一条评论记录
-  addComment(current,parent) {
+  addComment(content,dishId) {
     return request({
-      url: `/serviceedu/edu-comment/addComment`,
+      url: `${api_url}/addComment`,
       method: "post",
-      data:{current,parent}
+      params: {
+        content,
+        dishId
+      }
     });
   },
 
   // 根据评论id删除一条记录
-  deleteCommentById(current) {
+  deleteCommentById(commentId) {
     return request({
-      url: `/serviceedu/edu-comment/deleteCommentById`,
-      method: "delete",
-      data:current
+      url: `${api_url}/deleteCommentById/${commentId}`,
+      method: "delete"
     });
   },
 
-  // 修改评论的点赞数量
-  updateLikeCount(comment) {
-    return request({
-      url: `/serviceedu/edu-comment/updateLikeCount`,
-      method: "post",
-      data:comment
-    });
-  },
 
 };
 
