@@ -85,5 +85,39 @@ export default {
         type: type,
       }
     })
-  }
+  },
+  /** 笔记
+   * 收藏与取消收藏
+   * @param type 【0-取消收藏】【1-收藏】
+   * @param noteId
+   * @param memberId 当前登录的用户id
+   */
+  noteCollect(type, noteId, memberId) {
+    return http({
+      url: `${api_url}/noteLog/collect`,
+      method: 'patch',
+      params: {
+        type: type,
+        noteId: noteId,
+        memberId: memberId
+      }
+    })
+  },
+  /**
+   * 笔记
+   * 点赞与取消点赞
+   * @param type 【0-取消点赞】【1-点赞】
+   * @param noteId
+   // * @param memberId 当前登录的用户id
+   */
+  noteUp(type, noteId) {
+    return http({
+      url: `${api_url}/noteLog/up`,
+      method: 'patch',
+      params: {
+        type: type,
+        noteId: noteId,
+      }
+    })
+  },
 }

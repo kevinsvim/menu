@@ -1,6 +1,6 @@
 import axios from 'axios'
-// import store from '@/store'
-// axios.defaults.baseURL = 'http://localhost:8080'
+import {useRouter} from "vue-router/dist/vue-router";
+
 /**
  * 创建axios实例
  * @type {AxiosInstance}
@@ -18,7 +18,7 @@ const http = axios.create({
  */
 http.interceptors.request.use(config => {
     // 每次请求前需要携带token
-    config.headers['Authorization'] = localStorage.getItem('menu_token_info') || ''
+    config.headers['Authorization'] = localStorage.getItem('admin_token') || ''
     // 某些接口不需要携带token
     return config
 }, error => {
@@ -29,16 +29,19 @@ http.interceptors.request.use(config => {
  * response 拦截器
  * 可以在接口响应后做统一处理结果
  */
-http.interceptors.response.use(
-    response => {
+
+http.interceptors.response.use(response => {
+
+        console.log('response:', response)
+        // 未登录
+        const router = useRouter()
+        if (response.data.code === 401) {
+            router.push('/login').then(r => {})
+        }
         let res = response.data
         // 如果返回的文件
         if (response.config.responseType === 'blob') {
             return res
-        }
-        // 兼容服务端返回的字符串数据
-        if (typeof res === 'string') {
-            res = res ? JSON.parse(res) : res
         }
         return res
     }, error => {

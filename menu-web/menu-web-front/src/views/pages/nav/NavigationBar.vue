@@ -93,7 +93,7 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="publishMenu">发布菜谱</el-dropdown-item>
-            <el-dropdown-item>发布日记</el-dropdown-item>
+            <el-dropdown-item @click="publishNote">发布日记</el-dropdown-item>
           </el-dropdown-menu>
         </template>
       </el-dropdown>
@@ -131,7 +131,15 @@
 <script>
 import {useRouter} from 'vue-router/dist/vue-router'
 import {reactive, computed, ref, getCurrentInstance, onBeforeUnmount } from 'vue'
-import {HOME_CONSTANT, MENU_CONSTANT, MENU_EVENT} from '@/utils/nav'
+import {
+  COMIC_CONSTANT,
+  COMIC_EVENT,
+  HOME_CONSTANT,
+  MENU_CONSTANT,
+  MENU_EVENT,
+  NOTE_CONSTANT,
+  NOTE_EVENT
+} from '@/utils/nav'
 import {ArrowDown, ArrowRight} from '@element-plus/icons'
 import SearchBox from '@/components/search/SearchBox'
 import resource from "@/api/resource";
@@ -169,11 +177,18 @@ export default {
 
     const { Bus }  = getCurrentInstance().appContext.config.globalProperties
     Bus.on(MENU_EVENT, res => {
-      console.log('监听到事件.....')
       settingSelectState(2)
+    })
+    Bus.on(NOTE_EVENT, res => {
+      settingSelectState(3)
+    })
+    Bus.on(COMIC_EVENT, res => {
+      settingSelectState(4)
     })
     onBeforeUnmount(() => {
       Bus.off(MENU_EVENT)
+      Bus.off(NOTE_EVENT)
+      Bus.off(COMIC_EVENT)
     })
     const getCategoryTree = () => {
       resource.getTreeCategory(2).then(res => {
@@ -198,21 +213,24 @@ export default {
       menu()
       router.push({name: 'Category', params: { activeName: 'category' }})
     }
-
+    // 去登陆注册
     const sign = () => {
       router.push('/sign')
     }
     // 初始化或获取导航栏选中状态
     const initSelectState = () => {
       if (localStorage.getItem(HOME_CONSTANT) === null) {
-        localStorage.setItem(HOME_CONSTANT, true)
-        localStorage.setItem(MENU_CONSTANT, false)
+        localStorage.setItem(HOME_CONSTANT, 'select')
+        localStorage.setItem(MENU_CONSTANT, 'unselect')
+        localStorage.setItem(NOTE_CONSTANT, 'unselect')
       } else {
         // 取出为true的设置为选中状态
-        if (localStorage.getItem(HOME_CONSTANT)) {
+        if (localStorage.getItem(HOME_CONSTANT) === 'select') {
           state.homePageState = true
-        } else if (localStorage.getItem(MENU_CONSTANT)) {
+        } else if (localStorage.getItem(MENU_CONSTANT) === 'select') {
           state.menuState = true
+        } else if (localStorage.getItem(NOTE_CONSTANT) === 'select') {
+          state.noteState = true
         }
       }
     }
@@ -221,16 +239,30 @@ export default {
     const settingSelectState = (type) => {
       state.homePageState = false
       state.menuState = false
-      localStorage.setItem(HOME_CONSTANT, false)
-      localStorage.setItem(MENU_CONSTANT, false)
+      state.noteState = false
+      state.comicState = false
+      localStorage.setItem(HOME_CONSTANT, 'unselect')
+      localStorage.setItem(MENU_CONSTANT, 'unselect')
+      localStorage.setItem(NOTE_CONSTANT, 'unselect')
+      localStorage.setItem(COMIC_CONSTANT, 'unselect')
       switch (type) {
         case 1:
           state.homePageState = true
-          localStorage.setItem(HOME_CONSTANT, true)
+          localStorage.setItem(HOME_CONSTANT, 'select')
           break
         case 2:
           state.menuState = true
-          localStorage.setItem(MENU_CONSTANT, true)
+          localStorage.setItem(MENU_CONSTANT, 'select')
+          break
+        case 3:
+          state.noteState = true
+          localStorage.setItem(NOTE_CONSTANT, 'select')
+          break
+        case 4:
+          state.comicState = true
+          localStorage.setItem(COMIC_CONSTANT, 'select')
+          break
+        default:
           break
       }
     }
@@ -269,15 +301,19 @@ export default {
     // 点击笔记
     function note() {
       if (!state.noteState) {
-
+        state.noteState = true
+        settingSelectState(3)
+        router.push('/note')
         // 跳转到笔记页显示
 
       }
     }
-
+    // 点击动漫
     function comic() {
       if (!state.comicState) {
-
+        state.comicState = true
+        settingSelectState(4)
+        router.push('/comic')
       }
     }
     // 点击发布菜谱
@@ -285,23 +321,26 @@ export default {
       // 跳转路径
       router.push('/publishMenu')
     }
-
+    const publishNote = () => {
+      router.push('/publishNote')
+    }
 
     return {
-      sign,
       isLogin,
       avatar,
-      accessHomePage,
+      selectMenuStatue,
       selectHomePageState,
       selectNoteState,
-      note,
       selectComicState,
-      comic,
-      publishMenu,
       logoUrl,
       partCategoryTree,
+      accessHomePage,
+      sign,
+      note,
+      comic,
+      publishMenu,
       toLookAllCategory,
-      selectMenuStatue
+      publishNote
     }
   }
 }

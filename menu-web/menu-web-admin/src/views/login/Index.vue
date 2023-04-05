@@ -4,11 +4,11 @@
       <h2>美食吃坊后台管理系统</h2>
       <form>
         <div class="user-box">
-          <input type="text" name="" required="" v-model="loginForm.username">
+          <input type="text" name="username"  v-model="loginForm.username" autocomplete>
           <label>用户名</label>
         </div>
         <div class="user-box">
-          <input type="password" name="" required="" v-model="loginForm.password">
+          <input type="password" name="password"  v-model="loginForm.password" autocomplete>
           <label>密码</label>
         </div>
         &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -31,6 +31,7 @@ import { reactive, ref } from "vue";
 import { useRouter } from 'vue-router/dist/vue-router'
 import { ElMessage } from 'element-plus'
 import user from '@/api/user.js'
+import { tokenStore } from "@/store/token.js";
 export default {
   name: "Login",
   components: {
@@ -38,6 +39,7 @@ export default {
 
   setup() {
     const router = useRouter()
+    const tStore =  tokenStore()
     const loginForm = reactive({
       username: '',
       password: ''
@@ -51,11 +53,16 @@ export default {
     }
     const login = () => {
       router.push('/')
-      // user.login(loginForm).then(res => {
-      //   router.push('/')
-      // }).catch(error => {
-      //   ElMessage.error('登录失败..')
-      // })
+      user.login(loginForm).then(res => {
+        console.log(res)
+        tStore.saveToken(res.data)
+        localStorage.setItem('username', loginForm.username)
+        // 跳转到主页面
+        router.push('/')
+
+      }).catch(error => {
+        ElMessage.error('登录失败..')
+      })
     }
     const register = () => {
       ElMessage.info('注册功能开发中...')

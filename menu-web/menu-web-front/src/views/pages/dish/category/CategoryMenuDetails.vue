@@ -98,7 +98,6 @@ export default {
     }
     const getDishByCategoryId = () => {
       dish.getDishPageByCategoryId(categoryId.value, pageData.pageSize, pageData.currentPage).then(res => {
-        console.log(res.data)
         pageData.total = res.data.total
         pageData.pageCount = res.data.pages
         pageData.records = res.data.records

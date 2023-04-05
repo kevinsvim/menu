@@ -35,7 +35,7 @@ const routes = [
                     {
                         path: '/category/list',
                         name: 'List',
-                        component: ()=> import('@/components/category/List.vue'),
+                        component: ()=> import('@/views/category/List.vue'),
                         meta: {
                             title: '分类列表',
                             showRouter: true
@@ -44,14 +44,43 @@ const routes = [
                     {
                         path: '/category/update',
                         name: 'Update',
-                        component: () => import('@/components/category/Update.vue'),
+                        component: () => import('@/views/category/Update.vue'),
                         meta: {
                             title: '更新分类',
+                            showRouter: true
+                        }
+                    },
+                    {
+                        path: '/category/batchSave',
+                        name: 'BatchSave',
+                        component: () => import('@/views/category/BatchSave.vue'),
+                        meta: {
+                            title: '批量上传',
                             showRouter: true
                         }
                     }
                 ]
             },
+            {
+                path: 'article',
+                name: 'Article',
+                meta: {
+                    title: '文章管理',
+                    showRouter: true,
+                    icons: 'menu-icon-fenleiguanli'
+                },
+                children: [
+                    {
+                        path: '/addArticle',
+                        name: 'AddArticle',
+                        component: () => import('@/views/article/Add.vue'),
+                        meta: {
+                            title: '添加文章',
+                            showRouter: true
+                        }
+                    }
+                ]
+            }
         ]
     }
 ]

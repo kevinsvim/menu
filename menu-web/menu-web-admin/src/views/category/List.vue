@@ -1,15 +1,18 @@
 <template>
   <div>
     <el-input v-model="filterText" placeholder="Filter keyword"/>
-
-    <el-tree
-        ref="treeRef"
-        class="filter-tree"
-        :data="categoryTreeData"
-        :props="defaultProps"
-        default-expand-all
-        :filter-node-method="filterNode"
-    />
+    <el-card shadow="always" style="margin-top: 20px;">
+      <el-scrollbar height="60vh">
+        <el-tree
+            ref="treeRef"
+            class="filter-tree"
+            :data="categoryTreeData"
+            :props="defaultProps"
+            default-expand-all
+            :filter-node-method="filterNode"
+        />
+      </el-scrollbar>
+    </el-card>
   </div>
 </template>
 

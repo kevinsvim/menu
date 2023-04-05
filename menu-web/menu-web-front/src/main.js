@@ -7,10 +7,10 @@ import { createPinia } from 'pinia'
 import http from './utils/http'
 import "@/assets/fonts/icon_fonts/iconfont.js";
 import iconfontSvg from "@/components/iconfonts/IconSvg.vue";
-
+// 总线通信
+import mitt from 'mitt'
 const app = createApp(App)
 
-import mitt from 'mitt'
 
 app.config.globalProperties.Bus = mitt()
 app.use(ElementPlus)

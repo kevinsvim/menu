@@ -18,6 +18,14 @@ const routes = [
     }
   },
   {
+    path: '/404',
+    name: '404',
+    component: () => import('@/components/404/404'),
+    meta: {
+      auth: false
+    }
+  },
+  {
     path: '/',
     redirect: '/index',
     component: () => import('@/views/pages/nav/NavigationBar'),
@@ -113,17 +121,30 @@ const routes = [
       {
         path: '/note',
         name: 'Note',
-        component: () => import('@/components/card/NoteCard'),
+        component: () => import('@/views/pages/note/NotePage'),
         meta: {
           auth: false
         }
       },
       {
-        path: '/card',
-        name: 'Card',
-        component: () => import('@/components/card/DishCard2'),
+        path: '/noteDetail',
+        name: 'NoteDetail',
+        component: () => import('@/views/pages/note/NoteDetail')
+      },
+      {
+        path: '/comic',
+        name: 'Comic',
+        component: () => import('@/views/pages/comic/ComicList'),
         meta: {
           auth: false
+        }
+      },
+      {
+        path: '/publishArticle',
+        name: 'PublishArticle',
+        component: () => import('@/views/pages/article/ArticlePublish'),
+        meta: {
+          auth: true
         }
       }
     ]

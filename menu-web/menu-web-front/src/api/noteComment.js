@@ -1,17 +1,16 @@
 import http from "@/utils/http";
 
-const api_url = '/resource/comment'
+const api_url = '/resource/noteComment'
 
 export default {
-
   // 添加一条评论记录
-  addComment(content,dishId) {
+  addComment(content,noteId) {
     return http({
       url: `${api_url}/addComment`,
       method: "post",
       params: {
         content,
-        dishId
+        noteId
       }
     });
   },

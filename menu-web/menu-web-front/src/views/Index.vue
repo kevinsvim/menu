@@ -16,7 +16,7 @@
             <div style="text-align: left;"><span class="item1">精选菜谱推荐</span></div>
           </el-col>
           <el-col :span="12">
-            <div style="text-align: right; margin-top: 10px"><span class="item2">更多
+            <div style="text-align: right; margin-top: 10px; margin-right: 50px"><span class="item2">更多
           <el-icon :size="11" color="cornflowerblue">
             <ArrowRightBold/>
           </el-icon>
@@ -24,19 +24,167 @@
             </div>
           </el-col>
         </el-row>
-        <el-row>
-          <el-col :span="6" v-for="(menu,index) in concentrationMenu" :key="menu.id" style="margin-top: 20px; text-align: left">
+        <el-row justify="center">
+          <el-col :span="6" v-for="(menu,index) in concentrationMenu" :key="menu.id" style="margin-top: 20px;">
             <div @click="() => toDetail(menu.id)">
-<!--              <DishCard-->
-<!--                :title="menu.name"-->
-<!--                :imageUrl="menu.imageUrl"-->
-<!--                :username="menu.username"-->
-<!--              />-->
-              <DishCard2/>
+              <DishCard
+                :title="menu.name"
+                :image-url="menu.imageUrl"
+                :username="menu.username"
+                :collect-num="menu.collectNum"
+                :up-num="menu.upNum"
+                :views="menu.views"
+                :comment-num="menu.commentNum"
+                :evaluate="menu.evaluate"
+                :dish-id="menu.id"
+                :publish-date="menu.publishDate"
+              />
             </div>
           </el-col>
         </el-row>
+        <div style="margin-top: 30px; margin-bottom: 30px">
+          <el-row>
+            <el-col :span="15">
+              <!-- 大家都在搜索 -->
+              <el-row>
+                <div style="text-align: left">
+                  <span class="item1">大家都在搜</span>
+                </div>
+                <div style="max-height: 150px; width: 100%; padding: 10px 5px; text-align: left; overflow: hidden">
+                  <span class="search_span" v-for="item in 18">
+                    新概念肺炎
+                  </span>
+                </div>
+              </el-row>
+              <!-- 热门食材 -->
+              <div style="display: flex; justify-content: space-between; margin-top: 30px">
+                <div>
+                  <span class="item1">热门食材</span>
+                </div>
+                <div style="margin-top: 10px;">
+                  <span class="item2">更多
+                    <el-icon :size="11" color="cornflowerblue">
+                      <ArrowRightBold/>
+                    </el-icon>
+                  </span>
+                </div>
+              </div>
+              <div class="material-list">
+                <el-row>
+                  <el-col :span="4" v-for="item in 12" style="margin-top: 20px">
+                    <img src="https://cp1.douguo.com/upload/shicai/1446028243.jpg" alt="土豆">
+                    <div style="vertical-align: bottom">
+                      <span class="material_name">土豆</span>
+                    </div>
+                  </el-col>
+                </el-row>
+              </div>
+              <!-- 精彩主题文章 -->
+              <div style="display: flex; justify-content: space-between; margin-top: 30px; margin-bottom: 20px">
+                <div>
+                  <span class="item1">精彩主题文章</span>
+                </div>
+                <div style="margin-top: 10px;">
+                  <span class="item2">更多
+                    <el-icon :size="11" color="cornflowerblue">
+                      <ArrowRightBold/>
+                    </el-icon>
+                  </span>
+                </div>
+              </div>
+              <div>
+                <el-row>
+                  <el-col :span="8" style="text-align: left">
+                    <img src="https://cp1.douguo.com/upload/post/5/6/2/56228c4d2da02a2df47f82f4c874bac2.jpg"
+                         style="width: 210px; height: 115px; border-radius:8px">
+                  </el-col>
+                  <el-col :span="16">
+                    <div class="article_title">
+                      <span
+                        style="line-height: 30px">新品发布会，智宴释放出这几个绝佳优势新品发布会，智宴释放出这几个绝佳优势</span>
+                    </div>
+                    <el-row style="top: 50px">
+                      <el-col :span="12" style="text-align: left;">
+                        <span style="line-height: 40px; font-size: 13px">来自：食界大咖秀</span>
+                      </el-col>
+                      <el-col :span="12">
+                        <span style="line-height: 40px; font-size: 13px">作者：少油少盐</span>
+                      </el-col>
+                    </el-row>
+                  </el-col>
+                </el-row>
+                <el-row :gutter="40" style="margin-top: 20px">
+                  <el-col :span="12" v-for="item in 6">
+                    <div class="separator_dian">
+                      <iconfont-svg icon="icon-dian"/>
+                      <span
+                        style="font-size: 13px; line-height: 40px">200元一斤的草莓？这个红遍全日本的奶茶品牌上新200元一斤的草莓</span>
+                    </div>
+                  </el-col>
+
+                </el-row>
+              </div>
+            </el-col>
+            <!-- 美食达人、动漫-->
+            <el-col :span="9" style="padding-right: 25px; padding-top: 30px; padding-left: 40px">
+              <el-row style="text-align: left">
+                <el-col :span="12">
+                  <span class="item1">美食达人</span>
+                </el-col>
+                <el-col :span="11" style="text-align: right">
+                  <span class="item2">更多
+                    <el-icon :size="11" color="cornflowerblue">
+                      <ArrowRightBold/>
+                    </el-icon>
+                  </span>
+                </el-col>
+              </el-row>
+              <el-row style="margin-top: 25px; text-align: left" v-for="item in 6">
+                <el-col :span="4">
+                  <el-avatar shape="square" :size="45" :src="'https://cp1.douguo.com/upload/photo/b/d/a/u6158987842928806271321.png'"/>
+                </el-col>
+                <el-col :span="8">
+                  <div>
+                    <span style="font-size: 14px; line-height: 20px">颖涵的快厨房 </span>
+                  </div>
+                  <div>
+                    <span style="font-size: 12px; color: #999; line-height: 35px">168522粉丝</span>
+                  </div>
+                </el-col>
+                <el-col :span="11" style="margin-top: 8px; text-align: right">
+                  <el-button plain>
+                    + 关注
+                  </el-button>
+                </el-col>
+              </el-row>
+              <el-row style="text-align: left; margin-top: 40px">
+                <el-col :span="12">
+                  <span class="item1">动漫</span>
+                </el-col>
+                <el-col :span="11" style="text-align: right">
+                   <span class="item2" @click="toComicList">更多
+                    <el-icon :size="11" color="cornflowerblue">
+                      <ArrowRightBold/>
+                    </el-icon>
+                  </span>
+                </el-col>
+              </el-row>
+              <el-row :gutter="40" style="margin-top: 20px">
+                <el-col :span="24" v-for="item in comic">
+                  <div class="separator_dian">
+                    <iconfont-svg icon="icon-dian"/>
+                    <span
+                      style="font-size: 13px; line-height: 40px">{{ item.title }}</span>
+                  </div>
+                </el-col>
+
+              </el-row>
+            </el-col>
+          </el-row>
+
+        </div>
       </div>
+
       <!-- 笔记 -->
       <div class="daily_selection">
         <el-row>
@@ -52,22 +200,15 @@
             </div>
           </el-col>
         </el-row>
-        <el-row style="margin-top: 20px">
-          <el-col :span="5" style="text-align: left">
-            <CardTypeOne :title="title"/>
-          </el-col>
-          <el-col :span="5" style="text-align: left">
-            <CardTypeOne :title="title"/>
-          </el-col>
-          <el-col :span="5" style="text-align: left">
-            <CardTypeOne :title="title"/>
-          </el-col>
-          <el-col :span="5" style="text-align: left">
-            <CardTypeOne :title="title"/>
-          </el-col>
-          <el-col :span="4" style="text-align: left">
-            <CardTypeOne :title="title"/>
-
+        <el-row style="margin-top: 20px; margin-left: 20px">
+          <el-col :span="6" v-for="item in pageData.records">
+            <NoteCard2
+              @click="() => toNoteDetail(item.id)"
+              :title="item.title"
+              :id="item.id"
+              :intro="item.intro"
+              :image_url="item.imageList[0]"
+            />
           </el-col>
         </el-row>
       </div>
@@ -78,36 +219,44 @@
 </template>
 
 <script>
-import { useRouter } from 'vue-router'
+import {useRouter} from 'vue-router'
 import NavigationBar from '@/views/pages/nav/NavigationBar'
 import FoodFooter from '@/views/footer/FoodFooter'
 import Publish from '@/views/pages/PublishMenu'
-import { reactive, ref } from 'vue'
+import {reactive, ref} from 'vue'
 import BannerFront from '@/components/banner/BannerFront'
-import CardTypeOne from '@/components/card/CardTypeOne'
-import CardTypeTwo from '@/components/card/CardTypeTwo'
-import { ArrowRightBold } from '@element-plus/icons'
+import {ArrowRightBold} from '@element-plus/icons'
 import resource from "@/api/resource";
+import {getCurrentInstance} from 'vue'
 import DishCard from "@/components/card/DishCard";
-import { getCurrentInstance, onBeforeMount } from 'vue'
-import DishCard2 from "@/components/card/DishCard2";
+import noteApi from "@/api/note";
+import NoteCard2 from "@/components/card/NoteCard2";
+import IconfontSvg from "@/components/iconfonts/IconSvg";
+import comicApi from '@/api/comic'
 export default {
   name: 'HomeView',
   components: {
-    DishCard2,
+    IconfontSvg,
+    DishCard,
     NavigationBar,
     FoodFooter,
     Publish,
     BannerFront,
-    CardTypeOne,
-    CardTypeTwo,
     ArrowRightBold,
-    DishCard
+    NoteCard2
   },
 
-  setup () {
+  setup() {
+    const pageData = reactive({
+      pageSize: 4,
+      currentPage: 1,
+      total: 0,
+      pageCount: 1,
+      records: []
+    })
+    const comic = reactive([])
     // 获取到 全局事件总线
-    const { Bus }  = getCurrentInstance().appContext.config.globalProperties
+    const {Bus} = getCurrentInstance().appContext.config.globalProperties
     // 获取热度推荐
     const concentrationMenu = reactive([])
     const getDailySection = () => {
@@ -117,17 +266,6 @@ export default {
     }
     getDailySection()
     const indexLoading = ref(false)
-    const svg = `
-        <path class="path" d="
-          M 30 15
-          L 28 17
-          M 25.61 25.61
-          A 15 15, 0, 0, 1, 15 30
-          A 15 15, 0, 1, 1, 27.99 7.5
-          L 15 15
-        " style="stroke-width: 4px; fill: rgba(0, 0, 0, 0)"/>
-      `
-    const title = ref('高配版阳春面')
     // 导航栏功能选中状态
     const selectStatus = reactive({
       selectIndex: true,
@@ -147,23 +285,57 @@ export default {
     const logout = () => {
       router.push('/logout')
     }
-
+    // 点击去菜谱详情
     const toDetail = (menuId) => {
       // 通信修改导航栏选中状态
-      Bus.emit('NavSelectEvent', { state: 'menu' })
-      router.push({ path: '/detail', query: { id: menuId } })
-      // window.open(routeData.href, '_blank');
+      Bus.emit('NavSelectEvent', {state: 'menu'})
+      let routeData = router.resolve({path: '/detail', query: {id: menuId}})
+      window.open(routeData.href, '_blank');
     }
+
+    // 获取笔记列表
+    const getNoteList = () => {
+      noteApi.getNotes(pageData.currentPage, pageData.pageSize).then(res => {
+        pageData.total = res.data.total
+        pageData.pageCount = res.data.pages
+        res.data.records.map(x => {
+          x.imageList = x.imageUrls.split(',')
+        })
+        pageData.records = res.data.records
+      })
+    }
+    getNoteList()
+    // 去笔记详情页
+    const toNoteDetail = (id) => {
+      let noteRouterData = router.resolve({path: '/noteDetail', query: {id: id}})
+      window.open(noteRouterData.href, '_blank')
+    }
+    // 去动漫列表页面
+    const toComicList = () => {
+      let data = router.resolve('/comic')
+      window.open(data.href, '_blank')
+    }
+    // 获取动漫列表数据
+    const getComics = () => {
+      comicApi.getAllComic().then(res => {
+        for (let i = 0; i < 7; i++) {
+          comic.push(res.data[i])
+        }
+      })
+    }
+    getComics()
     return {
       selectStatus,
       indexLoading,
-      svg,
-      title,
       concentrationMenu,
+      pageData,
+      comic,
       login,
       register,
       logout,
-      toDetail
+      toDetail,
+      toNoteDetail,
+      toComicList
     }
   }
 }
@@ -171,7 +343,7 @@ export default {
 <style lang="less" scoped>
 .home {
   .daily_selection {
-    margin: 20px 10vw;
+    margin: 20px 12vw;
     text-align: center;
 
     .item1 {
@@ -185,6 +357,65 @@ export default {
       cursor: pointer;
     }
   }
+}
+
+.article_title {
+  vertical-align: top;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  word-break: keep-all;
+  white-space: nowrap;
+}
+
+.separator_dian {
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: block;
+  word-break: keep-all;
+  white-space: nowrap;
+}
+
+.material-list {
+  width: 692px;
+  height: 276px;
+  background: #F1F7FA;
+  margin-top: 20px;
+  border-radius: 8px;
+  padding: 10px 10px;
+
+  img {
+    border-radius: 4px;
+    width: 80px;
+    height: 80px;
+    cursor: pointer;
+  }
+
+  .material_name {
+    font-size: 14px;
+  }
+
+  .material_name:hover {
+    color: #ffaa00;
+    cursor: pointer;
+  }
+}
+
+.search_span {
+  border: 1px solid #000;
+  border-radius: 8px;
+  padding: 6px 24px;
+  display: inline-block;
+  margin: 12px 12px;
+  font-size: 13px;
+}
+
+.search_span:hover {
+  border: 1px solid rgb(244, 182, 68);
+  color: rgb(244, 182, 68);
+  cursor: pointer;
 }
 
 .el-carousel__item h3 {

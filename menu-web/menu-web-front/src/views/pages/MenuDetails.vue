@@ -218,7 +218,7 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import { userStore } from "@/store/user";
 import IconfontSvg from "@/components/iconfonts/IconSvg";
 import comment from '@/api/comment'
-import {HOME_CONSTANT, MENU_CONSTANT, MENU_EVENT} from "@/utils/nav";
+import {HOME_CONSTANT, MENU_CONSTANT, MENU_EVENT, NOTE_CONSTANT} from "@/utils/nav";
 export default {
   name: 'MenuDetails',
   components: {
@@ -327,8 +327,9 @@ export default {
     const { Bus }  = getCurrentInstance().appContext.config.globalProperties
     // 修改导航栏的状态
     const updateSelectState = () => {
-      localStorage.setItem(HOME_CONSTANT, false)
-      localStorage.setItem(MENU_CONSTANT, true)
+      localStorage.setItem(HOME_CONSTANT, 'unselect')
+      localStorage.setItem(NOTE_CONSTANT, 'unselect')
+      localStorage.setItem(MENU_CONSTANT, 'select')
       // 通知导航栏组件刷新选中状态
       Bus.emit(MENU_EVENT, { state: true })
     }
@@ -385,6 +386,12 @@ export default {
     }
     // 移除评论
     const removeComment = (commentId) => {
+      // 先移除该评论
+      detail.comments.map((element, index) => {
+        if (element.id === commentId) {
+          detail.comments.splice(index, 1)
+        }
+      })
       ElMessageBox.confirm(
         '您确定要删除该评论吗?',
         'Warning',
@@ -396,8 +403,6 @@ export default {
       ).then(() => {
         // 删除该评论
         comment.deleteCommentById(commentId).then(res => {
-          // 刷新评论
-          getDishDetailById()
         })
       })
     }

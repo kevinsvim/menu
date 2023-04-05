@@ -84,7 +84,6 @@ export default {
     const member_login = () => {
       sign.login(loginForm).then(res => {
         // 保存token到存储库和localstorage
-        console.log(res)
         tStore.saveToken(res.data.token)
 
         // 存储用户信息

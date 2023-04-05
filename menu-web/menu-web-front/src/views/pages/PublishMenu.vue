@@ -407,8 +407,6 @@ export default {
       // 移除文件触发的方法
     const removeSignalImage = (file, fileList) => {
         oss.removeImage(publishMenu.imageUrl).then(result => {
-          console.log(result)
-          ElMessage.success('图片移除成功~')
         })
       }
     // 图片上传成功触发的方法
