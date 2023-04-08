@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zsh.resource.mapper.ArticleMapper">
+
+    <resultMap id="BaseResultMap" type="com.zsh.resource.domain.Article">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="themeId" column="theme_id" jdbcType="BIGINT"/>
+        <result property="imageUrl" column="image_url" jdbcType="VARCHAR"/>
+        <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,title,theme_id,
+        image_url,is_deleted,create_time,
+        update_time,content
+    </sql>
+    <select id="selectPageArticle" resultType="com.zsh.resource.domain.vo.ArticleVo">
+        SELECT a.id,
+               a.title,
+               a.theme_id    AS themeId,
+               a.image_url   AS imageUrl,
+               a.create_time AS createTime,
+               a.author,
+               at.title      AS themeTitle
+        FROM article a
+                 LEFT JOIN article_theme at on a.theme_id = at.id
+        LIMIT #{startSize}, #{pageSize}
+    </select>
+    <select id="getArticleDetail" resultType="com.zsh.resource.domain.vo.ArticleDetailVo">
+        SELECT a.id,
+               a.title,
+               a.theme_id      AS themeId,
+               a.image_url     AS imageUrl,
+               a.content,
+               a.create_time   AS createTime,
+               a.author,
+               a.reading_times AS readingTimes,
+               t.title         AS themeTitle
+        FROM article AS a
+                 LEFT JOIN article_theme t on a.theme_id = t.id
+        WHERE a.id = #{id}
+    </select>
+    <select id="selectPageArticleByThemeId" resultType="com.zsh.resource.domain.vo.ArticleVo">
+        SELECT a.id,
+               a.title,
+               a.theme_id    AS themeId,
+               a.image_url   AS imageUrl,
+               a.create_time AS createTime,
+               a.author,
+               at.title      AS themeTitle
+        FROM article a
+                 LEFT JOIN article_theme at on a.theme_id = at.id
+        WHERE a.theme_id = #{themeId}
+        LIMIT #{startSize}, #{pageSize}
+    </select>
+</mapper>

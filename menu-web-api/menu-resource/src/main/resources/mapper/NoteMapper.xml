@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zsh.resource.mapper.NoteMapper">
+
+    <resultMap id="BaseResultMap" type="com.zsh.resource.domain.Note">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="imageUrls" column="image_urls" jdbcType="VARCHAR"/>
+            <result property="title" column="title" jdbcType="VARCHAR"/>
+            <result property="intro" column="intro" jdbcType="VARCHAR"/>
+            <result property="memberId" column="member_id" jdbcType="BIGINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+    </resultMap>
+
+    <resultMap id="BaseResultNoteMap" type="com.zsh.resource.domain.vo.NoteDetailVo">
+        <id property="id" column="id" jdbcType="BIGINT"/>
+        <result property="images" column="image_urls" jdbcType="VARCHAR"/>
+        <result property="intro" column="intro" jdbcType="VARCHAR"/>
+        <result property="title" column="title" jdbcType="VARCHAR"/>
+        <result property="publishDate" column="creat_time"/>
+        <collection property="noteComments" javaType="com.zsh.resource.domain.NoteComment">
+            <id property="id" column="id"/>
+            <result property="content" column="content"/>
+            <result property="publishDate" column="publish_date"/>
+            <result property="memberId" column="member_id"/>
+        </collection>
+    </resultMap>
+    <sql id="Base_Column_List">
+        id,image_urls,title,
+        intro,member_id,create_time,
+        update_time,is_deleted
+    </sql>
+    <select id="getNoteDetail" resultType="com.zsh.resource.domain.vo.NoteDetailVo">
+        SELECT
+            n.id,
+            n.title,
+            n.intro,
+            n.image_urls AS images,
+            n.create_time AS publishDate,
+            m.id AS publishId,
+            m.username,
+            m.image_url AS imageUrl
+        FROM note AS n
+        LEFT JOIN member AS m on n.member_id = m.id
+        WHERE n.id = #{id}
+    </select>
+</mapper>

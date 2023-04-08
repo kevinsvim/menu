@@ -71,10 +71,10 @@
               </div>
               <div class="material-list">
                 <el-row>
-                  <el-col :span="4" v-for="item in 12" style="margin-top: 20px">
-                    <img src="https://cp1.douguo.com/upload/shicai/1446028243.jpg" alt="土豆">
+                  <el-col :span="4" v-for="item in ingredient" style="margin-top: 20px">
+                    <img :src="item.imageUrl" :alt="item.name">
                     <div style="vertical-align: bottom">
-                      <span class="material_name">土豆</span>
+                      <span class="material_name">{{ item.name }}</span>
                     </div>
                   </el-col>
                 </el-row>
@@ -85,40 +85,48 @@
                   <span class="item1">精彩主题文章</span>
                 </div>
                 <div style="margin-top: 10px;">
-                  <span class="item2">更多
-                    <el-icon :size="11" color="cornflowerblue">
-                      <ArrowRightBold/>
-                    </el-icon>
-                  </span>
+                    <span @click="toArticle" class="item2">更多
+                      <el-icon :size="11" color="cornflowerblue">
+                        <ArrowRightBold/>
+                      </el-icon>
+                    </span>
                 </div>
               </div>
               <div>
-                <el-row>
-                  <el-col :span="8" style="text-align: left">
-                    <img src="https://cp1.douguo.com/upload/post/5/6/2/56228c4d2da02a2df47f82f4c874bac2.jpg"
+                <el-row v-for="(item, index) in article">
+                  <el-col :span="8" style="text-align: left" v-if="index === 0">
+                    <img @click="() => toArticleDetail(item.id)" :src="item.imageUrl"
                          style="width: 210px; height: 115px; border-radius:8px">
                   </el-col>
-                  <el-col :span="16">
-                    <div class="article_title">
-                      <span
-                        style="line-height: 30px">新品发布会，智宴释放出这几个绝佳优势新品发布会，智宴释放出这几个绝佳优势</span>
+                  <el-col :span="16" v-if="index === 0">
+                    <div>
+                      <div class="article_title">
+                        <span @click="() => toArticleDetail(item.id)" class="title_text">{{ item.title }}</span>
+                      </div>
+                      <div style="text-align: left; line-height: 50px">
+                        <span style="font-size: 13px; color: #999">
+                          {{ item.createTime }}
+                        </span>
+                      </div>
+                      <el-row>
+                        <el-col :span="12" style="text-align: left;">
+                          <span style="line-height: 40px; font-size: 13px">来自：{{ item.themeTitle }}</span>
+                        </el-col>
+                        <el-col :span="12">
+                          <span style="line-height: 40px; font-size: 13px">作者：{{ item.author }}</span>
+                        </el-col>
+                      </el-row>
                     </div>
-                    <el-row style="top: 50px">
-                      <el-col :span="12" style="text-align: left;">
-                        <span style="line-height: 40px; font-size: 13px">来自：食界大咖秀</span>
-                      </el-col>
-                      <el-col :span="12">
-                        <span style="line-height: 40px; font-size: 13px">作者：少油少盐</span>
-                      </el-col>
-                    </el-row>
+
                   </el-col>
                 </el-row>
                 <el-row :gutter="40" style="margin-top: 20px">
-                  <el-col :span="12" v-for="item in 6">
+                  <el-col :span="12" v-for="item in article">
                     <div class="separator_dian">
                       <iconfont-svg icon="icon-dian"/>
                       <span
-                        style="font-size: 13px; line-height: 40px">200元一斤的草莓？这个红遍全日本的奶茶品牌上新200元一斤的草莓</span>
+                        @click="() => toArticleDetail(item.id)"
+                        class="list_text">{{ item.title }}</span>
                     </div>
                   </el-col>
 
@@ -141,7 +149,8 @@
               </el-row>
               <el-row style="margin-top: 25px; text-align: left" v-for="item in 6">
                 <el-col :span="4">
-                  <el-avatar shape="square" :size="45" :src="'https://cp1.douguo.com/upload/photo/b/d/a/u6158987842928806271321.png'"/>
+                  <el-avatar shape="square" :size="45"
+                             :src="'https://cp1.douguo.com/upload/photo/b/d/a/u6158987842928806271321.png'"/>
                 </el-col>
                 <el-col :span="8">
                   <div>
@@ -233,6 +242,8 @@ import noteApi from "@/api/note";
 import NoteCard2 from "@/components/card/NoteCard2";
 import IconfontSvg from "@/components/iconfonts/IconSvg";
 import comicApi from '@/api/comic'
+import articleApi from '@/api/article'
+import ingredientApi from "@/api/ingredient";
 export default {
   name: 'HomeView',
   components: {
@@ -245,8 +256,8 @@ export default {
     ArrowRightBold,
     NoteCard2
   },
-
   setup() {
+    const router = useRouter()
     const pageData = reactive({
       pageSize: 4,
       currentPage: 1,
@@ -254,7 +265,9 @@ export default {
       pageCount: 1,
       records: []
     })
+    const article = ref([])
     const comic = reactive([])
+    const ingredient = reactive([])
     // 获取到 全局事件总线
     const {Bus} = getCurrentInstance().appContext.config.globalProperties
     // 获取热度推荐
@@ -264,7 +277,6 @@ export default {
         concentrationMenu.push(...res.data)
       })
     }
-    getDailySection()
     const indexLoading = ref(false)
     // 导航栏功能选中状态
     const selectStatus = reactive({
@@ -272,8 +284,6 @@ export default {
       selectPublish: false,
     })
 
-
-    const router = useRouter()
     const login = () => {
       router.push('/login')
     }
@@ -292,7 +302,12 @@ export default {
       let routeData = router.resolve({path: '/detail', query: {id: menuId}})
       window.open(routeData.href, '_blank');
     }
-
+    // 获取食材列表
+    const getPartIngredients = () => {
+      ingredientApi.getPartIngredients().then(res => {
+        ingredient.push(...res.data)
+      })
+    }
     // 获取笔记列表
     const getNoteList = () => {
       noteApi.getNotes(pageData.currentPage, pageData.pageSize).then(res => {
@@ -304,7 +319,6 @@ export default {
         pageData.records = res.data.records
       })
     }
-    getNoteList()
     // 去笔记详情页
     const toNoteDetail = (id) => {
       let noteRouterData = router.resolve({path: '/noteDetail', query: {id: id}})
@@ -323,13 +337,38 @@ export default {
         }
       })
     }
+    // 去文章页面
+    const toArticle = () => {
+      let data = router.resolve({path: '/article'})
+      open(data.href, '_blank')
+    }
+    // 获取文章数据
+    const getArticles = () => {
+      articleApi.getPageArticle(1, 6).then(res => {
+        console.log('wenzhang:', res)
+        article.value.push(...res.data.articleVos)
+      })
+    }
+    // 去文章详情页面
+    const toArticleDetail = (id) => {
+      let data = router.resolve({path: '/articleDetail', query: {id: id}})
+      open(data.href, '_blank')
+    }
+    getDailySection()
+    getNoteList()
+    getArticles()
     getComics()
+    getPartIngredients()
     return {
       selectStatus,
       indexLoading,
       concentrationMenu,
       pageData,
       comic,
+      article,
+      ingredient,
+      toArticleDetail,
+      toArticle,
       login,
       register,
       logout,
@@ -359,6 +398,15 @@ export default {
   }
 }
 
+.title_text {
+  line-height: 30px;
+  cursor: pointer;
+}
+
+.title_text:hover {
+  color: rgb(244, 182, 68);
+}
+
 .article_title {
   vertical-align: top;
   text-align: left;
@@ -376,6 +424,15 @@ export default {
   display: block;
   word-break: keep-all;
   white-space: nowrap;
+}
+
+.list_text {
+  font-size: 12px;
+  line-height: 40px;
+  cursor: pointer;
+}
+.list_text:hover {
+  color: rgb(244, 182, 68);
 }
 
 .material-list {

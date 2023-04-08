@@ -41,7 +41,6 @@ public class DishController {
     @PostMapping("/saveDish")
     public CommonResult<Object> saveDish(@RequestHeader("userId") String userId, @RequestBody PublishDishDto publishDishDto) {
         publishDishDto.setPublisherId(userId);
-        System.out.println("------------->" + userId);
         return dishService.saveDish(publishDishDto);
     }
 

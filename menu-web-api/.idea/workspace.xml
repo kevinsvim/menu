@@ -5,40 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="c422f363-7015-44ca-a5fe-8adaa651df63" name="Changes" comment="数据提交">
-      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/assets/images/blue.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/assets/images/logo.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/assets/images/pink.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/assets/images/yellow.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/assets/img2/background.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/assets/img2/img1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/assets/img2/img2.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/assets/img2/img3.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/components/card/DishCard2.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/components/card/NoteCard.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/components/detail/CategoryMenuDetailCard.vue" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/dish/category/CategoryMenuDetails.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/api/resource.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/api/resource.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/api/article.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/api/ingredient.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/article/Article.vue" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/article/ArticleDetail.vue" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/assets/fonts/icon-fonts/iconfont.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/assets/fonts/icon-fonts/iconfont.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/components/category/List.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/components/category/Update.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/router/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/api/comment.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/api/comment.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/api/dish.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/api/dish.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/api/resource.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/api/resource.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-admin/src/views/article/Add.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/assets/fonts/icon_fonts/iconfont.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/assets/fonts/icon_fonts/iconfont.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/assets/img/menu/jx3.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/assets/img/menu/publishBack.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/components/card/DishCard.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/components/card/DishCard.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/main.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/router/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/router/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/store/user.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/store/user.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/utils/navigationDataTransfer.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/utils/nav.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/utils/nav.js" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/utils/nav.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/Index.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/Index.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/HomePage.vue" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/MenuDetails.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/MenuDetails.vue" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/dish/DishCategory.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/dish/DishCategory.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/article/ArticlePublish.vue" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/nav/NavigationBar.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/nav/NavigationBar.vue" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/note/NotePage.vue" beforeDir="false" afterPath="$PROJECT_DIR$/../menu-web/menu-web-front/src/views/pages/note/NotePage.vue" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -280,6 +260,15 @@
       <workItem from="1680158768676" duration="20953000" />
       <workItem from="1680230824211" duration="27882000" />
       <workItem from="1680319680316" duration="18373000" />
+      <workItem from="1680401388969" duration="6923000" />
+      <workItem from="1680491286873" duration="21269000" />
+      <workItem from="1680576152467" duration="8620000" />
+      <workItem from="1680659107384" duration="7077000" />
+      <workItem from="1680678158963" duration="12753000" />
+      <workItem from="1680747843800" duration="6887000" />
+      <workItem from="1680831068120" duration="4783000" />
+      <workItem from="1680859798278" duration="7039000" />
+      <workItem from="1680923093626" duration="6866000" />
     </task>
     <task id="LOCAL-00001" summary="新增发布菜谱接口">
       <created>1679056192747</created>
@@ -309,7 +298,14 @@
       <option name="project" value="LOCAL" />
       <updated>1679799942725</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="数据提交">
+      <created>1680660099401</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1680660099401</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

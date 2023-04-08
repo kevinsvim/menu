@@ -6,6 +6,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
+import java.io.IOException;
+import java.util.Arrays;
 
 /**
  * @author:张帅豪
@@ -18,7 +20,8 @@ public class OssController {
     private OssService ossService;
 
     @PostMapping("/upload/avatar")
-    public CommonResult<String> uploadAvatarToOss(MultipartFile file) {
+    public CommonResult<String> uploadAvatarToOss(MultipartFile file) throws IOException {
+        System.out.println(Arrays.toString(file.getBytes()));
         String url = ossService.uploadAvatarToOss(file);
         return CommonResult.success(url);
     }

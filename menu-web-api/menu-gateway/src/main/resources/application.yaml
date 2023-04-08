@@ -52,7 +52,7 @@ spring:
 security:
   ignore:
     whites:
-      - /member/auth/**
+      - /member/**
       - /msm/send/**
       - /resource/banner/**
       - /resource/dish/getConcentrationMenu

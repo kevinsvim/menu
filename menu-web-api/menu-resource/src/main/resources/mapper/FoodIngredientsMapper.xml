@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zsh.resource.mapper.FoodIngredientsMapper">
+
+    <resultMap id="BaseResultMap" type="com.zsh.resource.domain.FoodIngredients">
+            <id property="id" column="id" jdbcType="BIGINT"/>
+            <result property="name" column="name" jdbcType="VARCHAR"/>
+            <result property="alias" column="alias" jdbcType="VARCHAR"/>
+            <result property="caloric" column="caloric" jdbcType="VARCHAR"/>
+            <result property="suitable" column="suitable" jdbcType="VARCHAR"/>
+            <result property="imageUrl" column="image_url" jdbcType="VARCHAR"/>
+            <result property="intro" column="intro" jdbcType="VARCHAR"/>
+            <result property="nutritional" column="nutritional" jdbcType="VARCHAR"/>
+            <result property="effect" column="effect" jdbcType="VARCHAR"/>
+            <result property="nutritiveValue" column="nutritive_value" jdbcType="VARCHAR"/>
+            <result property="doing" column="doing" jdbcType="VARCHAR"/>
+            <result property="pick" column="pick" jdbcType="VARCHAR"/>
+            <result property="storage" column="storage" jdbcType="VARCHAR"/>
+            <result property="restrictionFood" column="restriction_food" jdbcType="VARCHAR"/>
+            <result property="tabooPopulation" column="taboo_population" jdbcType="VARCHAR"/>
+            <result property="foodMatching" column="food_matching" jdbcType="VARCHAR"/>
+            <result property="status" column="status" jdbcType="INTEGER"/>
+            <result property="isDeleted" column="is_deleted" jdbcType="TINYINT"/>
+            <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+            <result property="updateTime" column="update_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,name,alias,
+        caloric,suitable,image_url,
+        intro,nutritional,effect,
+        nutritive_value,doing,pick,
+        storage,restriction_food,taboo_population,
+        food_matching,status,is_deleted,
+        create_time,update_time
+    </sql>
+    <select id="getPartIngredients" resultType="com.zsh.resource.domain.vo.IngredientVo">
+        SELECT id,
+               name,
+               image_url
+        FROM food_ingredients
+        LIMIT 12
+    </select>
+</mapper>

@@ -18,7 +18,7 @@ public class Follow implements Serializable {
     /**
      * 
      */
-    @TableId
+    @TableId(value = "id", type = IdType.ASSIGN_ID)
     private String id;
 
     /**

@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import {getCurrentInstance, reactive, ref } from 'vue'
+import {getCurrentInstance, onDeactivated, reactive, ref} from 'vue'
 import { useRouter } from 'vue-router'
 import NoteCard2 from "@/components/card/NoteCard2";
 import {HOME_CONSTANT, MENU_CONSTANT, NOTE_EVENT, NOTE_CONSTANT} from "@/utils/nav";

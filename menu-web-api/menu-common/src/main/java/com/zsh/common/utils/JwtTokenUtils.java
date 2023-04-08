@@ -33,8 +33,9 @@ public class JwtTokenUtils {
     private static final String TOKEN_SECRET = "secret";
     /**
      * 令牌过期时间 : one day
+     * 测试：改为7天
      */
-    private static final long TOKEN_EXPIRATION = 1000 * 60 * 60 * 24;
+    private static final long TOKEN_EXPIRATION = 1000 * 60 * 60 * 24 * 7;
     /**
      * 用户id定义
      */

@@ -140,13 +140,21 @@ const routes = [
         }
       },
       {
-        path: '/publishArticle',
-        name: 'PublishArticle',
-        component: () => import('@/views/pages/article/ArticlePublish'),
+        path: '/article',
+        name: 'Article',
+        component: () => import('@/views/pages/article/Article'),
         meta: {
-          auth: true
+          auth: false
         }
-      }
+      },
+      {
+        path: '/articleDetail',
+        name: 'ArticleDetail',
+        component: () => import('@/views/pages/article/ArticleDetail'),
+        meta: {
+          auth: false
+        }
+      },
     ]
   }
 ]

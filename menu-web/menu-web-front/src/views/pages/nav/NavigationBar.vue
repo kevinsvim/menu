@@ -7,7 +7,7 @@
     <div style="flex: 1"><span @click="accessHomePage" :class="selectHomePageState">首页</span></div>
     <div style="flex: 1; cursor:pointer;">
       <el-tooltip content="Bottom center" effect="customized">
-        <span :class="selectMenuStatue">菜谱
+        <span :class="selectMenuState">菜谱
           <span style="vertical-align: middle">
             <el-icon style="margin-left: 3px;"><ArrowDown/></el-icon>
           </span>
@@ -80,10 +80,8 @@
         </template>
       </el-tooltip>
     </div>
-    <div style="flex: 1">
-      <el-tooltip content="Bottom center" effect="customized">
-        <span>饮食健康</span>
-      </el-tooltip>
+    <div style="flex: 1; cursor:pointer;" @click="article">
+      <span :class="selectArticleState">文章</span>
     </div>
     <div style="flex: 1; cursor:pointer;" @click="note"><span :class="selectNoteState">笔记</span></div>
     <div style="flex: 1; cursor:pointer;" @click="comic"><span :class="selectComicState">动漫</span></div>
@@ -115,14 +113,6 @@
     </div>
     <!-- 用户已经登录则显示头像 -->
     <div style="flex: 3"></div>
-    <!-- 按钮 -->
-    <!--    <div class="tag-item current" mx-click="setTag({tag:''})" p-id="940"-->
-    <!--         data-spm-anchor-id="a313x.7781069.1998910419.i2"><span p-id="941"-->
-    <!--                                                                data-spm-anchor-id="a313x.7781069.1998910419.i4">-->
-    <!--      <span style="color: #FFFFFF; font-size: 13px">全部</span>-->
-    <!--    </span>-->
-    <!--    </div>-->
-
   </div>
   <el-divider/>
   <router-view/>
@@ -130,8 +120,9 @@
 
 <script>
 import {useRouter} from 'vue-router/dist/vue-router'
-import {reactive, computed, ref, getCurrentInstance, onBeforeUnmount } from 'vue'
+import {reactive, computed, ref, getCurrentInstance, onUnmounted, onMounted } from 'vue'
 import {
+  ARTICLE_CONSTANT, ARTICLE_EVENT,
   COMIC_CONSTANT,
   COMIC_EVENT,
   HOME_CONSTANT,
@@ -153,6 +144,7 @@ export default {
     SearchBox,
   },
   setup() {
+    const isDestory = ref(false)
     /**
      * 点击导航栏功能开始
      */
@@ -162,6 +154,7 @@ export default {
       menuState: false,     // 菜单
       noteState: false,     // 笔记
       comicState: false,    // 漫画
+      articleState: false,  // 文章
     })
     // 判断用户是否登录
     const isLogin = ref(false)
@@ -185,10 +178,27 @@ export default {
     Bus.on(COMIC_EVENT, res => {
       settingSelectState(4)
     })
-    onBeforeUnmount(() => {
+    Bus.on(ARTICLE_EVENT, res => {
+      settingSelectState(5)
+    })
+    onMounted(() => {
+      window.addEventListener('beforeunload', e => beforeunloadHandler(e))
+    })
+    onUnmounted(() => {
       Bus.off(MENU_EVENT)
       Bus.off(NOTE_EVENT)
       Bus.off(COMIC_EVENT)
+      Bus.off(ARTICLE_EVENT)
+    })
+    const beforeunloadHandler = (e) => {
+      localStorage.removeItem(HOME_CONSTANT)
+      localStorage.removeItem(MENU_CONSTANT)
+      localStorage.removeItem(NOTE_CONSTANT)
+      localStorage.removeItem(COMIC_CONSTANT)
+      localStorage.removeItem(ARTICLE_CONSTANT)
+    }
+    onUnmounted(() => {
+      window.removeEventListener('beforeunload', e => beforeunloadHandler(e))
     })
     const getCategoryTree = () => {
       resource.getTreeCategory(2).then(res => {
@@ -223,6 +233,8 @@ export default {
         localStorage.setItem(HOME_CONSTANT, 'select')
         localStorage.setItem(MENU_CONSTANT, 'unselect')
         localStorage.setItem(NOTE_CONSTANT, 'unselect')
+        localStorage.setItem(COMIC_CONSTANT, 'unselect')
+        localStorage.setItem(ARTICLE_CONSTANT, 'unselect')
       } else {
         // 取出为true的设置为选中状态
         if (localStorage.getItem(HOME_CONSTANT) === 'select') {
@@ -231,6 +243,13 @@ export default {
           state.menuState = true
         } else if (localStorage.getItem(NOTE_CONSTANT) === 'select') {
           state.noteState = true
+        } else if (localStorage.getItem(ARTICLE_CONSTANT) === 'select') {
+          state.articleState = true
+        } else if (localStorage.getItem(COMIC_CONSTANT) === 'select') {
+          state.comicState = true
+        } else {
+          localStorage.setItem(HOME_CONSTANT, 'select')
+          state.homePageState = true
         }
       }
     }
@@ -241,10 +260,12 @@ export default {
       state.menuState = false
       state.noteState = false
       state.comicState = false
+      state.articleState = false
       localStorage.setItem(HOME_CONSTANT, 'unselect')
       localStorage.setItem(MENU_CONSTANT, 'unselect')
       localStorage.setItem(NOTE_CONSTANT, 'unselect')
       localStorage.setItem(COMIC_CONSTANT, 'unselect')
+      localStorage.setItem(ARTICLE_CONSTANT, 'unselect')
       switch (type) {
         case 1:
           state.homePageState = true
@@ -261,6 +282,10 @@ export default {
         case 4:
           state.comicState = true
           localStorage.setItem(COMIC_CONSTANT, 'select')
+          break
+        case 5:
+          state.articleState = true
+          localStorage.setItem(ARTICLE_CONSTANT, 'select')
           break
         default:
           break
@@ -279,9 +304,13 @@ export default {
       selectStateStyle: state.comicState,
       unSelectStateStyle: !state.comicState
     }))
-    const selectMenuStatue = computed(() => ({
+    const selectMenuState = computed(() => ({
       selectStateStyle: state.menuState,
       unSelectStateStyle: !state.menuState
+    }))
+    const selectArticleState = computed(() => ({
+      selectStateStyle: state.articleState,
+      unSelectStateStyle: !state.articleState
     }))
     // 点击首页
     function accessHomePage() {
@@ -296,6 +325,14 @@ export default {
       if (!state.menuState) {
         state.menuState = true
         settingSelectState(2)
+      }
+    }
+    // 选中文章
+    function article() {
+      if (!state.articleState) {
+        state.articleState = true
+        settingSelectState(5)
+        router.push('/article')
       }
     }
     // 点击笔记
@@ -328,19 +365,22 @@ export default {
     return {
       isLogin,
       avatar,
-      selectMenuStatue,
+      selectMenuState ,
       selectHomePageState,
       selectNoteState,
       selectComicState,
+      selectArticleState,
       logoUrl,
       partCategoryTree,
+      isDestory,
       accessHomePage,
       sign,
       note,
       comic,
       publishMenu,
       toLookAllCategory,
-      publishNote
+      publishNote,
+      article
     }
   }
 }

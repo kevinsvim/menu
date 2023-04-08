@@ -9,6 +9,8 @@ export const MENU_CONSTANT = 'menuSelectState'
 export const NOTE_CONSTANT = 'noteSelectState'
 // 动漫选中状态
 export const COMIC_CONSTANT = 'comicSelectState'
+// 文章选中状态
+export const ARTICLE_CONSTANT = 'articleSelectState'
 /**
  * 导航栏选中通知事件名
  */
@@ -17,3 +19,5 @@ export const MENU_EVENT = 'MenuEvent'
 export const NOTE_EVENT = 'NoteEvent'
 
 export const COMIC_EVENT = 'ComicEvent'
+
+export const ARTICLE_EVENT = 'ArticleEvent'
