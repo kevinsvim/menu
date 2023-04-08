@@ -25,7 +25,6 @@ const routes = [
             {
                 path: 'category',
                 name: 'Category',
-                // component: () => import('@/views/home/Index.vue'),
                 meta: {
                     title: '分类管理',
                     showRouter: true,
@@ -73,16 +72,63 @@ const routes = [
                     {
                         path: '/addArticle',
                         name: 'AddArticle',
-                        component: () => import('@/views/article/Add.vue'),
+                        component: () => import('@/views/article/AddArticle.vue'),
                         meta: {
                             title: '添加文章',
                             showRouter: true
                         }
-                    }
+                    },
+                    {
+                        path: '/themeList',
+                        name: 'ThemeList',
+                        component: () => import('@/views/article/ThemeList.vue'),
+                        meta: {
+                            title: '主题列表',
+                            showRouter: true
+                        }
+                    },
+                    {
+                        path: '/addTheme',
+                        name: 'AddTheme',
+                        component: () => import('@/views/article/AddTheme.vue'),
+                        meta: {
+                            title: '添加主题',
+                            showRouter: true
+                        }
+                    },
                 ]
-            }
+            },
+            {
+                path: 'ingredients',
+                name: 'Ingredients',
+                meta: {
+                    title: '食材管理',
+                    showRouter: true,
+                    icons: 'menu-icon-fenleiguanli'
+                },
+                children: [
+                    {
+                        path: '/ingredients/increase',
+                        name: 'Increase',
+                        component: () => import('@/views/ingredients/Increase.vue'),
+                        meta: {
+                            title: '添加食材',
+                            showRouter: true
+                        },
+                    },
+                    {
+                        path: '/ingredients/list',
+                        name: 'IngredientList',
+                        component: () => import('@/views/ingredients/List.vue'),
+                        meta: {
+                            title: '食材列表',
+                            showRouter: true
+                        },
+                    },
+                ]
+            },
         ]
-    }
+    },
 ]
 
 const router = createRouter({
