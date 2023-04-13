@@ -22,8 +22,8 @@
       </el-row>
     </div>
   </div>
-
 </div>
+  <FoodFooter/>
 </template>
 
 <script>
@@ -31,11 +31,12 @@
 import resource from "@/api/resource";
 import { reactive } from 'vue'
 import { useRouter } from "vue-router/dist/vue-router";
+import FoodFooter from "@/views/footer/FoodFooter";
 
 export default {
   name: "Category",
   components: {
-
+    FoodFooter
   },
   setup() {
     const router = useRouter()

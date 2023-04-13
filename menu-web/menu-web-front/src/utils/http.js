@@ -18,9 +18,7 @@ const http = axios.create({
  */
 http.interceptors.request.use(config => {
   // 每次请求前需要携带token
-  console.log(window.localStorage.getItem('token'))
   config.headers['Authorization'] = localStorage.getItem('token') || ''
-  console.log(config.headers['Authorization'])
   // 某些接口不需要携带token
   return config
 }, error => {

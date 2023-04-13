@@ -82,11 +82,7 @@ export default {
     }
     // 修改导航栏的状态
     const updateSelectState = () => {
-      localStorage.setItem(HOME_CONSTANT, 'unselect')
-      localStorage.setItem(MENU_CONSTANT, 'unselect')
-      localStorage.setItem(NOTE_CONSTANT, 'unselect')
-      localStorage.setItem(COMIC_CONSTANT, 'unselect')
-      localStorage.setItem(ARTICLE_CONSTANT, 'select')
+      localStorage.setItem('navSelect', ARTICLE_CONSTANT)
 
       // 通知导航栏组件刷新选中状态
       Bus.emit(ARTICLE_EVENT, {state: true})

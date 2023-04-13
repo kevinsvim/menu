@@ -19,4 +19,10 @@ export default {
       method: 'get'
     })
   },
+  getIngredientById(id) {
+    return http({
+      url: `resource/ingredient/getIngredientById/${id}`,
+      method: 'get'
+    })
+  }
 }

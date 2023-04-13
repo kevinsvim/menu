@@ -149,7 +149,7 @@
 
 <script>
 import {getCurrentInstance, ref, reactive} from 'vue'
-import {HOME_CONSTANT, MENU_CONSTANT, NOTE_EVENT, NOTE_CONSTANT} from "@/utils/nav";
+import {NOTE_EVENT, NOTE_CONSTANT} from "@/utils/nav";
 import {useRouter, useRoute} from "vue-router/dist/vue-router";
 import {Plus, Star, Search} from '@element-plus/icons-vue'
 import IconfontSvg from "@/components/iconfonts/IconSvg";
@@ -199,7 +199,6 @@ export default {
     const selectStateIndex = ref(0)
     const initNoteDetail = () => {
       noteApi.getNoteDetail(noteDetail.id).then(res => {
-        console.log(res)
         let data = res.data
         noteDetail.isFollow = data.isFollow
         noteDetail.isUp = data.isUp
@@ -231,9 +230,7 @@ export default {
     }
     // 修改导航栏的状态
     const updateSelectState = () => {
-      localStorage.setItem(HOME_CONSTANT, 'unselect')
-      localStorage.setItem(MENU_CONSTANT, 'unselect')
-      localStorage.setItem(NOTE_CONSTANT, 'select')
+      localStorage.setItem('navSelect', NOTE_CONSTANT)
 
       // 通知导航栏组件刷新选中状态
       Bus.emit(NOTE_EVENT, {state: true})

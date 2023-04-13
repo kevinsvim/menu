@@ -3,14 +3,15 @@
   <div style="text-align: left">
     <span style="font-weight: bold; font-size: 19px">日记列表推荐</span>
   </div>
-  <el-row>
-    <el-col :span="6" v-for="item in pageData.records">
-      <NoteCard2
+  <el-row :gutter="30">
+    <el-col :span="6" v-for="item in pageData.records" style="margin-top: 20px">
+      <NoteCard
         @click="() => toNoteDetail(item.id)"
         :title="item.title"
         :id="item.id"
         :intro="item.intro"
-        :image_url="item.imageList[0]"
+        :date="item.createTime"
+        :image-url="item.imageUrls.split(',')[0]"
       />
     </el-col>
   </el-row>
@@ -32,20 +33,24 @@
 </template>
 
 <script>
-import {getCurrentInstance, onDeactivated, reactive, ref} from 'vue'
+import {getCurrentInstance, reactive} from 'vue'
 import { useRouter } from 'vue-router'
 import NoteCard2 from "@/components/card/NoteCard2";
-import {HOME_CONSTANT, MENU_CONSTANT, NOTE_EVENT, NOTE_CONSTANT} from "@/utils/nav";
+import {NOTE_EVENT, NOTE_CONSTANT} from "@/utils/nav";
 import noteApi from '@/api/note'
 import FoodFooter from "@/views/footer/FoodFooter";
+import NoteCard from "@/components/card/NoteCard";
+import dayjs from "dayjs";
 export default {
   name: "NotePage",
   components: {
     NoteCard2,
-    FoodFooter
+    FoodFooter,
+    NoteCard,
   },
   setup() {
     // 页数据
+
     const pageData = reactive({
       pageSize: 12,
       currentPage: 1,
@@ -58,9 +63,7 @@ export default {
     const router = useRouter()
     // 修改导航栏的状态
     const updateSelectState = () => {
-      localStorage.setItem(HOME_CONSTANT, 'unselect')
-      localStorage.setItem(MENU_CONSTANT, 'unselect')
-      localStorage.setItem(NOTE_CONSTANT, 'select')
+      localStorage.setItem('navSelect', NOTE_CONSTANT)
 
       // 通知导航栏组件刷新选中状态
       Bus.emit(NOTE_EVENT, { state: true })
@@ -70,12 +73,14 @@ export default {
     // 获取笔记列表
     const getNoteList = () => {
       noteApi.getNotes(pageData.currentPage, pageData.pageSize).then(res => {
+        pageData.records = []
         pageData.total = res.data.total
         pageData.pageCount = res.data.pages
         res.data.records.map(x => {
-          x.imageList = x.imageUrls.split(',')
+          x.createTime = dayjs(x.createTime).format('YYYY/MM/DD')
+          pageData.records.push(x)
         })
-        pageData.records = res.data.records
+        console.log(pageData)
       })
     }
     getNoteList()

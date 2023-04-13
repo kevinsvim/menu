@@ -7,15 +7,19 @@ export const tokenStore = defineStore('tokenId', {
   actions: {
     saveToken(token) {
       this.token = token
-      window.localStorage.setItem("token", token)
+      localStorage.setItem("token", token)
     },
     getToken() {
       try {
-        return this.token || window.localStorage.getItem("token") || ''
+        return this.token || localStorage.getItem("token") || ''
       } catch (e) {
-        window.localStorage.setItem("token", "")
+        localStorage.setItem("token", "")
         throw e
       }
+    },
+    // 移除token
+    removeToken() {
+      localStorage.removeItem("token")
     }
   }
 })

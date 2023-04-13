@@ -1,7 +1,7 @@
 <template>
   <div class="product-card">
     <div class="logo-cart">
-      <img src="@/assets/logo.png" alt="logo">
+      <img src="@/assets/images/logo.png" alt="logo">
       <i class='bx bx-shopping-bag'></i>
     </div>
     <div class="main-images">

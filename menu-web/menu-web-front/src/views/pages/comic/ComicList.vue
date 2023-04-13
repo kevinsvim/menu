@@ -39,8 +39,7 @@ import FoodFooter from "@/views/footer/FoodFooter";
 import comicApi from '@/api/comic'
 import gameApi from '@/api/game'
 import { reactive, getCurrentInstance } from "vue";
-import {useRouter} from "vue-router/dist/vue-router";
-import {COMIC_CONSTANT, COMIC_EVENT, HOME_CONSTANT, MENU_CONSTANT, NOTE_CONSTANT, NOTE_EVENT} from "@/utils/nav";
+import {COMIC_CONSTANT, COMIC_EVENT} from "@/utils/nav";
 
 export default {
   name: "ComicList",
@@ -55,10 +54,7 @@ export default {
     const { Bus }  = getCurrentInstance().appContext.config.globalProperties
     // 修改导航栏的状态
     const updateSelectState = () => {
-      localStorage.setItem(HOME_CONSTANT, 'unselect')
-      localStorage.setItem(MENU_CONSTANT, 'unselect')
-      localStorage.setItem(NOTE_CONSTANT, 'unselect')
-      localStorage.setItem(COMIC_CONSTANT, 'select')
+      localStorage.setItem('navSelect', COMIC_CONSTANT)
       // 通知导航栏组件刷新选中状态
       Bus.emit(COMIC_EVENT, { state: true })
     }

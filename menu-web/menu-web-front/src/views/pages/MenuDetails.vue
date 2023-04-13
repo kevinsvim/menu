@@ -84,7 +84,6 @@
           :data="detail.materials"
           highlight-current-row
           style="width: 100%"
-          @current-change="handleCurrentChange"
         >
           <el-table-column type="index" width="250"/>
           <el-table-column property="name" label="Material" width="300"/>
@@ -218,7 +217,7 @@ import {ElMessage, ElMessageBox} from "element-plus";
 import { userStore } from "@/store/user";
 import IconfontSvg from "@/components/iconfonts/IconSvg";
 import comment from '@/api/comment'
-import {HOME_CONSTANT, MENU_CONSTANT, MENU_EVENT, NOTE_CONSTANT} from "@/utils/nav";
+import {MENU_CONSTANT, MENU_EVENT} from "@/utils/nav";
 export default {
   name: 'MenuDetails',
   components: {
@@ -290,7 +289,6 @@ export default {
       let id = route.query.id
       if (id) {
         resource.getDetailByDishId(id).then(res => {
-          console.log('详情数据为:', res.data)
           // 数据赋值
           let data = res.data
           detail.id = data.id
@@ -327,9 +325,7 @@ export default {
     const { Bus }  = getCurrentInstance().appContext.config.globalProperties
     // 修改导航栏的状态
     const updateSelectState = () => {
-      localStorage.setItem(HOME_CONSTANT, 'unselect')
-      localStorage.setItem(NOTE_CONSTANT, 'unselect')
-      localStorage.setItem(MENU_CONSTANT, 'select')
+      localStorage.setItem('navSelect', MENU_CONSTANT)
       // 通知导航栏组件刷新选中状态
       Bus.emit(MENU_EVENT, { state: true })
     }

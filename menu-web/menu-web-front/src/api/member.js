@@ -24,4 +24,10 @@ export default {
       data: params
     })
   },
+  getMemberRec() {
+    return http({
+      url: '/resource/dish/getRecMember',
+      method: 'get'
+    })
+  }
 }

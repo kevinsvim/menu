@@ -351,7 +351,6 @@ export default {
     // 保存数据
     const publish = () => {
       publishMenu.typeId = categoryId.value[2]
-      console.log('发布的数据为:', publishMenu)
       resource.savePublishData(publishMenu).then(result => {
         ElMessage.success('发布成功')
         // 跳转到登录页面

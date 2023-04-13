@@ -1,6 +1,6 @@
 <template>
   <div class="menuNar">
-    <div style="flex: 3"></div>
+    <div style="flex: 2"></div>
     <div style="margin-top: 5px">
       <el-image class="logo" :src="logoUrl" :fit="'fill'"/>
     </div>
@@ -57,7 +57,8 @@
                 <el-col :span="20">
                   <el-row :gutter="30">
                     <el-col :span="4" v-for="(twoCategory) in oneCategory.children" :key="twoCategory.id">
-                      <span class="two_category_name">{{ twoCategory.name }}</span>
+                      <span @click="toSearchDishPage(twoCategory.id, twoCategory.name)"
+                            class="two_category_name">{{ twoCategory.name }}</span>
                     </el-col>
                   </el-row>
                 </el-col>
@@ -98,8 +99,8 @@
     </div>
 
     <!-- 搜索框 -->
-    <div style="flex: 1">
-      <SearchBox style="margin-left: 20px"/>
+    <div style="flex: 4; text-align: left">
+      <SearchBox/>
     </div>
 
     <!-- 登录注册 -->
@@ -108,11 +109,28 @@
         <el-button @click="sign" type="" link>登录 | 注册</el-button>
       </div>
     </div>
-    <div v-if="isLogin" style="margin-left: 20px">
-      <el-avatar :size="50" :src="avatar" />
+    <el-tooltip
+      class="box-item"
+      effect="light"
+      placement="bottom"
+    >
+      <div v-if="isLogin" style="margin-left: 20px">
+        <el-avatar :size="40" :src="avatar"/>
+      </div>
+      <template #content>
+        <div style="width: 100px; max-height: 100px; padding: 10px 5px; text-align: center">
+          <div style="display: flex; align-items: center">
+            <iconfont-svg size="18" icon="icon-tuichudenglu"/>
+            <span class="logout" @click="logout">退出登录</span>
+          </div>
+        </div>
+      </template>
+    </el-tooltip>
+    <!-- 搜索框 -->
+    <div style="flex: 1; text-align: center">
+      <iconfont-svg  @click="toPersonal"  icon="icon-gerenzhongxin" size="40"/>
     </div>
-    <!-- 用户已经登录则显示头像 -->
-    <div style="flex: 3"></div>
+    <div style="flex: 2"></div>
   </div>
   <el-divider/>
   <router-view/>
@@ -120,7 +138,7 @@
 
 <script>
 import {useRouter} from 'vue-router/dist/vue-router'
-import {reactive, computed, ref, getCurrentInstance, onUnmounted, onMounted } from 'vue'
+import {reactive, computed, ref, getCurrentInstance, onUnmounted, onMounted} from 'vue'
 import {
   ARTICLE_CONSTANT, ARTICLE_EVENT,
   COMIC_CONSTANT,
@@ -129,16 +147,20 @@ import {
   MENU_CONSTANT,
   MENU_EVENT,
   NOTE_CONSTANT,
-  NOTE_EVENT
+  NOTE_EVENT, PERSONAL_EVENT, PERSONAL_HOME_CONSTANT
 } from '@/utils/nav'
 import {ArrowDown, ArrowRight} from '@element-plus/icons'
 import SearchBox from '@/components/search/SearchBox'
 import resource from "@/api/resource";
 import {userStore} from '@/store/user'
+import {tokenStore} from "@/store/token";
+import IconfontSvg from "@/components/iconfonts/IconSvg";
+
 export default {
   name: 'MenuNar',
   emits: ['homePage'],
   components: {
+    IconfontSvg,
     ArrowDown,
     ArrowRight,
     SearchBox,
@@ -155,10 +177,12 @@ export default {
       noteState: false,     // 笔记
       comicState: false,    // 漫画
       articleState: false,  // 文章
+      personalState: false  // 个人中心
     })
     // 判断用户是否登录
     const isLogin = ref(false)
     const uStore = userStore()
+    const tStore = tokenStore()
     const avatar = ref('')
     /**
      * 初始化，加载分类数据
@@ -168,7 +192,7 @@ export default {
     const partCategoryTree = reactive([])
     const logoUrl = 'https://menu-api.oss-cn-beijing.aliyuncs.com/icon/logo.png'
 
-    const { Bus }  = getCurrentInstance().appContext.config.globalProperties
+    const {Bus} = getCurrentInstance().appContext.config.globalProperties
     Bus.on(MENU_EVENT, res => {
       settingSelectState(2)
     })
@@ -181,6 +205,9 @@ export default {
     Bus.on(ARTICLE_EVENT, res => {
       settingSelectState(5)
     })
+    Bus.on(PERSONAL_EVENT, res => {
+      settingSelectState(6)
+    })
     onMounted(() => {
       window.addEventListener('beforeunload', e => beforeunloadHandler(e))
     })
@@ -189,13 +216,10 @@ export default {
       Bus.off(NOTE_EVENT)
       Bus.off(COMIC_EVENT)
       Bus.off(ARTICLE_EVENT)
+      Bus.off(PERSONAL_EVENT)
     })
     const beforeunloadHandler = (e) => {
-      localStorage.removeItem(HOME_CONSTANT)
-      localStorage.removeItem(MENU_CONSTANT)
-      localStorage.removeItem(NOTE_CONSTANT)
-      localStorage.removeItem(COMIC_CONSTANT)
-      localStorage.removeItem(ARTICLE_CONSTANT)
+      localStorage.removeItem("navSelect")
     }
     onUnmounted(() => {
       window.removeEventListener('beforeunload', e => beforeunloadHandler(e))
@@ -221,7 +245,7 @@ export default {
     // 查看全部分类
     const toLookAllCategory = () => {
       menu()
-      router.push({name: 'Category', params: { activeName: 'category' }})
+      router.push({name: 'Category', params: {activeName: 'category'}})
     }
     // 去登陆注册
     const sign = () => {
@@ -229,26 +253,22 @@ export default {
     }
     // 初始化或获取导航栏选中状态
     const initSelectState = () => {
-      if (localStorage.getItem(HOME_CONSTANT) === null) {
-        localStorage.setItem(HOME_CONSTANT, 'select')
-        localStorage.setItem(MENU_CONSTANT, 'unselect')
-        localStorage.setItem(NOTE_CONSTANT, 'unselect')
-        localStorage.setItem(COMIC_CONSTANT, 'unselect')
-        localStorage.setItem(ARTICLE_CONSTANT, 'unselect')
+      if (localStorage.getItem("navSelect") === null) {
+        localStorage.setItem("navSelect", HOME_CONSTANT)
       } else {
         // 取出为true的设置为选中状态
-        if (localStorage.getItem(HOME_CONSTANT) === 'select') {
+        if (localStorage.getItem("navSelect") === HOME_CONSTANT) {
           state.homePageState = true
-        } else if (localStorage.getItem(MENU_CONSTANT) === 'select') {
+        } else if (localStorage.getItem("navSelect") === MENU_CONSTANT) {
           state.menuState = true
-        } else if (localStorage.getItem(NOTE_CONSTANT) === 'select') {
+        } else if (localStorage.getItem("navSelect") === NOTE_CONSTANT) {
           state.noteState = true
-        } else if (localStorage.getItem(ARTICLE_CONSTANT) === 'select') {
+        } else if (localStorage.getItem("navSelect") === ARTICLE_CONSTANT) {
           state.articleState = true
-        } else if (localStorage.getItem(COMIC_CONSTANT) === 'select') {
+        } else if (localStorage.getItem("navSelect") === COMIC_CONSTANT) {
           state.comicState = true
         } else {
-          localStorage.setItem(HOME_CONSTANT, 'select')
+          localStorage.setItem("navSelect", HOME_CONSTANT)
           state.homePageState = true
         }
       }
@@ -261,32 +281,31 @@ export default {
       state.noteState = false
       state.comicState = false
       state.articleState = false
-      localStorage.setItem(HOME_CONSTANT, 'unselect')
-      localStorage.setItem(MENU_CONSTANT, 'unselect')
-      localStorage.setItem(NOTE_CONSTANT, 'unselect')
-      localStorage.setItem(COMIC_CONSTANT, 'unselect')
-      localStorage.setItem(ARTICLE_CONSTANT, 'unselect')
+      state.personalState = false
       switch (type) {
         case 1:
           state.homePageState = true
-          localStorage.setItem(HOME_CONSTANT, 'select')
+          localStorage.setItem("navSelect", HOME_CONSTANT)
           break
         case 2:
           state.menuState = true
-          localStorage.setItem(MENU_CONSTANT, 'select')
+          localStorage.setItem("navSelect", MENU_CONSTANT)
           break
         case 3:
           state.noteState = true
-          localStorage.setItem(NOTE_CONSTANT, 'select')
+          localStorage.setItem("navSelect", NOTE_CONSTANT)
           break
         case 4:
           state.comicState = true
-          localStorage.setItem(COMIC_CONSTANT, 'select')
+          localStorage.setItem("navSelect", COMIC_CONSTANT)
           break
         case 5:
           state.articleState = true
-          localStorage.setItem(ARTICLE_CONSTANT, 'select')
+          localStorage.setItem("navSelect", ARTICLE_CONSTANT)
           break
+        case 6:
+          state.personalState = true
+          localStorage.setItem('navSelect', PERSONAL_HOME_CONSTANT)
         default:
           break
       }
@@ -312,6 +331,7 @@ export default {
       selectStateStyle: state.articleState,
       unSelectStateStyle: !state.articleState
     }))
+
     // 点击首页
     function accessHomePage() {
       if (!state.homePageState) {
@@ -320,6 +340,7 @@ export default {
         router.push('/index')
       }
     }
+
     // 选中菜谱
     function menu() {
       if (!state.menuState) {
@@ -327,6 +348,7 @@ export default {
         settingSelectState(2)
       }
     }
+
     // 选中文章
     function article() {
       if (!state.articleState) {
@@ -335,6 +357,7 @@ export default {
         router.push('/article')
       }
     }
+
     // 点击笔记
     function note() {
       if (!state.noteState) {
@@ -345,6 +368,7 @@ export default {
 
       }
     }
+
     // 点击动漫
     function comic() {
       if (!state.comicState) {
@@ -353,19 +377,41 @@ export default {
         router.push('/comic')
       }
     }
+
     // 点击发布菜谱
     function publishMenu() {
       // 跳转路径
       router.push('/publishMenu')
     }
+
     const publishNote = () => {
       router.push('/publishNote')
     }
+    // 去食谱页面
+    const toSearchDishPage = (id, name) => {
+      let data = router.resolve({path: '/categoryMenuDetails', query: {id: id, name: name}})
+      open(data.href, '_blank')
+    }
+    // 去个人页面
+    const toPersonal = () => {
+      const id = uStore.getId()
+      if (id != null) {
+        let data = router.resolve({path: '/personal', query: {id: id}})
+        open(data.href, '_blank')
+      }
 
+    }
+    // 退出登录
+    const logout = () => {
+      uStore.removeUserInfo()
+      tStore.removeToken()
+      // 重新跳转到登录页面
+      router.push('/login')
+    }
     return {
       isLogin,
       avatar,
-      selectMenuState ,
+      selectMenuState,
       selectHomePageState,
       selectNoteState,
       selectComicState,
@@ -373,6 +419,9 @@ export default {
       logoUrl,
       partCategoryTree,
       isDestory,
+      logout,
+      toPersonal,
+      toSearchDishPage,
       accessHomePage,
       sign,
       note,
@@ -387,6 +436,14 @@ export default {
 </script>
 
 <style lang="less" scoped>
+.logout {
+  margin-left: 4px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.logout:hover {
+  color: #32a3b1;
+}
 // logo样式
 .logo {
   width: 100px;

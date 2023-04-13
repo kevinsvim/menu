@@ -8,7 +8,7 @@
     <div style="margin-left: 10px">
       <el-tabs v-model="activeName" class="demo-tabs" @tab-click="handleClick">
         <el-tab-pane label="全部文章" name="article">
-          <div>
+          <div v-if="article.records.length !== 0">
             <el-row :gutter="30">
               <el-col :span="16">
                 <el-row v-for="item in article.records" style="margin-top: 20px;">
@@ -71,14 +71,16 @@
 
               </el-col>
             </el-row>
-
+          </div>
+          <div v-else>
+            <el-empty description="还没有数据!" />
           </div>
         </el-tab-pane>
         <el-tab-pane label="全部主题站" name="theme">
           <div v-show="isShowTheme">
             <el-row>
               <el-col :span="9" v-for="item in themes" style="text-align: left;">
-                <div class="card2" @click="() => toArticleListByThemeId(item.id)">
+                <div class="card2" @click="() => toArticleListByThemeId(item.id, item.title)">
                   <div style="height: 6vw; width: 319px; padding-left: 15px; padding-top: 15px;;">
                     <el-row>
                       <el-col :span="8">
@@ -107,9 +109,9 @@
           </div>
           <div v-show="!isShowTheme" style="text-align: left">
             <div style="margin-top: 20px">
-              <span style="font-weight: bold; font-size: 20px; line-height: 20px;">食界大咖秀</span>
+              <span style="font-weight: bold; font-size: 20px; line-height: 20px;">{{ currentThemeTitle }}</span>
             </div>
-            <div>
+            <div v-if="articleWithCondition.records.length !== 0">
               <el-row :gutter="30">
                 <el-col :span="16">
                   <el-row v-for="item in articleWithCondition.records" style="margin-top: 20px;">
@@ -154,6 +156,9 @@
                 </el-col>
               </el-row>
 
+            </div>
+            <div v-else>
+              <el-empty description="还没有数据!" />
             </div>
           </div>
         </el-tab-pane>
@@ -202,16 +207,13 @@ export default {
     const isShowReturn = ref(false)
     // 所有主题theme
     const themes = reactive([])
+    const currentThemeTitle = ref('')
     // 通知导航栏发生变更
     // 获取到 全局事件总线
     const {Bus} = getCurrentInstance().appContext.config.globalProperties
     // 修改导航栏的状态
     const updateSelectState = () => {
-      localStorage.setItem(HOME_CONSTANT, 'unselect')
-      localStorage.setItem(MENU_CONSTANT, 'unselect')
-      localStorage.setItem(NOTE_CONSTANT, 'unselect')
-      localStorage.setItem(COMIC_CONSTANT, 'unselect')
-      localStorage.setItem(ARTICLE_CONSTANT, 'select')
+      localStorage.setItem('navSelect', ARTICLE_CONSTANT)
       // 通知导航栏组件刷新选中状态
       Bus.emit(ARTICLE_EVENT, {state: true})
     }
@@ -264,9 +266,9 @@ export default {
       })
     }
     // 根据themeId获取具体分类下的所有分页数据
-    const toArticleListByThemeId = (themeId) => {
+    const toArticleListByThemeId = (themeId, themeName) => {
+      currentThemeTitle.value = themeName
       articleApi.getPageArticleByThemeId(articleWithCondition.currentPage,articleWithCondition.pageSize, themeId).then(res => {
-        console.log('获取的分页数据为:', res)
         articleWithCondition.records = []
         articleWithCondition.total = res.data.total
         articleWithCondition.pageSize = res.data.pageSize
@@ -293,6 +295,7 @@ export default {
       articleWithCondition,
       isShowTheme,
       isShowReturn,
+      currentThemeTitle,
       toLastStep,
       toArticleListByThemeId,
       handleClick,

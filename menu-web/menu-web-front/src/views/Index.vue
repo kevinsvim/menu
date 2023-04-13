@@ -50,9 +50,9 @@
                 <div style="text-align: left">
                   <span class="item1">大家都在搜</span>
                 </div>
-                <div style="max-height: 150px; width: 100%; padding: 10px 5px; text-align: left; overflow: hidden">
-                  <span class="search_span" v-for="item in 18">
-                    新概念肺炎
+                <div style="max-height: 170px; width: 100%; padding: 10px 5px; text-align: left; overflow: hidden">
+                  <span class="search_span" v-for="item in searchRec">
+                      <span @click="() => toSearchDishPage(item.id, item.name)">{{ item.name }}</span>
                   </span>
                 </div>
               </el-row>
@@ -61,8 +61,8 @@
                 <div>
                   <span class="item1">热门食材</span>
                 </div>
-                <div style="margin-top: 10px;">
-                  <span class="item2">更多
+                <div style="margin-top: 10px; margin-right: 30px">
+                  <span class="item2" @click="toIngredient">更多
                     <el-icon :size="11" color="cornflowerblue">
                       <ArrowRightBold/>
                     </el-icon>
@@ -72,9 +72,9 @@
               <div class="material-list">
                 <el-row>
                   <el-col :span="4" v-for="item in ingredient" style="margin-top: 20px">
-                    <img :src="item.imageUrl" :alt="item.name">
+                    <img @click="() => toIngredientDetail(item.id)" :src="item.imageUrl" :alt="item.name">
                     <div style="vertical-align: bottom">
-                      <span class="material_name">{{ item.name }}</span>
+                      <span @click="() => toIngredientDetail(item.id)" class="material_name">{{ item.name }}</span>
                     </div>
                   </el-col>
                 </el-row>
@@ -84,7 +84,7 @@
                 <div>
                   <span class="item1">精彩主题文章</span>
                 </div>
-                <div style="margin-top: 10px;">
+                <div style="margin-top: 10px;margin-right: 30px">
                     <span @click="toArticle" class="item2">更多
                       <el-icon :size="11" color="cornflowerblue">
                         <ArrowRightBold/>
@@ -147,17 +147,21 @@
                   </span>
                 </el-col>
               </el-row>
-              <el-row style="margin-top: 25px; text-align: left" v-for="item in 6">
+              <el-row style="margin-top: 25px; text-align: left" v-for="item in memberRec">
                 <el-col :span="4">
-                  <el-avatar shape="square" :size="45"
-                             :src="'https://cp1.douguo.com/upload/photo/b/d/a/u6158987842928806271321.png'"/>
+                  <el-avatar style="cursor: pointer" shape="square" :size="45"
+                             :src="item.imageUrl"
+                             @click="() => toPersonal(item.id)"
+                  />
                 </el-col>
                 <el-col :span="8">
                   <div>
-                    <span style="font-size: 14px; line-height: 20px">颖涵的快厨房 </span>
+                    <span @click="() => toPersonal(item.id)" class="member_name">{{
+                        item.nickname || item.username
+                      }} </span>
                   </div>
                   <div>
-                    <span style="font-size: 12px; color: #999; line-height: 35px">168522粉丝</span>
+                    <span style="font-size: 12px; color: #999; line-height: 35px">{{ item.fansNum }}粉丝</span>
                   </div>
                 </el-col>
                 <el-col :span="11" style="margin-top: 8px; text-align: right">
@@ -200,7 +204,7 @@
           <el-col :span="12">
             <div style="text-align: left;"><span class="item1">笔记</span></div>
           </el-col>
-          <el-col :span="12">
+          <el-col :span="8">
             <div style="text-align: right; margin-top: 10px"><span class="item2">更多
           <el-icon :size="11" color="cornflowerblue">
             <ArrowRightBold/>
@@ -209,14 +213,15 @@
             </div>
           </el-col>
         </el-row>
-        <el-row style="margin-top: 20px; margin-left: 20px">
-          <el-col :span="6" v-for="item in pageData.records">
-            <NoteCard2
-              @click="() => toNoteDetail(item.id)"
+        <el-row :gutter="20" style="margin-top: 20px;">
+          <el-col :span="5" v-for="item in pageData.records">
+            <NoteCard
               :title="item.title"
               :id="item.id"
               :intro="item.intro"
-              :image_url="item.imageList[0]"
+              :date="item.createTime"
+              :image-url="item.imageUrls.split(',')[0]"
+              @click="() => toNoteDetail(item.id)"
             />
           </el-col>
         </el-row>
@@ -244,6 +249,10 @@ import IconfontSvg from "@/components/iconfonts/IconSvg";
 import comicApi from '@/api/comic'
 import articleApi from '@/api/article'
 import ingredientApi from "@/api/ingredient";
+import memberApi from '@/api/member'
+import NoteCard from "@/components/card/NoteCard";
+import dish from "@/api/dish";
+
 export default {
   name: 'HomeView',
   components: {
@@ -254,7 +263,8 @@ export default {
     Publish,
     BannerFront,
     ArrowRightBold,
-    NoteCard2
+    NoteCard2,
+    NoteCard
   },
   setup() {
     const router = useRouter()
@@ -265,9 +275,12 @@ export default {
       pageCount: 1,
       records: []
     })
+    const searchRec = reactive([])
     const article = ref([])
     const comic = reactive([])
     const ingredient = reactive([])
+    // 推荐用户
+    const memberRec = reactive([])
     // 获取到 全局事件总线
     const {Bus} = getCurrentInstance().appContext.config.globalProperties
     // 获取热度推荐
@@ -277,6 +290,13 @@ export default {
         concentrationMenu.push(...res.data)
       })
     }
+    // 获取搜索热度推荐
+    const getSearchList = () => {
+      dish.getHotSearchDish().then(res => {
+        searchRec.push(...res.data)
+      })
+    }
+    getSearchList()
     const indexLoading = ref(false)
     // 导航栏功能选中状态
     const selectStatus = reactive({
@@ -311,12 +331,10 @@ export default {
     // 获取笔记列表
     const getNoteList = () => {
       noteApi.getNotes(pageData.currentPage, pageData.pageSize).then(res => {
+        console.log('最终的笔记列表为:', res)
         pageData.total = res.data.total
         pageData.pageCount = res.data.pages
-        res.data.records.map(x => {
-          x.imageList = x.imageUrls.split(',')
-        })
-        pageData.records = res.data.records
+        pageData.records.push(...res.data.records)
       })
     }
     // 去笔记详情页
@@ -337,6 +355,14 @@ export default {
         }
       })
     }
+    // 获取用户推荐列表
+    const getMembers = () => {
+      memberApi.getMemberRec().then(res => {
+        console.log('获取的用户推荐列表为:', res)
+        memberRec.push(...res.data)
+      })
+    }
+    getMembers()
     // 去文章页面
     const toArticle = () => {
       let data = router.resolve({path: '/article'})
@@ -345,13 +371,32 @@ export default {
     // 获取文章数据
     const getArticles = () => {
       articleApi.getPageArticle(1, 6).then(res => {
-        console.log('wenzhang:', res)
         article.value.push(...res.data.articleVos)
       })
     }
     // 去文章详情页面
     const toArticleDetail = (id) => {
       let data = router.resolve({path: '/articleDetail', query: {id: id}})
+      open(data.href, '_blank')
+    }
+    // 去食材页面
+    const toIngredient = () => {
+      let data = router.resolve({path: '/dish/material'})
+      open(data.href, '_blank')
+    }
+    // 去详情页面
+    const toIngredientDetail = (id) => {
+      let data = router.resolve({path: '/dishMaterialDetail', query: {id: id}})
+      open(data.href, '_blank')
+    }
+    // 去个人页面
+    const toPersonal = (id) => {
+      let data = router.resolve({path: '/personal', query: {id: id}})
+      open(data.href, '_blank')
+    }
+    // 去食谱页面
+    const toSearchDishPage = (id, name) => {
+      let data = router.resolve({path: '/categoryMenuDetails', query: {id: id, name: name}})
       open(data.href, '_blank')
     }
     getDailySection()
@@ -367,6 +412,12 @@ export default {
       comic,
       article,
       ingredient,
+      memberRec,
+      searchRec,
+      toSearchDishPage,
+      toPersonal,
+      toIngredientDetail,
+      toIngredient,
       toArticleDetail,
       toArticle,
       login,
@@ -403,6 +454,16 @@ export default {
   cursor: pointer;
 }
 
+.member_name {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.member_name:hover {
+  color: rgb(244, 182, 68);
+  cursor: pointer;
+}
+
 .title_text:hover {
   color: rgb(244, 182, 68);
 }
@@ -431,6 +492,7 @@ export default {
   line-height: 40px;
   cursor: pointer;
 }
+
 .list_text:hover {
   color: rgb(244, 182, 68);
 }

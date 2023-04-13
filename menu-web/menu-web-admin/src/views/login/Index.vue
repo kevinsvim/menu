@@ -52,7 +52,6 @@ export default {
       }
     }
     const login = () => {
-      router.push('/')
       user.login(loginForm).then(res => {
         console.log(res)
         tStore.saveToken(res.data)

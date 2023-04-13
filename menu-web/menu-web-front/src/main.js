@@ -1,4 +1,4 @@
-import { createApp } from 'vue'
+import Vue, { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import ElementPlus from 'element-plus'
@@ -14,6 +14,7 @@ const app = createApp(App)
 
 app.config.globalProperties.Bus = mitt()
 app.use(ElementPlus)
+
 app.use(createPinia())
 app.component("iconfont-svg",iconfontSvg)
 app.config.globalProperties.$http = http

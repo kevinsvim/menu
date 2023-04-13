@@ -39,6 +39,14 @@ const routes = [
         }
       },
       {
+        path: 'personal',
+        name: 'Personal',
+        component: () => import('@/views/pages/personal/PersonalHomepage'),
+        meta: {
+          auth: false
+        }
+      },
+      {
         path: 'publishMenu',
         name: 'PublishMenu',
         component: () => import('@/views/pages/PublishMenu'),
@@ -111,6 +119,14 @@ const routes = [
         }
       },
       {
+        path: 'dishMaterialDetail',
+        name: 'DishMaterialDetail',
+        component: () => import('@/views/pages/dish/category/DishMaterialDetail'),
+        meta: {
+          auth: false
+        }
+      },
+      {
         path: 'detail',
         name: 'MenuDetails',
         component: () => import('@/views/pages/MenuDetails'),
@@ -154,7 +170,7 @@ const routes = [
         meta: {
           auth: false
         }
-      },
+      }
     ]
   }
 ]

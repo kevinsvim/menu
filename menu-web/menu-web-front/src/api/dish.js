@@ -22,5 +22,27 @@ export default {
       url: `${api_url}/getAllDishByCategoryId/${categoryId}/${pageSize}/${currentPage}`,
       method: 'get'
     })
+  },
+  // 获取个人主页信息
+  getPersonalInfo(data) {
+    return http({
+      url: '/resource/dish/getPersonalInfo',
+      method: 'post',
+      data
+    })
+  },
+  // 获取实时搜索建议列表
+  getSearchSuggest(data) {
+    return http({
+      url: '/resource/category/getSuggestList',
+      method: 'post',
+      data
+    })
+  },
+  // 获取菜谱的热搜列表
+  getHotSearchDish() {
+    return http({
+      url: `/resource/searchLog/searchList`
+    })
   }
 }
