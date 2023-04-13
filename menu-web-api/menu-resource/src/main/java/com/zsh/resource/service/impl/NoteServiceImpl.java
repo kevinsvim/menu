@@ -8,16 +8,14 @@ import com.zsh.common.result.CommonResult;
 import com.zsh.resource.domain.Follow;
 import com.zsh.resource.domain.Note;
 import com.zsh.resource.domain.NoteComment;
-import com.zsh.resource.domain.NoteLog;
+import com.zsh.resource.domain.MemberNoteLog;
 import com.zsh.resource.domain.dto.PublishNoteVo;
-import com.zsh.resource.domain.vo.DishCategoryVo;
 import com.zsh.resource.domain.vo.NoteDetailVo;
 import com.zsh.resource.mapper.FollowMapper;
 import com.zsh.resource.mapper.NoteCommentMapper;
-import com.zsh.resource.mapper.NoteLogMapper;
+import com.zsh.resource.mapper.MemberNoteLogMapper;
 import com.zsh.resource.service.NoteService;
 import com.zsh.resource.mapper.NoteMapper;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
@@ -34,13 +32,13 @@ public class NoteServiceImpl extends ServiceImpl<NoteMapper, Note>
 
     private final NoteMapper noteMapper;
     private final NoteCommentMapper noteCommentMapper;
-    private final NoteLogMapper noteLogMapper;
+    private final MemberNoteLogMapper memberNoteLogMapper;
     private final FollowMapper followMapper;
-    public NoteServiceImpl(NoteMapper noteMapper, NoteLogMapper noteLogMapper,
+    public NoteServiceImpl(NoteMapper noteMapper, MemberNoteLogMapper memberNoteLogMapper,
                            NoteCommentMapper noteCommentMapper, FollowMapper followMapper) {
         this.noteMapper = noteMapper;
         this.noteCommentMapper = noteCommentMapper;
-        this.noteLogMapper = noteLogMapper;
+        this.memberNoteLogMapper = memberNoteLogMapper;
         this.followMapper = followMapper;
     }
     @Override
@@ -72,16 +70,16 @@ public class NoteServiceImpl extends ServiceImpl<NoteMapper, Note>
         List<NoteComment> noteComments = noteCommentMapper.selectList(commentWrapper);
         noteDetail.setNoteComments(noteComments);
         // 3.加载笔记日志表
-        List<NoteLog> noteLogs = noteLogMapper.selectList(null);
+        List<MemberNoteLog> memberNoteLogs = memberNoteLogMapper.selectList(null);
         // 设置当前用户是否点赞，是否收藏，日记点赞数量
         int upNum = 0;
         noteDetail.setIsUp(false);
         noteDetail.setIsCollect(false);
-        for (NoteLog noteLog : noteLogs) {
-            upNum += noteLog.getIsUp() ? 1 : 0;
-            if (StringUtils.isNotEmpty(userId) && userId.equals(noteLog.getMemberId())) {
-                noteDetail.setIsUp(noteLog.getIsUp());
-                noteDetail.setIsCollect(noteLog.getIsCollect());
+        for (MemberNoteLog memberNoteLog : memberNoteLogs) {
+            upNum += memberNoteLog.getIsUp() ? 1 : 0;
+            if (StringUtils.isNotEmpty(userId) && userId.equals(memberNoteLog.getMemberId())) {
+                noteDetail.setIsUp(memberNoteLog.getIsUp());
+                noteDetail.setIsCollect(memberNoteLog.getIsCollect());
             }
         }
         noteDetail.setUpNum(upNum);

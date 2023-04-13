@@ -18,5 +18,12 @@
         id,name,parent_id,
         is_deleted,create_time,update_time
     </sql>
+    <select id="getSearchSuggests" resultType="com.zsh.resource.domain.vo.SuggestVo">
+        SELECT id,
+               name AS value
+        FROM type
+        WHERE type_level = 3 AND name LIKE CONCAT('%',#{content},'%')
+        LIMIT #{size}
+    </select>
 
 </mapper>

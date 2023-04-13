@@ -2,10 +2,13 @@ package com.zsh.resource.controller;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.zsh.common.result.CommonResult;
+import com.zsh.resource.domain.dto.PersonalDto;
 import com.zsh.resource.domain.dto.PublishDishDto;
 import com.zsh.resource.domain.vo.DishCategoryVo;
 import com.zsh.resource.domain.vo.DishConcentrationVo;
 import com.zsh.resource.domain.vo.DishDetailVo;
+import com.zsh.resource.domain.vo.MemberRecVo;
+import com.zsh.resource.domain.vo.personal.PersonalVo;
 import com.zsh.resource.service.DishService;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,16 +25,17 @@ import java.util.List;
 public class DishController {
 
     private final DishService dishService;
+
     public DishController(DishService dishService) {
         this.dishService = dishService;
     }
 
     /**
-     *  获取热度值推荐
+     * 获取热度值推荐
      */
     @GetMapping("/hotScore")
     public CommonResult<Object> getHotRec() {
-        
+
         return dishService.getHotRec();
     }
 
@@ -55,6 +59,7 @@ public class DishController {
 
     /**
      * 获取菜谱详情数据
+     *
      * @param id 菜谱id
      */
     @GetMapping("/getDishDetailById/{id}")
@@ -72,5 +77,24 @@ public class DishController {
                                                        @PathVariable("currentPage") Integer currentPage) {
         IPage<DishCategoryVo> data = dishService.getAllDishByCategoryId(categoryId, pageSize, currentPage);
         return CommonResult.success(data);
+    }
+
+    /**
+     * 个人主页信息获取
+     */
+    @PostMapping("/getPersonalInfo")
+    private CommonResult<Object> getPersonalInfo(@RequestHeader("userId") String userId, @RequestBody PersonalDto personalDto) {
+
+        PersonalVo personalVo = dishService.getPersonal(userId, personalDto);
+        return CommonResult.success(personalVo);
+    }
+
+    /**
+     * 获取推荐的用户
+     */
+    @GetMapping("/getRecMember")
+    public CommonResult<Object> getRecMember() {
+        List<MemberRecVo> memberRecVos = dishService.getRecMember();
+        return CommonResult.success(memberRecVos);
     }
 }

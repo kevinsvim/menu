@@ -17,4 +17,8 @@
         id,fans_id,member_id,
         is_deleted,create_time,update_time
     </sql>
+    <select id="getAllMember" resultType="java.lang.String">
+        SELECT id
+        FROM member
+    </select>
 </mapper>

@@ -89,7 +89,7 @@
         SELECT d.id,
                d.name,
                d.image_url,
-               m.id AS member_id,
+               m.id        AS member_id,
                m.username,
                m.image_url AS avatar,
                c.click_num,
@@ -97,7 +97,52 @@
                c.up_num
         FROM dish AS d
                  LEFT JOIN member m ON d.publisher_id = m.id
-                 LEFT JOIN click_log AS c ON d.id = c.dish_id
+                 LEFT JOIN dish_rec_log AS c ON d.id = c.dish_id
         WHERE d.type_id = #{categoryId}
+    </select>
+    <select id="getPersonDishPage" resultType="com.zsh.resource.domain.vo.personal.PersonalDishVo">
+        SELECT d.id,
+               d.name,
+               d.image_url    AS imageUrl,
+               d.publisher_id AS publisherId,
+               cl.click_num   AS viewNum,
+               cl.collect_num AS collectNum
+        FROM dish AS d
+                 LEFT JOIN dish_rec_log cl on d.id = cl.dish_id
+        WHERE d.publisher_id = #{userId}
+        LIMIT #{startSize}, #{pageSize}
+    </select>
+    <select id="getPersonNotePage" resultType="com.zsh.resource.domain.vo.personal.PersonalNoteVo">
+        SELECT n.id,
+               n.image_urls AS imageUrls,
+               n.title,
+               n.member_id  AS publisherId,
+               ncl.up_num   AS upNum
+        FROM note AS n
+                 LEFT JOIN note_rec_log ncl on n.id = ncl.note_id
+        WHERE n.member_id = #{userId}
+        LIMIT #{startSize}, #{pageSize}
+    </select>
+    <select id="getMemberRecInfo" resultType="com.zsh.resource.domain.vo.MemberRecVo">
+        SELECT id, image_url, username, nickname
+        FROM member
+        WHERE id IN
+        <foreach  item="item" collection="list" index="index"  open="(" separator="," close=")">
+            #{item}
+        </foreach>
+    </select>
+    <select id="getMemberDetailInfo" resultType="com.zsh.resource.domain.vo.personal.MemberInfoVo">
+        SELECT id,
+               nickname,
+               username,
+               address,
+               exp,
+               intro,
+               sex,
+               fans,
+               follows,
+               image_url AS imageUrl
+        FROM member
+        WHERE id = #{memberId}
     </select>
 </mapper>

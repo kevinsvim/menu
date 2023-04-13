@@ -4,6 +4,8 @@ import com.zsh.common.result.CommonResult;
 import com.zsh.resource.domain.Follow;
 import com.baomidou.mybatisplus.extension.service.IService;
 
+import java.util.List;
+
 /**
  * @author 18179
  * @description 针对表【follow】的数据库操作Service
@@ -19,4 +21,5 @@ public interface FollowService extends IService<Follow> {
      * @param type      【0 - 取消关注】 【1 - 关注】
      */
     CommonResult<Object> updateFollow(String userId, String publisher, Integer type);
+
 }

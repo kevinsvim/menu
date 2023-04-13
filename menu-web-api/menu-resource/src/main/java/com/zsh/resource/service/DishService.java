@@ -4,10 +4,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.zsh.common.result.CommonResult;
 import com.zsh.resource.domain.Dish;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zsh.resource.domain.dto.PersonalDto;
 import com.zsh.resource.domain.dto.PublishDishDto;
 import com.zsh.resource.domain.vo.DishCategoryVo;
 import com.zsh.resource.domain.vo.DishConcentrationVo;
 import com.zsh.resource.domain.vo.DishDetailVo;
+import com.zsh.resource.domain.vo.MemberRecVo;
+import com.zsh.resource.domain.vo.personal.PersonalVo;
 
 import java.util.List;
 
@@ -43,5 +46,16 @@ public interface DishService extends IService<Dish> {
      * 根据分类id获取全部的菜谱
      */
     IPage<DishCategoryVo> getAllDishByCategoryId(String categoryId, Integer pageSize, Integer pageNum);
+
+    /**
+     * 个人主页信息获取
+     *
+     * @param userId
+     * @param personalDto 条件信息
+     * @return 个人主页信息
+     */
+    PersonalVo getPersonal(String userId, PersonalDto personalDto);
+
+    List<MemberRecVo> getRecMember();
 
 }

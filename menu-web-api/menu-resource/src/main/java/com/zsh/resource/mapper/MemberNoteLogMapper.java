@@ -1,9 +1,12 @@
 package com.zsh.resource.mapper;
 
-import com.zsh.resource.domain.NoteLog;
+import com.zsh.resource.domain.MemberNoteLog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zsh.resource.domain.vo.personal.PersonalNoteVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 /**
 * @author 18179
@@ -12,11 +15,13 @@ import org.springframework.data.repository.query.Param;
 * @Entity com.zsh.resource.domain.NoteLog
 */
 @Mapper
-public interface NoteLogMapper extends BaseMapper<NoteLog> {
+public interface MemberNoteLogMapper extends BaseMapper<MemberNoteLog> {
 
     void updateUpType(@Param("type") boolean type, @Param("noteId") String noteId, @Param("userId") String userId);
 
     void updateCollectType(@Param("type") boolean type, @Param("noteId") String noteId, @Param("userId") String memberId);
+
+    List<PersonalNoteVo> getNoteCollectPage(@Param("userId") String userId, @Param("startSize") int startSize, @Param("pageSize") Integer pageSize);
 }
 
 

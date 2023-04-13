@@ -3,7 +3,9 @@ package com.zsh.resource.service;
 import com.zsh.common.result.CommonResult;
 import com.zsh.resource.domain.Type;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.zsh.resource.domain.dto.SearchSuggestDto;
 import com.zsh.resource.domain.vo.CategoryTreeVo;
+import com.zsh.resource.domain.vo.SuggestVo;
 
 import java.util.List;
 
@@ -19,4 +21,7 @@ public interface TypeService extends IService<Type> {
     CommonResult<Object> saveCategory(Type type);
 
     CommonResult<Object> removeCategory(Integer categoryLevel, Long categoryId);
+
+    List<SuggestVo> getSearchSuggestList(SearchSuggestDto searchSuggestDto);
+
 }

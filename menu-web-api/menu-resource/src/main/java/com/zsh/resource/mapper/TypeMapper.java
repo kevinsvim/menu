@@ -2,7 +2,11 @@ package com.zsh.resource.mapper;
 
 import com.zsh.resource.domain.Type;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zsh.resource.domain.vo.SuggestVo;
 import org.apache.ibatis.annotations.Mapper;
+import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 /**
 * @author 18179
@@ -13,6 +17,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface TypeMapper extends BaseMapper<Type> {
 
+    List<SuggestVo> getSearchSuggests(@Param("size") Integer size, @Param("content") String content);
 }
 
 

@@ -32,16 +32,16 @@
                is_up,
                comment_num,
                create_time
-        FROM rec_log
+        FROM member_dish_log
     </select>
     <update id="updateCollectType">
-        UPDATE rec_log
+        UPDATE member_dish_log
         SET is_collect = #{type}
         WHERE dish_id = #{dishId}
           AND member_id = #{memberId}
     </update>
     <update id="updateUpType">
-        UPDATE rec_log
+        UPDATE member_dish_log
         SET is_up = #{type}
         WHERE dish_id = #{dishId}
           AND member_id = #{userId}

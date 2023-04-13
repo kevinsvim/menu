@@ -10,7 +10,7 @@ import lombok.Data;
  * 
  * @TableName rec_log
  */
-@TableName(value ="rec_log")
+@TableName(value ="member_dish_log")
 @Data
 public class RecLog implements Serializable {
     /**

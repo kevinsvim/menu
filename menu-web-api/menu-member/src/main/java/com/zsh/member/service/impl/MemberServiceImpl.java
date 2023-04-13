@@ -1,6 +1,5 @@
 package com.zsh.member.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.ObjectUtils;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -91,5 +90,6 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         }
         return CommonResult.fail(CommonResultCode.VERIFY_CODE_ERROR);
     }
+
 
 }

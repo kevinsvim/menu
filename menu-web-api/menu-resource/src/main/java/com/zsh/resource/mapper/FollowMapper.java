@@ -4,6 +4,8 @@ import com.zsh.resource.domain.Follow;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 /**
 * @author 18179
 * @description 针对表【follow】的数据库操作Mapper
@@ -13,6 +15,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface FollowMapper extends BaseMapper<Follow> {
 
+    List<String> getAllMember();
 }
 
 

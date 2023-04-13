@@ -6,7 +6,9 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zsh.common.result.CommonResult;
 import com.zsh.resource.domain.Dish;
 import com.zsh.resource.domain.Type;
+import com.zsh.resource.domain.dto.SearchSuggestDto;
 import com.zsh.resource.domain.vo.CategoryTreeVo;
+import com.zsh.resource.domain.vo.SuggestVo;
 import com.zsh.resource.service.DishService;
 import com.zsh.resource.service.TypeService;
 import com.zsh.resource.mapper.TypeMapper;
@@ -26,9 +28,10 @@ public class TypeServiceImpl extends ServiceImpl<TypeMapper, Type>
 
 
     private final DishService dishService;
-
-    public TypeServiceImpl(DishService dishService) {
+    private final TypeMapper typeMapper;
+    public TypeServiceImpl(DishService dishService, TypeMapper typeMapper) {
         this.dishService = dishService;
+        this.typeMapper = typeMapper;
     }
 
     /**
@@ -114,6 +117,21 @@ public class TypeServiceImpl extends ServiceImpl<TypeMapper, Type>
         }
         this.removeById(categoryId);
         return CommonResult.success(true);
+    }
+
+    /**
+     * 获取实时的搜索建议列表
+     * @param searchSuggestDto 请求参数
+     * @return 建议列表
+     */
+    @Override
+    public List<SuggestVo> getSearchSuggestList(SearchSuggestDto searchSuggestDto) {
+//        // 1.模糊查询,返回指定数量的建议
+//        LambdaQueryWrapper<Type> wrapper = new LambdaQueryWrapper<>();
+//        wrapper.eq(Type::getTypeLevel, 3).like(Type::getName, searchSuggestDto.getContent());
+//        wrapper.last("limit " + searchSuggestDto.getSize());
+        List<SuggestVo> list = typeMapper.getSearchSuggests(searchSuggestDto.getSize(), searchSuggestDto.getContent());
+        return list;
     }
 }
 

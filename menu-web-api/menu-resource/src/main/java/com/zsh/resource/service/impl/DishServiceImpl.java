@@ -9,20 +9,22 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.zsh.common.result.CommonResult;
 import com.zsh.resource.constant.DishConstant;
 import com.zsh.resource.domain.*;
+import com.zsh.resource.domain.dto.PersonalDto;
 import com.zsh.resource.domain.dto.PublishDishDto;
 import com.zsh.resource.domain.vo.DishCategoryVo;
 import com.zsh.resource.domain.vo.DishConcentrationVo;
 import com.zsh.resource.domain.vo.DishDetailVo;
-import com.zsh.resource.mapper.CommentMapper;
-import com.zsh.resource.mapper.FollowMapper;
-import com.zsh.resource.mapper.RecLogMapper;
+import com.zsh.resource.domain.vo.MemberRecVo;
+import com.zsh.resource.domain.vo.personal.*;
+import com.zsh.resource.mapper.*;
 import com.zsh.resource.service.DishService;
-import com.zsh.resource.mapper.DishMapper;
 import com.zsh.resource.service.MaterialService;
+import com.zsh.resource.service.MemberDishLogService;
 import com.zsh.resource.service.StepService;
 import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -45,11 +47,15 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
     private final CommentMapper commentMapper;
     private final RecLogMapper recLogMapper;
     private final FollowMapper followMapper;
+    private final NoteMapper noteMapper;
+    private final MemberNoteLogMapper memberNoteLogMapper;
+    private final MemberDishLogMapper memberDishLogMapper;
 
     public DishServiceImpl(RedisTemplate<Object, Object> redisTemplate, MaterialService materialService,
                            StepService stepService, DishMapper dishMapper,
                            CommentMapper commentMapper, RecLogMapper recLogMapper,
-                           FollowMapper followMapper) {
+                           FollowMapper followMapper, NoteMapper noteMapper,
+                           MemberNoteLogMapper memberNoteLogMapper, MemberDishLogMapper memberDishLogMapper) {
         this.redisTemplate = redisTemplate;
         this.materialService = materialService;
         this.stepService = stepService;
@@ -57,6 +63,9 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         this.commentMapper = commentMapper;
         this.recLogMapper = recLogMapper;
         this.followMapper = followMapper;
+        this.noteMapper = noteMapper;
+        this.memberNoteLogMapper = memberNoteLogMapper;
+        this.memberDishLogMapper = memberDishLogMapper;
     }
 
     /**
@@ -159,7 +168,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
      * 获取菜谱页详情
      *
      * @param id     菜谱id
-     * @param userId 《---- 当前登录的用户id ---》
+     * @param userId 当前登录的用户id
      */
 //    @Cacheable(value = "dishDetail", key = "#id + #userId")
     @Override
@@ -223,6 +232,112 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
     public IPage<DishCategoryVo> getAllDishByCategoryId(String categoryId, Integer pageSize, Integer pageNum) {
         Page<DishCategoryVo> page = new Page<>(pageNum, pageSize);
         return dishMapper.getDishPage(page, categoryId);
+    }
+
+    /**
+     * 个人主页信息获取
+     *
+     * @param userId      当前登录的用户id
+     * @param personalDto 条件信息
+     */
+    @Cacheable(cacheNames = "personal", key = "#root.methodName + '[' + #personalDto.userId + ']'")
+    @Override
+    public PersonalVo getPersonal(String userId, PersonalDto personalDto) {
+        PersonalVo personalVo = new PersonalVo();
+        // 个人信息获取
+        MemberInfoVo memberInfoVo = dishMapper.getMemberDetailInfo(personalDto.getUserId());
+        personalVo.setMemberInfoVo(memberInfoVo);
+        // 菜谱分页数据
+        PersonalDishPageVo personalDishPageVo = new PersonalDishPageVo();
+        // 日记分页数据
+        PersonalNotePageVo personalNotePageVo = new PersonalNotePageVo();
+        // 收藏数据[菜谱 + 日记]
+        PersonalCollectVo personalCollectVo = new PersonalCollectVo();
+        PersonalDishPageVo personalDishCollectVo = new PersonalDishPageVo();
+        PersonalNotePageVo personalNoteCollectVo = new PersonalNotePageVo();
+        // 如果是第一次需要查询总数
+        if (isFirstTime(personalDto)) {
+            // 查询菜谱总数
+            LambdaQueryWrapper<Dish> dishWrapper = new LambdaQueryWrapper<>();
+            dishWrapper.eq(Dish::getPublisherId, userId);
+            Integer dishTotal = dishMapper.selectCount(dishWrapper);
+            personalDishPageVo.setTotal(dishTotal);
+            // 查询日记总数
+            LambdaQueryWrapper<Note> noteWrapper = new LambdaQueryWrapper<>();
+            noteWrapper.eq(Note::getMemberId, userId);
+            Integer noteTotal = noteMapper.selectCount(noteWrapper);
+            personalNotePageVo.setTotal(noteTotal);
+            // 查询收藏数据总数[菜谱 + 日记]
+            LambdaQueryWrapper<RecLog> recLogWrapper = new LambdaQueryWrapper<>();
+            recLogWrapper.eq(RecLog::getMemberId, userId);
+            Integer dishCollectTotal = recLogMapper.selectCount(recLogWrapper);
+            personalDishCollectVo.setTotal(dishCollectTotal);
+            LambdaQueryWrapper<MemberNoteLog> noteLogWrapper = new LambdaQueryWrapper<>();
+            noteLogWrapper.eq(MemberNoteLog::getMemberId, userId);
+            Integer noteCollectTotal = memberNoteLogMapper.selectCount(noteLogWrapper);
+            personalNoteCollectVo.setTotal(noteCollectTotal);
+        }
+        // 处理个人主页菜谱分页数据
+        List<PersonalDishVo> dishPages = dishMapper.getPersonDishPage(personalDto.getUserId(),
+                (personalDto.getMenuCurrentPage() - 1) * personalDto.getMenuPageSize(), personalDto.getMenuPageSize());
+        personalDishPageVo.setPersonalDishVos(dishPages);
+        personalDishPageVo.setCurrentPage(personalDto.getMenuCurrentPage());
+        personalDishPageVo.setPageSize(personalDto.getMenuPageSize());
+        personalVo.setPersonalDishPageVo(personalDishPageVo);
+        // 查询笔记对应的分页数据
+        List<PersonalNoteVo> notePages = dishMapper.getPersonNotePage(personalDto.getUserId(),
+                (personalDto.getMenuCurrentPage() - 1) * personalDto.getMenuPageSize(), personalDto.getMenuPageSize());
+        personalNotePageVo.setPersonalNoteVos(notePages);
+        personalNotePageVo.setCurrentPage(personalDto.getNoteCurrentPage());
+        personalNotePageVo.setPageSize(personalDto.getNotePageSize());
+        personalVo.setPersonalNotePageVo(personalNotePageVo);
+        // 处理收藏[菜谱 + 笔记]
+        List<PersonalDishVo> dishCollectPages = memberDishLogMapper.getDishCollectPage(personalDto.getUserId(),
+                (personalDto.getCollectMenuCurrentPage() - 1) * personalDto.getCollectMenuPageSize(), personalDto.getCollectMenuPageSize());
+        personalDishCollectVo.setPersonalDishVos(dishCollectPages);
+        personalDishCollectVo.setCurrentPage(personalDto.getCollectMenuCurrentPage());
+        personalDishCollectVo.setPageSize(personalDto.getCollectMenuPageSize());
+        List<PersonalNoteVo> noteCollectPages = memberNoteLogMapper.getNoteCollectPage(personalDto.getUserId(),
+                (personalDto.getCollectNoteCurrentPage() - 1) * personalDto.getCollectNotePageSize(), personalDto.getCollectNotePageSize());
+        personalNoteCollectVo.setPersonalNoteVos(noteCollectPages);
+        personalNoteCollectVo.setCurrentPage(personalDto.getCollectNoteCurrentPage());
+        personalNoteCollectVo.setPageSize(personalDto.getCollectNotePageSize());
+
+        personalCollectVo.setPersonalDishCollectVo(personalDishCollectVo);
+        personalCollectVo.setPersonalNoteCollectVo(personalNoteCollectVo);
+        personalVo.setPersonalCollectVo(personalCollectVo);
+        return personalVo;
+    }
+
+    private boolean isFirstTime(PersonalDto personalDto) {
+        return personalDto.getMenuCurrentPage() == 1 ||
+                personalDto.getNoteCurrentPage() == 1 ||
+                personalDto.getCollectMenuCurrentPage() == 1 ||
+                personalDto.getCollectNoteCurrentPage() == 1;
+    }
+
+    @Cacheable(cacheNames = "memberRecInfo")
+    @Override
+    public List<MemberRecVo> getRecMember() {
+        // 从缓存中获取推荐结果
+        Object obj = redisTemplate.opsForValue().get(DishConstant.MEMBER_REC);
+        // 将对象反序列化为集合
+        List<String> memberIds = JSON.parseObject(JSON.toJSONString(obj), new TypeReference<>() {
+        });
+        List<MemberRecVo> memberRecVos = dishMapper.getMemberRecInfo(memberIds);
+        Map<String, MemberRecVo> memberMaps = memberRecVos.stream().collect(Collectors.toMap(MemberRecVo::getId, x -> x));
+        LambdaQueryWrapper<Follow> wrapper = new LambdaQueryWrapper<>();
+        wrapper.in(Follow::getMemberId, memberIds);
+        List<Follow> follows = followMapper.selectList(wrapper);
+        follows.forEach(item -> {
+            memberMaps.get(item.getMemberId()).setFansNum( memberMaps.get(item.getMemberId()).getFansNum() + 1);
+        });
+        List<MemberRecVo> result = new ArrayList<>(8);
+        for (Map.Entry<String, MemberRecVo> entry : memberMaps.entrySet()) {
+            result.add(entry.getValue());
+        }
+        // 根据id集合查询相应信息
+        return result;
     }
 }
 

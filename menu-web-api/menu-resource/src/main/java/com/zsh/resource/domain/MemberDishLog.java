@@ -10,51 +10,51 @@ import lombok.Data;
 
 /**
  * 
- * @TableName note_log
+ * @TableName member_dish_log
  */
-@TableName(value ="note_log")
+@TableName(value ="member_dish_log")
 @Data
-public class NoteLog implements Serializable {
+public class MemberDishLog implements Serializable {
     /**
      * 
      */
-    @TableId(type = IdType.AUTO)
-    private String id;
+    @TableId
+    private Long id;
 
     /**
-     * 笔记id
+     * 
      */
-    private String noteId;
+    private Long dishId;
 
     /**
-     * 用户id
+     * 
      */
-    private String memberId;
+    private Long memberId;
 
     /**
-     * 点击数量
+     * 
      */
     private Integer clickNum;
 
     /**
-     * 是否点赞
+     * 
      */
-    private Boolean isUp;
-
-    /**
-     * 是否收藏
-     */
-    private Boolean isCollect;
-
-    /**
-     * 评论数量
-     */
-    private Integer commentNum;
+    private Integer isCollect;
 
     /**
      * 
      */
-    private Boolean isDeleted;
+    private Integer isUp;
+
+    /**
+     * 
+     */
+    private Integer commentNum;
+
+    /**
+     * 是否删除
+     */
+    private Integer isDeleted;
 
     /**
      * 

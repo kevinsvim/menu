@@ -16,4 +16,6 @@ public interface MemberService extends IService<Member> {
     CommonResult<Object> login(LoginDto loginDto);
 
     CommonResult<String> register(RegisterDto registerDto);
+
+
 }

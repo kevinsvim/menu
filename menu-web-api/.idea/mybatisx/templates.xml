@@ -62,8 +62,8 @@
             <option name="tableUIInfoList">
               <list>
                 <TableUIInfo>
-                  <option name="className" value="FoodIngredients" />
-                  <option name="tableName" value="food_ingredients" />
+                  <option name="className" value="SearchLog" />
+                  <option name="tableName" value="search_log" />
                 </TableUIInfo>
               </list>
             </option>

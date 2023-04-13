@@ -2,8 +2,12 @@ package com.zsh.resource.controller;
 
 import com.zsh.common.result.CommonResult;
 import com.zsh.resource.domain.Type;
+import com.zsh.resource.domain.dto.SearchSuggestDto;
+import com.zsh.resource.domain.vo.SuggestVo;
 import com.zsh.resource.service.TypeService;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 /**
  * Created by zsh on 2023/3/21
@@ -41,5 +45,14 @@ public class TypeController {
     @DeleteMapping("/removeCategory")
     public CommonResult<Object> removeCategory(@RequestParam("categoryLevel") Integer categoryLevel, @RequestParam("categoryId") Long categoryId) {
         return typeService.removeCategory(categoryLevel, categoryId);
+    }
+
+    /**
+     * 给予用户实时搜索建议
+     */
+    @PostMapping("/getSuggestList")
+    public CommonResult<Object> getSuggest(@RequestBody SearchSuggestDto searchSuggestDto) {
+        List<SuggestVo> list = typeService.getSearchSuggestList(searchSuggestDto);
+        return CommonResult.success(list);
     }
 }

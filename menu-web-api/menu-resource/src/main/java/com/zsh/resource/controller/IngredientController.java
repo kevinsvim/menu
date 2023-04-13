@@ -69,11 +69,16 @@ public class IngredientController {
 
     /**
      * 获取数据
-     * @return
+     * @return 200
      */
     @GetMapping("getPartIngredients")
     public CommonResult<Object> getIngredient() {
         List<IngredientVo> ingredientVos = ingredientsService.getPartIngredients();
         return CommonResult.success(ingredientVos);
+    }
+
+    @GetMapping("getIngredientById/{id}")
+    public CommonResult<Object> getIngredientById(@PathVariable String id) {
+        return CommonResult.success(ingredientsService.getById(id));
     }
 }
