@@ -1,17 +1,19 @@
 package com.zsh.resource.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.zsh.common.result.CommonResult;
+import com.zsh.resource.domain.Dish;
 import com.zsh.resource.domain.dto.PersonalDto;
 import com.zsh.resource.domain.dto.PublishDishDto;
-import com.zsh.resource.domain.vo.DishCategoryVo;
-import com.zsh.resource.domain.vo.DishConcentrationVo;
-import com.zsh.resource.domain.vo.DishDetailVo;
-import com.zsh.resource.domain.vo.MemberRecVo;
+import com.zsh.resource.domain.vo.*;
 import com.zsh.resource.domain.vo.personal.PersonalVo;
+import com.zsh.resource.recommend.DataPreprocess.DishDataPreProcess;
 import com.zsh.resource.service.DishService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.annotation.Resource;
 import java.util.List;
 
 
@@ -30,6 +32,16 @@ public class DishController {
         this.dishService = dishService;
     }
 
+    @Resource
+    private DishDataPreProcess dishDataPreProcess;
+    /**
+     * 测试
+     */
+    @GetMapping("/test")
+    public CommonResult<Object> test() {
+        dishDataPreProcess.process();
+        return CommonResult.success();
+    }
     /**
      * 获取热度值推荐
      */
@@ -96,5 +108,35 @@ public class DishController {
     public CommonResult<Object> getRecMember() {
         List<MemberRecVo> memberRecVos = dishService.getRecMember();
         return CommonResult.success(memberRecVos);
+    }
+
+    /**
+     * 获取菜谱分页数据
+     */
+    @GetMapping("/admin/getPageDish/{currentPage}/{pageSize}")
+    public CommonResult<Object> getPageDish(@PathVariable("currentPage") Integer currentPage, @PathVariable("pageSize")Integer pageSize) {
+        IPage<Dish> page = new Page<>(currentPage, pageSize);
+        dishService.page(page);
+        return CommonResult.success(page);
+    }
+    /**
+     * 删除
+     */
+    @DeleteMapping("/admin/removeDishById/{id}")
+    public CommonResult<Object> removeDishById(@PathVariable("id") String id) {
+        dishService.deleteDish(id);
+        return CommonResult.success("删除成功");
+    }
+
+    /**
+     * 更新
+     */
+    @PutMapping("/admin/auditDish/{id}/{status}")
+    public CommonResult<Object> auditDish(@PathVariable("id") String id, @PathVariable("status") Integer status) {
+        Dish dish = new Dish();
+        dish.setId(id);
+        dish.setStatus(status);
+        dishService.updateById(dish);
+        return CommonResult.success("更新成功");
     }
 }

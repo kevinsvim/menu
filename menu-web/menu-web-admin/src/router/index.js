@@ -153,7 +153,7 @@ const routes = [
                     {
                         path: '/dish/list',
                         name: 'DishList',
-                        component: () => import('@/views/dish/list.vue'),
+                        component: () => import('@/views/dish/List.vue'),
                         meta: {
                             title: '菜谱列表',
                             showRouter: true,

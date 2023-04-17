@@ -3,10 +3,7 @@ package com.zsh.resource.mapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.zsh.resource.domain.Dish;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import com.zsh.resource.domain.vo.DishCategoryVo;
-import com.zsh.resource.domain.vo.DishConcentrationVo;
-import com.zsh.resource.domain.vo.DishDetailVo;
-import com.zsh.resource.domain.vo.MemberRecVo;
+import com.zsh.resource.domain.vo.*;
 import com.zsh.resource.domain.vo.personal.MemberInfoVo;
 import com.zsh.resource.domain.vo.personal.PersonalDishVo;
 import com.zsh.resource.domain.vo.personal.PersonalNoteVo;
@@ -51,6 +48,7 @@ public interface DishMapper extends BaseMapper<Dish> {
     List<MemberRecVo> getMemberRecInfo(@Param("memberIds") List<String> memberIds);
 
     MemberInfoVo getMemberDetailInfo(@Param("memberId") String memberId);
+
 }
 
 

@@ -10,56 +10,21 @@ import lombok.Data;
 
 /**
  * 
- * @TableName member_dish_log
+ * @TableName item_cf_accuracy
  */
-@TableName(value ="member_dish_log")
+@TableName(value ="item_cf_accuracy")
 @Data
-public class MemberDishLog implements Serializable {
+public class ItemCfAccuracy implements Serializable {
     /**
      * 
      */
     @TableId
-    private String id;
+    private Long id;
 
     /**
      * 
      */
-    private String dishId;
-
-    /**
-     * 
-     */
-    private String memberId;
-
-    /**
-     * 
-     */
-    private Integer clickNum;
-
-    /**
-     * 
-     */
-    private Boolean isCollect;
-
-    /**
-     * 
-     */
-    private Boolean isUp;
-
-    /**
-     * 默认评分
-     */
-    private Double initScore;
-
-    /**
-     * 
-     */
-    private Integer commentNum;
-
-    /**
-     * 是否删除
-     */
-    private Boolean isDeleted;
+    private Double accuracy;
 
     /**
      * 

@@ -9,10 +9,12 @@ package com.zsh.resource.recommend.cf;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.io.*;
 
+@Component
 public class MenuItemCFRec {
 
     // 用户 - 物品评分矩阵
@@ -170,7 +172,6 @@ public class MenuItemCFRec {
      * 计算准确率
      */
     public double precision(int k, int nItems) {
-        System.out.println("开始计算准确率 ...");
         int hit = 0;
         double precision = 0;
         for (String user : this.testData.keySet()) {
@@ -188,9 +189,13 @@ public class MenuItemCFRec {
     }
 
     public static void main(String[] args) {
-        MenuItemCFRec ib = new MenuItemCFRec("D:\\recommend_system\\代码\\7-chapter\\data\\ratings.dat", 5);
-        System.out.printf("用户1进行推荐的结果如下：%s\n", ib.recommend("1", 8, 40));
-        System.out.printf("准确率为：%f\n", ib.precision(8, 40));
+        String fileName = System.getProperty("user.dir") + "/menu-resource/src/main/java/com/zsh/resource/recommend/data/dish_ratings.dat";
+        MenuItemCFRec ibs = new MenuItemCFRec(fileName, 4);
+        System.out.printf("用户1进行推荐的结果如下：%s\n", ibs.recommend("676", 2, 4));
+        System.out.printf("准确率为：%f\n", ibs.precision(4, 8));
+//        MenuItemCFRec ib = new MenuItemCFRec("D:\\recommend_system\\代码\\7-chapter\\data\\ratings.dat", 5);
+//        System.out.printf("用户1进行推荐的结果如下：%s\n", ib.recommend("1", 8, 40));
+//        System.out.printf("准确率为：%f\n", ib.precision(8, 40));
     }
 
 }

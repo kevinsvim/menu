@@ -11,11 +11,9 @@ import com.zsh.resource.constant.DishConstant;
 import com.zsh.resource.domain.*;
 import com.zsh.resource.domain.dto.PersonalDto;
 import com.zsh.resource.domain.dto.PublishDishDto;
-import com.zsh.resource.domain.vo.DishCategoryVo;
-import com.zsh.resource.domain.vo.DishConcentrationVo;
-import com.zsh.resource.domain.vo.DishDetailVo;
-import com.zsh.resource.domain.vo.MemberRecVo;
+import com.zsh.resource.domain.vo.*;
 import com.zsh.resource.domain.vo.personal.*;
+import com.zsh.resource.exception.RemoveDishException;
 import com.zsh.resource.mapper.*;
 import com.zsh.resource.service.DishService;
 import com.zsh.resource.service.MaterialService;
@@ -48,6 +46,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
     private final RecLogMapper recLogMapper;
     private final FollowMapper followMapper;
     private final NoteMapper noteMapper;
+    private final DishRecLogMapper dishRecLogMapper;
     private final MemberNoteLogMapper memberNoteLogMapper;
     private final MemberDishLogMapper memberDishLogMapper;
 
@@ -55,7 +54,8 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
                            StepService stepService, DishMapper dishMapper,
                            CommentMapper commentMapper, RecLogMapper recLogMapper,
                            FollowMapper followMapper, NoteMapper noteMapper,
-                           MemberNoteLogMapper memberNoteLogMapper, MemberDishLogMapper memberDishLogMapper) {
+                           MemberNoteLogMapper memberNoteLogMapper, MemberDishLogMapper memberDishLogMapper,
+                           DishRecLogMapper dishRecLogMapper) {
         this.redisTemplate = redisTemplate;
         this.materialService = materialService;
         this.stepService = stepService;
@@ -66,6 +66,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         this.noteMapper = noteMapper;
         this.memberNoteLogMapper = memberNoteLogMapper;
         this.memberDishLogMapper = memberDishLogMapper;
+        this.dishRecLogMapper = dishRecLogMapper;
     }
 
     /**
@@ -105,7 +106,6 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         });
         String materialNames = materialNamesAppend.substring(0, materialNamesAppend.length() - 1);
         String dosages = dosagesAppend.substring(0, dosagesAppend.length() - 1);
-        // 保存食材
         Material material = new Material();
         material.setName(materialNames);
         material.setDosage(dosages);
@@ -339,6 +339,40 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         // 根据id集合查询相应信息
         return result;
     }
+
+    @Transactional
+    @Override
+    public void deleteDish(String id) {
+        Dish dish = dishMapper.selectById(id);
+        try {
+            // 1.删除菜谱
+            dishMapper.deleteById(id);
+            // 2.删除评论
+            LambdaQueryWrapper<Comment> commentWrapper = new LambdaQueryWrapper<>();
+            commentWrapper.eq(Comment::getDishId, id);
+            commentMapper.delete(commentWrapper);
+            // 3.删除dish_rec_log日志
+            LambdaQueryWrapper<DishRecLog> dishRecLogWrapper = new LambdaQueryWrapper<>();
+            dishRecLogWrapper.eq(DishRecLog::getDishId, id);
+            dishRecLogMapper.delete(dishRecLogWrapper);
+            // 4.删除食材
+            LambdaQueryWrapper<Material> materialWrapper = new LambdaQueryWrapper<>();
+            materialWrapper.eq(Material::getId, dish.getMaterialId());
+            // 5.删除member_dish_log
+            LambdaQueryWrapper<MemberDishLog> memberDishLogWrapper = new LambdaQueryWrapper<>();
+            memberDishLogWrapper.eq(MemberDishLog::getDishId, id);
+            memberDishLogMapper.delete(memberDishLogWrapper);
+            // 6.删除步骤
+            LambdaQueryWrapper<Step> stepWrapper = new LambdaQueryWrapper<>();
+            stepWrapper.eq(Step::getDishId, id);
+            stepService.remove(stepWrapper);
+            // 7.将redis中的缓存失效
+        }catch (RemoveDishException e) {
+            throw new RemoveDishException("删除食谱失败!");
+        }
+
+    }
+
 }
 
 

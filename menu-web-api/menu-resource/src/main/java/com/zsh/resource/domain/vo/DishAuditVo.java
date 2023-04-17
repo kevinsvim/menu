@@ -1,20 +1,22 @@
-package com.zsh.resource.domain.dto;
+package com.zsh.resource.domain.vo;
 
 import com.zsh.resource.domain.Material;
 import com.zsh.resource.domain.Step;
 import lombok.Data;
-import lombok.ToString;
 
 import java.util.List;
 
 /**
- * Created by zsh on 2023/3/17
+ * Created by zsh on 2023/4/13
  *
  * @author zsh
  */
 @Data
-@ToString
-public class PublishDishDto {
+public class DishAuditVo {
+    /**
+     * 菜谱id
+     */
+    private String id;
     /**
      * 发布者id
      */
@@ -40,25 +42,9 @@ public class PublishDishDto {
      */
     private String description;
     /**
-     * 材料列表
-     */
-    private List<Material> materialMenu;
-    /**
-     * 中间转换变量
-     */
-    private String materials;
-    /**
-     * 步骤列表
-     */
-    private List<Step> stepMenu;
-    /**
      * 诀窍
      */
     private String skill;
-    /**
-     * 厨具集合
-     */
-    private List<Long> kitchenwareIds;
     /**
      * 是否独家发布
      */
@@ -68,13 +54,11 @@ public class PublishDishDto {
      */
     private String flavorId;
     /**
-     * 烹饪工艺id
+     * 烹饪工艺
      */
     private String cookTechnologyId;
     /**
      * 分类id
      */
     private String  typeId;
-
-
 }

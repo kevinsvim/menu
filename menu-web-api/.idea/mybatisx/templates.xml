@@ -62,8 +62,8 @@
             <option name="tableUIInfoList">
               <list>
                 <TableUIInfo>
-                  <option name="className" value="SearchLog" />
-                  <option name="tableName" value="search_log" />
+                  <option name="className" value="ItemCfAccuracy" />
+                  <option name="tableName" value="item_cf_accuracy" />
                 </TableUIInfo>
               </list>
             </option>

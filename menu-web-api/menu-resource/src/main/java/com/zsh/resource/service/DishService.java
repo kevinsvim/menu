@@ -6,10 +6,7 @@ import com.zsh.resource.domain.Dish;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.zsh.resource.domain.dto.PersonalDto;
 import com.zsh.resource.domain.dto.PublishDishDto;
-import com.zsh.resource.domain.vo.DishCategoryVo;
-import com.zsh.resource.domain.vo.DishConcentrationVo;
-import com.zsh.resource.domain.vo.DishDetailVo;
-import com.zsh.resource.domain.vo.MemberRecVo;
+import com.zsh.resource.domain.vo.*;
 import com.zsh.resource.domain.vo.personal.PersonalVo;
 
 import java.util.List;
@@ -58,4 +55,5 @@ public interface DishService extends IService<Dish> {
 
     List<MemberRecVo> getRecMember();
 
+    void deleteDish(String id);
 }
