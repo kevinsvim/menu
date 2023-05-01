@@ -18,6 +18,8 @@ import java.util.List;
 public interface TypeMapper extends BaseMapper<Type> {
 
     List<SuggestVo> getSearchSuggests(@Param("size") Integer size, @Param("content") String content);
+
+    void saveTag(@Param("result") String result, @Param("userId") String userId);
 }
 
 

@@ -18,6 +18,11 @@
         id,name,parent_id,
         is_deleted,create_time,update_time
     </sql>
+    <update id="saveTag">
+        UPDATE member
+        SET tags = #{result}
+        WHERE id = #{userId}
+    </update>
     <select id="getSearchSuggests" resultType="com.zsh.resource.domain.vo.SuggestVo">
         SELECT id,
                name AS value

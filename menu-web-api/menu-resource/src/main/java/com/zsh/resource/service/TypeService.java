@@ -24,4 +24,5 @@ public interface TypeService extends IService<Type> {
 
     List<SuggestVo> getSearchSuggestList(SearchSuggestDto searchSuggestDto);
 
+    void insertTags(List<String> tags, String userId);
 }

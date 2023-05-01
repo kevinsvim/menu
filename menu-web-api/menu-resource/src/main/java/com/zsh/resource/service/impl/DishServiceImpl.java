@@ -15,6 +15,7 @@ import com.zsh.resource.domain.vo.*;
 import com.zsh.resource.domain.vo.personal.*;
 import com.zsh.resource.exception.RemoveDishException;
 import com.zsh.resource.mapper.*;
+import com.zsh.resource.recommend.cf.ContentBasedRecommendation;
 import com.zsh.resource.service.DishService;
 import com.zsh.resource.service.MaterialService;
 import com.zsh.resource.service.MemberDishLogService;
@@ -49,13 +50,14 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
     private final DishRecLogMapper dishRecLogMapper;
     private final MemberNoteLogMapper memberNoteLogMapper;
     private final MemberDishLogMapper memberDishLogMapper;
+    private ContentBasedRecommendation contentBasedRecommendation;
 
     public DishServiceImpl(RedisTemplate<Object, Object> redisTemplate, MaterialService materialService,
                            StepService stepService, DishMapper dishMapper,
                            CommentMapper commentMapper, RecLogMapper recLogMapper,
                            FollowMapper followMapper, NoteMapper noteMapper,
                            MemberNoteLogMapper memberNoteLogMapper, MemberDishLogMapper memberDishLogMapper,
-                           DishRecLogMapper dishRecLogMapper) {
+                           DishRecLogMapper dishRecLogMapper, ContentBasedRecommendation contentBasedRecommendation) {
         this.redisTemplate = redisTemplate;
         this.materialService = materialService;
         this.stepService = stepService;
@@ -67,6 +69,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         this.memberNoteLogMapper = memberNoteLogMapper;
         this.memberDishLogMapper = memberDishLogMapper;
         this.dishRecLogMapper = dishRecLogMapper;
+        this.contentBasedRecommendation = contentBasedRecommendation;
     }
 
     /**
@@ -124,6 +127,63 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         stepService.saveBatch(steps);
 
         return CommonResult.success();
+    }
+
+    @Override
+    public List<DishConcentrationVo> recommendRecipe(String userId) {
+        // 1.获取缓存中推荐的菜谱
+        Object hotScore = redisTemplate.opsForValue().get(DishConstant.HOT_SCORE);
+        Map<String, String> hotScoreMap = JSON.parseObject(JSON.toJSONString(hotScore), new TypeReference<>() {
+        });
+        Set<String> dishIds = hotScoreMap.keySet();
+        List<String> ids = new ArrayList<>(8);
+        if (StringUtils.isEmpty(userId)) {
+            // 用户userId为空，表示未登录
+            // 未登录，没有交互行为，则根据热度推荐
+            // 取出前8个菜谱id
+            ids = dishIds.stream().limit(8).collect(Collectors.toList());
+        } else {
+            // userId不为空,则表示用户已经登录
+            // 已登录，则综合考虑基于内容和基于热度推荐
+            Iterator<String> iterator = dishIds.iterator();
+            int count = 0;
+            while (iterator.hasNext() && count < 2) {
+                String item = iterator.next();
+                ids.add(item);
+                count++;
+            }
+            List<String> basedContentIds = contentBasedRecommendation.recommendRecipes(userId);
+            for (String basedContentId : basedContentIds) {
+                if (ids.get(0).equals(basedContentId) || ids.get(1).equals(basedContentId)) {
+                    continue;
+                }
+                if (ids.size() < 8) {
+                    ids.add(basedContentId);
+                }
+            }
+        }
+        // 根据id查询相关信息
+        // 3.根据id集合查询相关信息
+        List<DishConcentrationVo> concentrationVos = dishMapper.getConcentrationRecContent(ids);
+        Map<String, DishConcentrationVo> resMap = concentrationVos.stream().collect(Collectors.toMap(DishConcentrationVo::getId, k1 -> k1));
+        LambdaQueryWrapper<RecLog> wrapper = new LambdaQueryWrapper<>();
+        // 拼接参数查询所有相关日志
+        for (String id : ids) {
+            wrapper.or().eq(RecLog::getDishId, id);
+        }
+        List<RecLog> recLogs = recLogMapper.selectList(wrapper);
+        for (RecLog recLog : recLogs) {
+            DishConcentrationVo dishVo = resMap.get(recLog.getDishId());
+            dishVo.setViews(dishVo.getViews() + recLog.getClickNum());
+            dishVo.setUpNum(dishVo.getUpNum() + (recLog.getIsUp() ? 1 : 0));
+            dishVo.setCollectNum(dishVo.getCollectNum() + (recLog.getIsCollect() ? 1 : 0));
+            dishVo.setCommentNum(dishVo.getCommentNum() + recLog.getCommentNum());
+        }
+        List<DishConcentrationVo> res = new ArrayList<>();
+        for (Map.Entry<String, DishConcentrationVo> entry : resMap.entrySet()) {
+            res.add(entry.getValue());
+        }
+        return res;
     }
 
     /**
@@ -330,7 +390,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
         wrapper.in(Follow::getMemberId, memberIds);
         List<Follow> follows = followMapper.selectList(wrapper);
         follows.forEach(item -> {
-            memberMaps.get(item.getMemberId()).setFansNum( memberMaps.get(item.getMemberId()).getFansNum() + 1);
+            memberMaps.get(item.getMemberId()).setFansNum(memberMaps.get(item.getMemberId()).getFansNum() + 1);
         });
         List<MemberRecVo> result = new ArrayList<>(8);
         for (Map.Entry<String, MemberRecVo> entry : memberMaps.entrySet()) {
@@ -367,7 +427,7 @@ public class DishServiceImpl extends ServiceImpl<DishMapper, Dish> implements Di
             stepWrapper.eq(Step::getDishId, id);
             stepService.remove(stepWrapper);
             // 7.将redis中的缓存失效
-        }catch (RemoveDishException e) {
+        } catch (RemoveDishException e) {
             throw new RemoveDishException("删除食谱失败!");
         }
 

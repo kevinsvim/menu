@@ -65,21 +65,19 @@ public class MemberHotRec {
     }
 
     /**
-     * 对map集合的value进行降序排列方法
-     * @param map 需要排序的map集合
-     * @param <K> 键
-     * @param <V> 值
+     * Map按照整数型的value进行降序排序，当value相同时，按照key的长度进行排序
      */
-    public <K, V extends Comparable<? super V>> Map<K, V> sortDescend(Map<K, V> map) {
-        List<Map.Entry<K, V>> list = new ArrayList<>(map.entrySet());
-        list.sort((o1, o2) -> {
-            int compare = (o1.getValue()).compareTo(o2.getValue());
-            return -compare;
-        });
-        Map<K, V> returnMap = new LinkedHashMap<>();
-        for (Map.Entry<K, V> entry:list) {
-            returnMap.put(entry.getKey(), entry.getValue());
-        }
-        return returnMap;
+    private LinkedHashMap<String, Integer> sortDescend(Map<String, Integer> map) {
+        return map.entrySet().stream().sorted(((item1, item2) -> {
+            int compare = item2.getValue().compareTo(item1.getValue());
+            if (compare == 0) {
+                if (item1.getKey().length() < item2.getKey().length()) {
+                    compare = 1;
+                } else if (item1.getKey().length() > item2.getKey().length()) {
+                    compare = -1;
+                }
+            }
+            return compare;
+        })).collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
     }
 }

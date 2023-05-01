@@ -29,6 +29,12 @@ public interface DishService extends IService<Dish> {
     CommonResult<Object> saveDish(PublishDishDto publishDishDto);
 
     /**
+     * 获取推荐页数据
+     * @param userId 当前登录的用户
+     * @return 返回推荐的数据
+     */
+    List<DishConcentrationVo> recommendRecipe(String userId);
+    /**
      *  获取推荐页数据
      */
     List<DishConcentrationVo> getConcentrationMenu();

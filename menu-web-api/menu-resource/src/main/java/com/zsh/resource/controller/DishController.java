@@ -10,10 +10,13 @@ import com.zsh.resource.domain.dto.PublishDishDto;
 import com.zsh.resource.domain.vo.*;
 import com.zsh.resource.domain.vo.personal.PersonalVo;
 import com.zsh.resource.recommend.DataPreprocess.DishDataPreProcess;
+import com.zsh.resource.recommend.cf.ContentBasedRecommendation;
 import com.zsh.resource.service.DishService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.io.FileNotFoundException;
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 
@@ -63,9 +66,9 @@ public class DishController {
     /**
      * 获取精选菜谱
      */
-    @GetMapping("/getConcentrationMenu")
-    public CommonResult<Object> getConcentrationMenu() {
-        List<DishConcentrationVo> list = dishService.getConcentrationMenu();
+    @GetMapping("/getConcentrationMenu/{id}")
+    public CommonResult<Object> getConcentrationMenu(@PathVariable("id") String id, @RequestHeader(value = "userId", required = false) String userId) {
+        List<DishConcentrationVo> list = dishService.recommendRecipe(userId);
         return CommonResult.success(list);
     }
 
@@ -139,4 +142,5 @@ public class DishController {
         dishService.updateById(dish);
         return CommonResult.success("更新成功");
     }
+
 }

@@ -133,6 +133,14 @@ public class TypeServiceImpl extends ServiceImpl<TypeMapper, Type>
         List<SuggestVo> list = typeMapper.getSearchSuggests(searchSuggestDto.getSize(), searchSuggestDto.getContent());
         return list;
     }
+
+    @Override
+    public void insertTags(List<String> tags, String userId) {
+        if (ObjectUtils.isNotEmpty(tags)) {
+            String result = String.join(",", tags);
+            typeMapper.saveTag(result, userId);
+        }
+    }
 }
 
 

@@ -49,6 +49,7 @@ public interface DishMapper extends BaseMapper<Dish> {
 
     MemberInfoVo getMemberDetailInfo(@Param("memberId") String memberId);
 
+    String getTags(@Param("userId") String userId);
 }
 
 

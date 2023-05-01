@@ -13,8 +13,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.*;
 import java.io.*;
-
-@Component
 public class MenuItemCFRec {
 
     // 用户 - 物品评分矩阵
@@ -140,7 +138,7 @@ public class MenuItemCFRec {
      * @param nItems 总共返回n个物品
      * @return { 菜单id:最终得分 }
      */
-    Map<String, Double> recommend(String user, int k, int nItems) {
+    public Map<String, Double> recommend(String user, int k, int nItems) {
         Map<String, Double> result = new HashMap<>();
         Map<String, Double> u_items = trainData.getOrDefault(user, new HashMap<>());
         for (Map.Entry<String, Double> entry : u_items.entrySet()) {

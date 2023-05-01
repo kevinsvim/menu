@@ -2,6 +2,7 @@ package com.zsh.resource.mapper;
 
 import com.zsh.resource.domain.MemberDishLog;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import com.zsh.resource.domain.dto.DishPreData;
 import com.zsh.resource.domain.vo.personal.PersonalDishVo;
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.data.repository.query.Param;
@@ -20,6 +21,7 @@ public interface MemberDishLogMapper extends BaseMapper<MemberDishLog> {
     List<PersonalDishVo> getDishCollectPage(@Param("userId") String userId, @Param("startSize") int startSize, @Param("pageSize") Integer pageSize);
 
 
+    List<DishPreData> selectDishList();
 }
 
 

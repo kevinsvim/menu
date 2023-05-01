@@ -15,4 +15,19 @@ public class DishConstant {
      * 用户推荐常量
      */
     public static final String MEMBER_REC = "memberHotRec";
+
+    /**
+     * 菜谱点击常量
+     */
+    public static final String DISH_CLICK_NUM = "dishClickNum";
+
+    /**
+     * 菜谱收藏常量
+     */
+    public static final String DISH_COLLECT_NUM = "dishCollectNum";
+
+    /**
+     * 菜谱点赞常量
+     */
+    public static final String DISH_UP_NUM = "dishUpNum";
 }
