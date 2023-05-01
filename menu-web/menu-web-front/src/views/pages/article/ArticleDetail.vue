@@ -29,7 +29,7 @@
     <div style="text-align: left">
       <span style="font-size: 17px; font-weight: bold;">{{ article.title }}</span>
     </div>
-    <div v-html="article.content"></div>
+    <div class="content" v-html="article.content"></div>
     <div>{{ article.id }}</div>
   </div>
   <FoodFooter/>
@@ -95,6 +95,10 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style scoped lang="less">
+.content {
+    :deep(img) {
+        max-width: 48vw;
+    }
+}
 </style>

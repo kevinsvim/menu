@@ -26,6 +26,11 @@ const routes = [
     }
   },
   {
+    path: '/tag',
+    name: 'Tag',
+    component: () => import('@/views/pages/tag/TagSeelction')
+  },
+  {
     path: '/',
     redirect: '/index',
     component: () => import('@/views/pages/nav/NavigationBar'),

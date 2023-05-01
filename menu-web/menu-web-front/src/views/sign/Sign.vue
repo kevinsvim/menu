@@ -44,7 +44,7 @@
             </el-button>
           </template>
         </el-input>
-        <button>Sign Up</button>
+        <button @click="register">Sign Up</button>
       </form>
       <form class="sign-in">
         <h2>Sign In</h2>
@@ -143,23 +143,22 @@ export default {
     /**
      * 用户注册
      */
-    const submit = () => {
+    const register = () => {
       // 校验验证码是否为空
       if (registerData.code === "") {
         ElMessage.error('验证码不能为空')
         return
       }
-      registerLoading.value = true
       member.userRegister(registerData).then(result => {
         // 注册成功,获取token
         ElMessage.success('注册成功~')
-        console.log("注册结果: ", result)
-        // store.saveToken(result.data)
-        console.log("logStorage存储结果:", window.localStorage.getItem("menu_token_info"))
+        // 保存token
+        tStore.saveToken(result.data)
+        // 调转到标签选择页眉
+        router.push("/tag")
       }).catch(error => {
         ElMessage.error('注册失败,请稍后再试~')
       })
-      registerLoading.value = false
     }
 
     const toLogin = () => {
@@ -176,7 +175,7 @@ export default {
       disabled,
       loginForm,
       getAuthCode,
-      submit,
+      register,
       toLogin,
       member_login
     }

@@ -213,6 +213,7 @@ export default {
         noteDetail.publisherName = data.username
         noteDetail.publisherDate = data.publisherDate
         noteDetail.intro = data.intro
+        console.log('comment:', data.noteComments)
       })
     }
     if (routes.query.id) {

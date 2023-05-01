@@ -406,7 +406,7 @@ export default {
       uStore.removeUserInfo()
       tStore.removeToken()
       // 重新跳转到登录页面
-      router.push('/login')
+      router.push('/sign')
     }
     return {
       isLogin,

@@ -27,7 +27,7 @@ export default {
   // 获取精品菜谱数据
   getConcentrationMenu() {
     return http({
-      url: `${api_url}/dish/getConcentrationMenu`,
+      url: `${api_url}/dish/getConcentrationMenu/1`,
       method: 'get'
     })
   },

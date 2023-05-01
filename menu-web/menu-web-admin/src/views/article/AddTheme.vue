@@ -87,7 +87,6 @@ export default {
     })
 
     const saveTheme = () => {
-      console.log('保存的数据为:', theme)
       articleApi.saveTheme(theme).then(res => {
         ElMessage.success('保存成功!')
         theme = {}
