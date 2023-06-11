@@ -5,11 +5,11 @@ spring:
     name: menu-member
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://sh-cynosdbmysql-grp-pl8px3xs.sql.tencentcdb.com:23079/food_menu?serverTimezone=UTC&allowPublicKeyRetrieval=true
+    url: xxxx
     username: root
-    password: Hao_7886*@.Zms
+    password: xxxx
   redis:
-    host: 43.138.88.44
+    host: xxxxx
     port: 6379
     database: 0
     password: 654321
