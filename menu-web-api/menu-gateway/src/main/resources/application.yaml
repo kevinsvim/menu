@@ -36,7 +36,7 @@ spring:
             - Path=/oss/**
 
   redis:
-    host: 43.138.88.44
+    host: xxxxx
     port: 6379
     database: 1
     password: 654321
