@@ -4,7 +4,7 @@ spring:
   application:
     name: menu-msm
   redis:
-    host: 43.138.88.44
+    host: xxxx
     port: 6379
     database: 1
     password: 654321
@@ -22,17 +22,10 @@ spring:
 #腾讯-》短信服务配置
 tencent:
   msm:
-    id: AKIDhCRP7ZjcEZcOt73i6D3bssb2C5h25rMa
-    secret: ye3BQO4UcT2LOBhvtaz7yYqsd6ICpBF2
-    endPoint: sms.tencentcloudapi.com
+    id: xxxx
+    secret: xxx
+    endPoint: xxx
     appId: 1400561703
     signName: 编程指引
     templateId: 1082416
-#tencent:
-#  msm:
-#    id: AKIDUqzvmbJsN2maJDCA1wslcPAsVxFOM6c6
-#    secret: S1UlqiM1fEmBNK5cuFVdaKq78wX3Up6L
-#    endPoint: sms.tencentcloudapi.com
-#    appId: 1400569954
-#    signName: 备用
-#    templateId: 1113549
+
